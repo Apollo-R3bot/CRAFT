@@ -52,8 +52,8 @@ class AcquireEvidenceController:
             profile_files = {
                 "history": [history_path],
                 "cookies": [cookies_path],
-                "logins": [bookmarks_path],
-                "bookmarks": [logins_path]
+                "logins": [logins_path],
+                "bookmarks": [bookmarks_path]
             }
 
             user_name = os.path.basename(root_folder)
