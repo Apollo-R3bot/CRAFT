@@ -1,24 +1,26 @@
 import os
 from pathlib import Path
 from PySide6.QtCore import QDir
-from PySide6.QtWidgets import QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QRadioButton, QVBoxLayout
+from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QRadioButton, QVBoxLayout
 from controllers.acquire_controller import AcquireEvidenceController
 from controllers.browser_controller import BrowserSelectionController
-from controllers.main_controller import MainController
+from controllers.user_profile_controller import UserProfileController
 
-class EvidenceSourceAndDestination(QDialog):
-    def __init__(self):
-        super().__init__()
+class EvidenceAcquisition(QDialog):
+    def __init__(self, logger, parent=None):
+        super().__init__(parent)
 
         # Controllers
-        self.acquire = AcquireEvidenceController()
+        self.logger = logger
+        self.acquire = AcquireEvidenceController(logger=self.logger)
         self.select_browser = BrowserSelectionController()
-        self.user_profile = MainController()
+        self.user_profile = UserProfileController()
 
         self.selected_browser_path = None
         self.selected_user = None
+        self.parent_dialog = parent 
 
-        self.setWindowTitle("Select Evidence Source")
+        self.setWindowTitle("Select Profile and Browser Source")
         self.resize(450, 500)
         layout = QVBoxLayout()
 
@@ -57,6 +59,7 @@ class EvidenceSourceAndDestination(QDialog):
 
         # Select Destination Folder
         destination_folder = QGroupBox("Select Destination Folder")
+        destination_folder.setStyleSheet("QGroupBox { margin: 10px; padding: 10px; }")
         layout.addWidget(destination_folder)
         destination = QHBoxLayout()
 
@@ -64,10 +67,16 @@ class EvidenceSourceAndDestination(QDialog):
         self.path_input = QLineEdit()
         browse_btn = QPushButton("Browse...")
         browse_btn.clicked.connect(self.browse_output_folder)
-        destination_folder.setStyleSheet("QGroupBox { margin: 10px; padding: 10px; }")
         destination.addWidget(self.path_input)
         destination.addWidget(browse_btn)
         destination_folder.setLayout(destination)
+
+        # if Hashing required
+        hash_checkbox = QCheckBox("Verify evidence after they are created")
+        hash_checkbox.stateChanged.connect(self.toggle_hashing)
+        hash_checkbox.setChecked(True)
+        hash_checkbox.setStyleSheet("QCheckBox { padding: 10px; }")
+        layout.addWidget(hash_checkbox)
 
         # Footer - Separator
         line = QFrame()
@@ -76,15 +85,26 @@ class EvidenceSourceAndDestination(QDialog):
         layout.addWidget(line)
 
         footer = QHBoxLayout()
+        back_btn = QPushButton("< Back")
         start_btn = QPushButton("Start")
         cancel_btn = QPushButton("Cancel")
 
-        start_btn.clicked.connect(self.handle_start)
+        back_btn.clicked.connect(self.go_back)
+        start_btn.clicked.connect(self.start_acquire)
         cancel_btn.clicked.connect(self.accept)
 
+        footer.addWidget(back_btn)
         footer.addWidget(start_btn)
         footer.addWidget(cancel_btn)
-        
+        self.setStyleSheet("""
+            QPushButton {
+                padding: 5px;
+                font-size: 12px;
+            }
+            QDialog {
+                padding: 40px;
+            }
+            """)
         layout.addLayout(footer) 
         self.setLayout(layout)
 
@@ -122,16 +142,43 @@ class EvidenceSourceAndDestination(QDialog):
             self.path_input.setText(QDir.toNativeSeparators(folder))
             self.acquire.set_output_folder(QDir.toNativeSeparators(folder))
 
-    def handle_start(self):
-        if not self.selected_browser_path:
-            QMessageBox.warning(self, "Error", "Select a browser")
+    def toggle_hashing(self, state):
+        self.acquire.set_hashing(state == 2)
+
+    def go_back(self):
+        self.reject()
+
+    def start_acquire(self):
+        output_path = self.path_input.text().strip()
+
+        if not output_path or not self.selected_browser_path:
+            QMessageBox.warning(
+                self,
+                "Warning",
+                "Please select both browser and destination folder"
+            )
             return
+
 
         data = self.acquire.start_parsing(
             self.selected_user,
             self.selected_browser_path
         )
-        QMessageBox.information(self, "Done", "Parsing Complete")
+        QMessageBox.information(self, "Success", "Acquisition Completed Successfully")
+
+    # def go_next(self):
+    #     if not self.selected_browser_path:
+    #         QMessageBox.warning(self, "Missing Browser", "Select a browser to continue")
+    #         return
+        
+    #     self.destination_dialog = EvidenceDestination(
+    #         self.selected_user,
+    #         self.selected_browser_path,
+    #         parent=self
+    #     )
+
+    #     if self.destination_dialog.exec() == QDialog.Rejected:
+    #         return
 
     
     
