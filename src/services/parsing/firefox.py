@@ -1,52 +1,110 @@
 import os
 import json
 import sqlite3
-from services.utils.utils import convert_firefox_time, safe_copy
+from services.utils.utils import convert_firefox_time, format_size, safe_copy
 
-def extract_firefox_downloads(files, user_profile):
+def extract_firefox_downloads(
+    files,
+    user_profile,
+    logger=None
+):
     downloads = []
 
     for db_file in files:
         try:
             safe_db = safe_copy(db_file)
+
             if not safe_db:
                 continue
 
-            conn = sqlite3.connect(f"file:{safe_db}?mode=ro", uri=True)
+            conn = sqlite3.connect(
+                f"file:{safe_db}?mode=ro",
+                uri=True
+            )
+
             cursor = conn.cursor()
 
             cursor.execute("""
-                SELECT 
-                    moz_places.url,
-                    moz_annos.content,
-                    moz_annos.dateAdded
-                FROM moz_annos
-                JOIN moz_places ON moz_annos.place_id = moz_places.id
-                WHERE moz_annos.anno_attribute_id IN (
-                    SELECT id FROM moz_anno_attributes 
-                    WHERE name = 'downloads/destinationFileURI'
+                SELECT
+                    p.url,
+
+                    dest.content AS download_path,
+
+                    meta.content AS metadata,
+
+                    dest.dateAdded
+
+                FROM moz_annos dest
+
+                LEFT JOIN moz_annos meta
+                    ON dest.place_id = meta.place_id
+
+                JOIN moz_places p
+                    ON dest.place_id = p.id
+
+                WHERE dest.anno_attribute_id = (
+                    SELECT id
+                    FROM moz_anno_attributes
+                    WHERE name='downloads/destinationFileURI'
+                )
+
+                AND meta.anno_attribute_id = (
+                    SELECT id
+                    FROM moz_anno_attributes
+                    WHERE name='downloads/metaData'
                 )
             """)
 
-            for url, file_path, date_added in cursor.fetchall():
+            rows = cursor.fetchall()
+
+            for row in rows:
+                (
+                    url,
+                    download_path,
+                    metadata_json,
+                    date_added
+                ) = row
+
+                size = ""
+                end_time = ""
+
+                try:
+                    metadata = json.loads(metadata_json)
+
+                    size = metadata.get(
+                        "fileSize",
+                        ""
+                    )
+
+                    end_time_raw = metadata.get(
+                        "endTime",
+                        ""
+                    )
+
+                    if end_time_raw:
+                        end_time = convert_firefox_time(
+                            int(end_time_raw)
+                        )
+
+                except Exception:
+                    pass
+                
+                total_size = format_size(size) if size else "0 B"
                 downloads.append([
                     convert_firefox_time(date_added),
-                    None,
-                    file_path,
-                    None,
-                    None,
-                    None,
-                    None,
-                    None,
-                    "firefox",
-                    user_profile,
-                    db_file
+                    end_time,                          
+                    download_path,                  
+                    total_size,                           
+                    url                              
                 ])
 
             conn.close()
 
         except Exception as e:
-            print(f"Firefox downloads error: {e}")
+            if logger:
+                logger.exception(
+                    f"Firefox downloads extraction failed: {e}"
+                )
 
     return downloads
 
@@ -77,10 +135,7 @@ def extract_firefox_cookies(files, user_profile):
                     convert_firefox_time(row[4]),
                     convert_firefox_time(row[5]),
                     "Yes" if row[6] else "No",
-                    "Yes" if row[7] else "No",
-                    "firefox",
-                    user_profile,
-                    db_file
+                    "Yes" if row[7] else "No"
                 ])
 
             conn.close()
@@ -107,10 +162,7 @@ def extract_firefox_logins(files, user_profile):
                     entry.get("hostname"),
                     entry.get("encryptedUsername"),
                     entry.get("encryptedPassword"),
-                    entry.get("timeCreated"),
-                    "firefox",
-                    user_profile,
-                    file
+                    entry.get("timeCreated")
                 ])
 
         except Exception as e:
@@ -141,10 +193,7 @@ def extract_firefox_bookmarks(files, user_profile):
                 bookmarks.append([
                     title,
                     url,
-                    convert_firefox_time(date_added),
-                    "firefox",
-                    user_profile,
-                    db_file
+                    convert_firefox_time(date_added)
                 ])
 
             conn.close()

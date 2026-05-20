@@ -3,6 +3,7 @@ import os
 import shutil
 from PySide6.QtWidgets import QMessageBox
 
+from services.parsing.preferences import extract_browser_info, extract_signed_in_accounts
 from services.parsing.autofills import extract_autofill
 from services.parsing.caches import extract_caches
 from services.parsing.history import extract_history
@@ -10,9 +11,10 @@ from services.parsing.logins import  extract_logins
 from services.parsing.downloads import extract_downloads
 from services.parsing.cookies import extract_cookies
 from services.parsing.bookmarks import extract_bookmarks
+from services.parsing.top_sites import extract_top_sites
 from services.parsing.firefox import extract_firefox_bookmarks, extract_firefox_cookies, extract_firefox_downloads, extract_firefox_logins
 from services.parsing.sessions import extract_session_and_tabs
-from services.utils.utils import hash_all_csv_to_txt, hash_file_multi, write_to_csv, zip_folder
+from services.utils.utils import hash_all_csv_to_txt, hash_file_multi, write_json, write_to_csv, zip_folder
 
 
 class AcquireEvidenceController:
@@ -28,13 +30,62 @@ class AcquireEvidenceController:
     def set_hashing(self, enabled: bool):
         self.enable_hashing = enabled
     
-    def generate_hash(self, user_name, browser):
-        zip_output = os.path.join(self.output_folder, f"{user_name}_{browser}_{self.timestamp}.zip")
-        zip_folder(self.output_folder, zip_output)
-        md5, sha1, sha256 = hash_file_multi(zip_output)
-        
-        hash_output = os.path.join(self.output_folder, f"hash_report_{user_name}_{browser}.txt")
-        hash_all_csv_to_txt(self.output_folder, hash_output, zip_path=zip_output)
+    def generate_hash(self, user_name, browser, archive_folder):
+        zip_output = os.path.join(
+            self.output_folder,
+            f"{user_name}_{browser}_{self.timestamp}.zip"
+        )
+
+        # Step 1: Hash all files inside archive folder
+        hash_output = os.path.join(
+            self.output_folder,
+            f"hash_report_{user_name}_{browser}.txt"
+        )
+
+        with open(hash_output, "w", encoding="utf-8") as f:
+            f.write("FORENSIC HASH VERIFICATION REPORT\n")
+            f.write("=" * 60 + "\n\n")
+
+            f.write("INDIVIDUAL FILE HASHES\n")
+            f.write("-" * 60 + "\n")
+
+            for root, _, files in os.walk(archive_folder):
+                for file in files:
+                    file_path = os.path.join(root, file)
+
+                    try:
+                        md5, sha1, sha256 = hash_file_multi(file_path)
+
+                        relative_path = os.path.relpath(
+                            file_path,
+                            archive_folder
+                        )
+
+                        f.write(f"FILE: {relative_path}\n")
+                        f.write(f"MD5: {md5}\n")
+                        f.write(f"SHA1: {sha1}\n")
+                        f.write(f"SHA256: {sha256}\n")
+                        f.write("-" * 60 + "\n")
+
+                    except Exception as e:
+                        f.write(f"FAILED: {file_path}\n")
+                        f.write(f"ERROR: {str(e)}\n")
+                        f.write("-" * 60 + "\n")
+
+        # Step 2: Create ZIP after hashing files
+        zip_folder(archive_folder, zip_output)
+
+        # Step 3: Hash ZIP file
+        zip_md5, zip_sha1, zip_sha256 = hash_file_multi(zip_output)
+
+        with open(hash_output, "a", encoding="utf-8") as f:
+            f.write("\nZIP ARCHIVE HASH\n")
+            f.write("=" * 60 + "\n")
+            f.write(f"ZIP FILE: {os.path.basename(zip_output)}\n")
+            f.write(f"MD5: {zip_md5}\n")
+            f.write(f"SHA1: {zip_sha1}\n")
+            f.write(f"SHA256: {zip_sha256}\n")
+            f.write("=" * 60 + "\n")
 
     def copy_session_folder(self, session_source, output_folder):
         session_output = os.path.join(output_folder, "sessions")
@@ -81,18 +132,18 @@ class AcquireEvidenceController:
                 cache_path = os.path.join(base_path, "Cache")
                 session_path = os.path.join(base_path, "Sessions")
                 autofill_path = os.path.join(base_path, "Web Data")
-                # top_sites_path = os.path.join(base_path, "Top Sites")
+                top_sites_path = os.path.join(base_path, "Top Sites")
 
             elif browser == "opera":
                 base_path = os.path.dirname(browser_path)
                 history_path = browser_path
-                cookies_path = os.path.join(base_path, "Cookies")
+                cookies_path = os.path.join(base_path, "Network","Cookies")
                 logins_path = os.path.join(base_path, "Login Data")
                 bookmarks_path = os.path.join(base_path, "Bookmarks")
                 cache_path = os.path.join(base_path, "Cache")
                 session_path = os.path.join(base_path, "Sessions")
                 autofill_path = os.path.join(base_path, "Web Data")
-                # top_sites_path = os.path.join(base_path, "Top Sites")
+                top_sites_path = os.path.join(base_path, "Top Sites")
 
             elif browser == "firefox":
                 base_path = os.path.dirname(browser_path)
@@ -103,11 +154,7 @@ class AcquireEvidenceController:
                 cache_path =  os.path.join(base_path, "cache2")
                 session_path = os.path.join(base_path, "sessionstore-backups")
                 autofill_path = os.path.join(base_path, "formhistory.sqlite")
-
-                if os.path.exists(cache_path):
-                    profiles = os.listdir(cache_path)
-                    if profiles:
-                        return os.path.join(cache_path, profiles[0], "cache2")
+                top_sites_path = browser_path
             
             profile_files = {
                 "history": [history_path],
@@ -117,120 +164,113 @@ class AcquireEvidenceController:
                 "bookmarks": [bookmarks_path],
                 "cache": [cache_path],
                 "sessions": [session_path],
-                "autofill": [autofill_path]
-                # "top_sites": [top_sites_path]
+                "autofill": [autofill_path],
+                "top_sites": [top_sites_path]
             }
 
             user_name = os.path.basename(root_folder)
+            archive_folder = os.path.join(self.output_folder, f"{user_name}_{browser}_{self.timestamp}")
+            os.makedirs(archive_folder, exist_ok=True)
 
             # Parse History Files
             history_data, search_data = extract_history(browser, profile_files["history"], user_name, logger=self.logger)
-            history_output = os.path.join(self.output_folder, "history.csv")
-            write_to_csv(history_data, ["Visit Time", "URL", "Title", "Visit Count", "Visit Type", "Duration", "Browser", "User Profile", "Source"], history_output)
-            self.logger.info(f"History extracted: {len(history_data)} records")
+            history_output = os.path.join(archive_folder, "history.csv")
+            write_to_csv(history_data, ["Visit Time", "URL", "Title", "Visit Count", "Visit Type"], history_output)
+            if self.logger:
+                self.logger.info(f"History extracted: {len(history_data)} records")
 
             # Parse Search Terms
-            search_output = os.path.join(self.output_folder, "search_terms.csv")
-            write_to_csv(search_data, ["Search Term", "URL", "Time", "Browser", "User", "Source"], search_output)
-            self.logger.info(f"Search terms extracted: {len(history_data)} records")
+            search_output = os.path.join(archive_folder, "search_terms.csv")
+            write_to_csv(search_data, ["Search Term", "Time"], search_output)
+            if self.logger:
+                self.logger.info(f"Search terms extracted: {len(history_data)} records")
 
             # Parse Caches
             cache_data = extract_caches(browser, profile_files["cache"], user_name)
-            cache_output = os.path.join(self.output_folder, "caches.csv")
-            write_to_csv(cache_data, ["Field", "Value", "Created", "Last Used","Browser", "User", "Source"], cache_output)
-            self.logger.info(f"Caches extracted: {len(cache_data)} records")
+            cache_output = os.path.join(archive_folder, "caches.csv")
+            write_to_csv(cache_data, ["Field", "Size", "Created", "Last Used"], cache_output)
+            if self.logger:
+                self.logger.info(f"Caches extracted: {len(cache_data)} records")
 
             # Parse Downloads
             if browser == "firefox":
                 downloads_data = extract_firefox_downloads(profile_files["history"], user_name)
+                downloads_output = os.path.join(archive_folder, "downloads.csv")
+                write_to_csv(downloads_data, ["Start Time", "End Time", "File Path", "Size", "URL"], downloads_output)
             else:
                 downloads_data = extract_downloads(browser, profile_files["history"], user_name)
-            downloads_output = os.path.join(self.output_folder, "downloads.csv")
-            write_to_csv(downloads_data, ["Start Time", "End Time", "File Path", "Total Bytes", "Received Bytes", "Danger Type", "Interrupt Reason", "Opened", "Browser", "User Profile", "Source"], downloads_output)
-            self.logger.info(f"Downloads extracted: {len(downloads_data)} records")
+                downloads_output = os.path.join(archive_folder, "downloads.csv")
+                write_to_csv(downloads_data, ["Start Time", "End Time", "File Path", "Size", "Danger Type", "Interrupt Reason", "Opened"], downloads_output)
+            if self.logger:
+                self.logger.info(f"Downloads extracted: {len(downloads_data)} records")
 
             # Parse Cookies
             if browser == "firefox":
                 cookies_data = extract_firefox_cookies(profile_files["cookies"], user_name)
+                cookies_output = os.path.join(archive_folder, "cookies.csv")
+                write_to_csv(cookies_data, ["Host", "Name", "Value", "Creation Time", "Last Access Time", "Expiry Time", "Secure", "HTTP Only"], cookies_output)
             else:
                 cookies_data = extract_cookies(browser, profile_files["cookies"], user_name)
-            cookies_output = os.path.join(self.output_folder, "cookies.csv")
-            write_to_csv(cookies_data, ["Host", "Name", "Value", "Creation Time", "Last Access Time", "Expiry Time", "Secure", "HTTP Only", "Browser", "User Profile", "Source"], cookies_output)
-            self.logger.info(f"Cookies extracted: {len(cookies_data)} records")
+                cookies_output = os.path.join(archive_folder, "cookies.csv")
+                write_to_csv(cookies_data, ["Host", "Name", "Creation Time", "Last Access Time", "Expiry Time", "Secure", "HTTP Only"], cookies_output)
+            if self.logger:
+                self.logger.info(f"Cookies extracted: {len(cookies_data)} records")
 
             #Parse Login Data
             if browser == "firefox":
                 logins_data = extract_firefox_logins(profile_files["logins"], user_name)
             else:
                 logins_data = extract_logins(browser, profile_files["logins"], user_name)
-            logins_output = os.path.join(self.output_folder, "logins.csv")
-            write_to_csv(logins_data, ["URL","Username","Password","Created Time","Browser", "User Profile", "Source"], logins_output)
-            self.logger.info(f"Logins data extracted: {len(logins_data)} records")
+            logins_output = os.path.join(archive_folder, "logins.csv")
+            write_to_csv(logins_data, ["URL","Username","Password","Created Time"], logins_output)
+            if self.logger:
+                self.logger.info(f"Logins data extracted: {len(logins_data)} records")
 
             #Parse Bookmarks
             if browser == "firefox":
                 bookmarks_data = extract_firefox_bookmarks(profile_files["bookmarks"], user_name)
             else:
                 bookmarks_data = extract_bookmarks(browser, profile_files["bookmarks"], user_name, logger=self.logger)
-            bookmarks_output = os.path.join(self.output_folder, "bookmarks.csv")
-            write_to_csv(bookmarks_data, ["Name","URL","Browser","User Profile"], bookmarks_output)
-            self.logger.info(f"Bookmarks extracted: {len(bookmarks_data)} records")
+            bookmarks_output = os.path.join(archive_folder, "bookmarks.csv")
+            write_to_csv(bookmarks_data, ["Name","URL", "Date Added"], bookmarks_output)
+            if self.logger:
+                self.logger.info(f"Bookmarks extracted: {len(bookmarks_data)} records")
 
             # Parse Sessions and Tabs
             sessions_data = extract_session_and_tabs(browser, profile_files["sessions"], user_name)
-            sessions_output = os.path.join(self.output_folder, "sessions.csv")
-            write_to_csv(sessions_data, ["Session/Tab Info", "Browser", "User", "Source"], sessions_output)
-            self.logger.info(f"Sessions data extracted: {len(sessions_data)} records")
-
-            self.copy_session_folder(session_path, self.output_folder)
+            sessions_output = os.path.join(archive_folder, "sessions.csv")
+            write_to_csv(sessions_data, ["Session/Tab Info"], sessions_output)
+            if self.logger:
+                self.logger.info(f"Sessions data extracted: {len(sessions_data)} records")
+            self.copy_session_folder(session_path, archive_folder)
             
             # Parse Autofill
             autofill_data = extract_autofill(browser, profile_files["autofill"], user_name, logger=self.logger)
-            autofill_output = os.path.join(self.output_folder, "autofill.csv")
-            write_to_csv(autofill_data, ["Field Name", "Value", "First Used", "Last Used", "Count", "Browser", "User", "Source"], autofill_output)
-            self.logger.info(f"Autofills data extracted: {len(autofill_data)} records")
+            autofill_output = os.path.join(archive_folder, "autofill.csv")
+            write_to_csv(autofill_data, ["Field Name", "Value", "First Used", "Last Used", "Count"], autofill_output)
+            if self.logger:
+                self.logger.info(f"Autofills data extracted: {len(autofill_data)} records")
+
+            # Parse Signed-in Accounts
+            accounts_data = extract_signed_in_accounts(base_path, user_name, archive_folder)
+            accounts_output = os.path.join(archive_folder, "signed_in_accounts.json")
+            write_json(accounts_data, accounts_output)
+            if self.logger:
+                self.logger.info(f"Signed-in accounts extracted: {len(accounts_data)} records")
 
             # Parse Top Sites
-            # top_sites_data = extract_top_sites(browser, profile_files["top_sites"], user_name)
-            # top_sites_output = os.path.join(self.output_folder, "top_sites.csv")
-            # write_to_csv(top_sites_data,["URL", "Rank/VisitCount", "Browser", "User", "Source"], top_sites_output)
+            top_sites_data = extract_top_sites(browser, profile_files["history"], user_name)
+            top_sites_output = os.path.join(archive_folder, "top_sites.csv")
+            write_to_csv(top_sites_data,[ "Visit Count", "URL"], top_sites_output)
+
+            extract_browser_info(browser_type=browser,profile_path=base_path,output_folder=archive_folder, username=user_name)
 
             if self.enable_hashing:
-                self.generate_hash(user_name, browser)
+                self.generate_hash(user_name, browser, archive_folder)
+                if self.logger:
+                    self.logger.info("Hash verification started..")
 
-            archive_folder = os.path.join(self.output_folder, f"{user_name}_{browser}_{self.timestamp}")
-            os.makedirs(archive_folder, exist_ok=True)
+            return archive_folder
 
-            for item in os.listdir(self.output_folder):
-                item_path = os.path.join(self.output_folder, item)
-
-                if item.endswith(".zip"):
-                    continue
-
-                if item.endswith(".txt"):
-                    continue
-
-                if item == os.path.basename(archive_folder):
-                    continue
-
-                try:
-                    shutil.move(
-                        item_path,
-                        os.path.join(archive_folder, item)
-                    )
-                except Exception as e:
-                    if self.logger:
-                        self.logger.exception(
-                            f"Failed to move {item}: {str(e)}"
-                        )
-
-            for file in os.listdir(self.output_folder):
-                if file.endswith(".csv"):
-                    shutil.move(
-                        os.path.join(self.output_folder, file),
-                        os.path.join(archive_folder, file)
-                    )
         except Exception as e:
             QMessageBox.critical(self, "Error", "Acquisition not completed.!")
-
-       

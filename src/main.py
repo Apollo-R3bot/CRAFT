@@ -10,51 +10,6 @@ from services.utils.logger import setup_logger
 
 def main():
     app = QApplication(sys.argv)
-    # app.setStyleSheet("""
-    #     QWidget {
-    #         background-color: #f5f7fa;
-    #         color: #222222;
-    #         font-size: 14px;
-    #     }
-
-    #     QMainWindow {
-    #         background-color: #f5f7fa;
-    #     }
-
-    #     QDialog {
-    #         background-color: white;
-    #     }
-
-    #     QLabel {
-    #         color: #222222;
-    #     }
-
-    #     QPushButton {
-    #         background-color: white;
-    #         color: #222222;
-    #         border: 1px solid #cccccc;
-    #         border-radius: 6px;
-    #         padding: 6px;
-    #     }
-
-    #     QPushButton:hover {
-    #         background-color: #f0f0f0;
-    #     }
-
-    #     QLineEdit, QComboBox, QListWidget, QTableWidget {
-    #         background-color: white;
-    #         color: #222222;
-    #         border: 1px solid #dcdcdc;
-    #         border-radius: 5px;
-    #     }
-
-    #     QHeaderView::section {
-    #         background-color: #eeeeee;
-    #         color: #111111;
-    #         padding: 5px;
-    #         border: none;
-    #     }
-    # """)
 
     log_folder = os.path.join(os.getcwd(), "Log")
     logger = setup_logger(log_folder)

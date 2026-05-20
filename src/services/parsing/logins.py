@@ -26,10 +26,7 @@ def extract_logins(browser, files, user_profile):
                     url,
                     username,
                     encrypted_password,  # raw encrypted
-                    convert_webkit_time(date_created),
-                    browser,
-                    user_profile,
-                    db_file
+                    convert_webkit_time(date_created)
                 ])
 
             conn.close()

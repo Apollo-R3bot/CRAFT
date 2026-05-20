@@ -29,10 +29,7 @@ def extract_autofill(browser, files, user_profile, logger=None):
                         row[1],
                         convert_webkit_date(row[2]),
                         convert_webkit_date(row[3]),
-                        value,
-                        browser,
-                        user_profile,
-                        db_file
+                        value
                     ])
 
             # FIREFOX
@@ -48,10 +45,7 @@ def extract_autofill(browser, files, user_profile, logger=None):
                         row[1],
                         convert_firefox_time(row[3]), 
                         convert_firefox_time(row[4]), 
-                        row[2],
-                        browser,
-                        user_profile,
-                        db_file
+                        row[2]
                     ])
 
             conn.close()

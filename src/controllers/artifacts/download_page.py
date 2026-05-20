@@ -16,25 +16,9 @@ class DownloadController:
         columns = []
         data = []
 
-        required_columns = [
-            "Start Time",
-            "End Time", 
-            "File Path", 
-            "Total Bytes", 
-            "Received Bytes", 
-            "Danger Type", 
-            "Interrupt Reason", 
-            "Opened"
-        ]
-
         if os.path.exists(csv_file):
             try:
                 df = pd.read_csv(csv_file)
-                existing_columns = [
-                    col for col in required_columns
-                    if col in df.columns
-                ]
-                df = df[existing_columns]
                 columns = df.columns.tolist()
                 data = df.values.tolist()
 

@@ -122,5 +122,19 @@ def hash_all_csv_to_txt(folder_path, output_file, zip_path=None):
     with open(output_file, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
         
-
     return output_file
+
+def write_json(data, output_file):
+    import json
+
+    with open(
+        output_file,
+        "w",
+        encoding="utf-8"
+    ) as f:
+        json.dump(
+            data,
+            f,
+            indent=4,
+            ensure_ascii=False
+        )

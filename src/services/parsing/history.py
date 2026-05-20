@@ -72,9 +72,9 @@ def extract_history(browser, files, user_profile, logger=None):
                 for row in cursor.fetchall():
                     url, title, visit_count, last_visit_time, visit_time, visit_duration, from_visit, transition = row
                     visit_time_utc = convert_webkit_time(visit_time)
-                    visit_duration_sec = visit_duration / 1000000 if visit_duration else 0
+                    # visit_duration_sec = visit_duration / 1000000 if visit_duration else 0
                     visit_type = TRANSITION_TYPES.get(transition & 0xFF, 'Unknown')
-                    history.append([visit_time_utc, url, title, visit_count, visit_type, visit_duration_sec, browser, user_profile, db_file])
+                    history.append([visit_time_utc, url, title, visit_count, visit_type])
                     term = extract_search_term_from_url(url)
 
                     if term:
@@ -82,7 +82,7 @@ def extract_history(browser, files, user_profile, logger=None):
                         key = term.lower()
                         if key not in seen:
                             seen.add(key)
-                            search_terms.append([term,url,visit_time_utc,browser,user_profile,db_file])
+                            search_terms.append([term,visit_time_utc])
 
             elif 'moz_places' in tables and 'moz_historyvisits' in tables:
                 # Firefox history
@@ -101,17 +101,18 @@ def extract_history(browser, files, user_profile, logger=None):
                     url, title, visit_count, visit_time, url_visit_type = row
                     visit_time_utc = convert_firefox_time(visit_time)
                     visit_type = FIREFOX_TRANSITION_TYPES.get(url_visit_type, 'Unknown')
-                    history.append([visit_time_utc, url, title, visit_count, visit_type, None, browser, user_profile, db_file])
+                    history.append([visit_time_utc, url, title, visit_count, visit_type])
                     term = extract_search_term_from_url(url)
                     if term:
                         term = term.replace("+", " ").strip()
                         key = term.lower()
                         if key not in seen:
                             seen.add(key)
-                        search_terms.append([term,url,visit_time_utc,browser,user_profile,db_file])
+                        search_terms.append([term,visit_time_utc])
 
             conn.close()
         except sqlite3.Error as e:
             if logger:
                 logger.error(f"History extraction failed from {db_file}: {e}")
+                
     return history, search_terms

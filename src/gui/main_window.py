@@ -1,5 +1,5 @@
 from PySide6.QtGui import QAction, Qt
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QListWidget, QListWidgetItem, QMainWindow, QSplitter, QStackedWidget, QTableWidget, QTableWidgetItem, QToolBar, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QListWidget, QListWidgetItem, QMainWindow, QSplitter, QStackedWidget, QTableWidget, QTableWidgetItem, QToolBar, QVBoxLayout, QWidget
 
 from controllers.artifacts.artifact_count_controller import get_artifact_count
 from controllers.artifacts.autofill_page import AutofillController
@@ -8,16 +8,23 @@ from controllers.artifacts.cache_page import CacheController
 from controllers.artifacts.cookie_page import CookieController
 from controllers.artifacts.download_page import DownloadController
 from controllers.artifacts.history_page import HistoryController
-from controllers.artifacts.dashboard_controller import DashboardController
+from controllers.artifacts.dashboard_page import DashboardController
 from controllers.artifacts.logins_page import LoginsController
 from controllers.artifacts.search_term_page import SearchTermController
 from controllers.artifacts.session_page import SessionsController
+from controllers.artifacts.top_sites_page import TopSitesController
 from controllers.main_controller import MainController
+from controllers.report_controller import ReportController
+from gui.evidence_acquisition_dialog import EvidenceAcquisition
+from gui.evidence_analysis_dialog import EvidenceAnalysis
+from gui.report_generation_dialog import ReportGenerationDialog
 
 class MainWindow(QMainWindow):
-    def __init__(self, evidence_path=None):
+    def __init__(self, evidence_path=None, logger=None):
         super().__init__()
         self.control = MainController()
+        self.evidence_path = evidence_path
+        self.logger = logger
 
         if evidence_path:
             self.control.load_evidence(evidence_path)
@@ -27,12 +34,44 @@ class MainWindow(QMainWindow):
 
         #MenuBar and Menu
         menuBar = self.menuBar()
+        menuBar.setStyleSheet("""
+            QMenuBar {
+                padding: 5px;
+            }
+            QMenuBar::item {
+                padding: 8px 15px;
+                margin: 3px;
+            }
+            QMenu {
+                padding: 5px;
+            }
+            QMenu::item {
+                padding: 8px 25px;
+                margin: 2px;
+            }
+            QMenu::item:selected {
+                border: 1px solid #efefef;
+                border-radius: 4px;
+            }
+        """)
         fileMenu = menuBar.addMenu("File")
         acquire_evidence = fileMenu.addAction("Acquire Evicence")
+        acquire_evidence.triggered.connect(self.open_acquisition_dialog)
 
         analyze_evidence = fileMenu.addAction("Analyze Evicence")
+        analyze_evidence.triggered.connect(self.open_analysis_dialog)
+
         remove_evidence = fileMenu.addAction("Remove Evicence")
         integrity_verify = fileMenu.addAction("Verify Artefact")
+        
+        report_menu = menuBar.addMenu("Report")
+        report_action = QAction("Generate Report", self)
+        report_menu.addAction(report_action)
+        report = ReportController(self.evidence_path)
+        report_action.triggered.connect(
+            lambda: ReportGenerationDialog(report, self).exec()
+        )
+
         quit_app = fileMenu.addAction("Quit")
         quit_app.triggered.connect(self.control.quit_app)
         
@@ -83,21 +122,20 @@ class MainWindow(QMainWindow):
         """)
 
         artifacts = [
-            (" Dashboard", 1),
-            (" History", get_artifact_count(evidence_path, "history.csv")),
-            (" Downloads", get_artifact_count(evidence_path, "downloads.csv")),
-            (" Cookies", get_artifact_count(evidence_path, "cookies.csv")),
-            (" Password", get_artifact_count(evidence_path, "logins.csv")),
-            (" Cache", get_artifact_count(evidence_path, "caches.csv")),
-            (" Search Terms", get_artifact_count(evidence_path, "search_terms.csv")),
-            (" Bookmarks", get_artifact_count(evidence_path, "bookmarks.csv")),
-            (" Autofill", get_artifact_count(evidence_path, "autofill.csv")),
-            (" Sessions", get_artifact_count(evidence_path, "sessions.csv")),
-            (" Top Sites", 5),
+            (" Dashboard"),
+            (" History"),
+            (" Downloads"),
+            (" Cookies"),
+            (" Password"),
+            (" Cache"),
+            (" Search Terms"),
+            (" Bookmarks"),
+            (" Autofill"),
+            (" Sessions"),
+            (" Top Sites")
         ]
 
-        for name, count in artifacts:
-            # item = QListWidgetItem(f"{name} ({count})")
+        for name in artifacts:
             item = QListWidgetItem(name)
             self.nav_list.addItem(item)
 
@@ -121,15 +159,69 @@ class MainWindow(QMainWindow):
             SearchTermController(evidence_path),
             BookmarkController(evidence_path),
             AutofillController(evidence_path),
-            SessionsController(evidence_path)
+            SessionsController(evidence_path),
+            TopSitesController(evidence_path)
         ]
 
         for controller in self.page_controllers:
             self.pages.addWidget(controller.create_page())
 
         self.nav_list.setCurrentRow(0)
+        
 
+    def load_evidence(self, evidence_path):
+        self.evidence_path = evidence_path
+        self.current_case_path = evidence_path
 
+        # Clear old pages
+        while self.pages.count():
+            widget = self.pages.widget(0)
+            self.pages.removeWidget(widget)
+            widget.deleteLater()
+
+        # Reload controllers/pages
+        dashboard = DashboardController(evidence_path)
+        history = HistoryController(evidence_path)
+        downloads = DownloadController(evidence_path)
+        cookies = CookieController(evidence_path)
+        logins = LoginsController(evidence_path)
+        cache = CacheController(evidence_path)
+        search = SearchTermController(evidence_path)
+        bookmarks = BookmarkController(evidence_path)
+        autofill = AutofillController(evidence_path)
+        sessions = SessionsController(evidence_path)
+        top_sites = TopSitesController(evidence_path)
+        ReportController(self.current_case_path)
+
+        self.pages.addWidget(dashboard.create_page())
+        self.pages.addWidget(history.create_page())
+        self.pages.addWidget(downloads.create_page())
+        self.pages.addWidget(cookies.create_page())
+        self.pages.addWidget(logins.create_page())
+        self.pages.addWidget(cache.create_page())
+        self.pages.addWidget(search.create_page())
+        self.pages.addWidget(bookmarks.create_page())
+        self.pages.addWidget(autofill.create_page())
+        self.pages.addWidget(sessions.create_page())
+        self.pages.addWidget(top_sites.create_page())
+
+    def open_analysis_dialog(self):
+        dialog = EvidenceAnalysis(self)
+        if dialog.exec():
+            selected_path = dialog.evidence_path
+            if selected_path:
+                self.load_evidence(selected_path)
+
+    def open_acquisition_dialog(self):
+        dialog = EvidenceAcquisition(
+            logger=self.logger,
+            parent=self
+        )
+
+        if dialog.exec():
+            new_evidence = dialog.generated_evidence_path
+            if new_evidence:
+                self.load_evidence(new_evidence)
 
     def change_page(self, index):
         if index >= 0:

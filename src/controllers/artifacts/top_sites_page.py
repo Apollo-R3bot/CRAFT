@@ -4,43 +4,36 @@ import pandas as pd
 from controllers.artifact_controller import ArtifactTableController
 
 
-class SearchTermController:
+class TopSitesController:
     def __init__(self, evidence_path=None):
         self.table = ArtifactTableController()
-        self.title = "Search Terms"
+        self.title = "Top Sites"
         self.evidence_path = evidence_path
 
     def create_page(self):
-        csv_file = os.path.join(self.evidence_path, "search_terms.csv")
+        csv_file = os.path.join(self.evidence_path, "top_sites.csv")
 
         columns = []
         data = []
 
-        required_columns = [
-            "Search Term", 
-            "Time"
-        ]
-
         if os.path.exists(csv_file):
             try:
                 df = pd.read_csv(csv_file)
-                existing_columns = [
-                    col for col in required_columns
-                    if col in df.columns
-                ]
-                df = df[existing_columns]
                 columns = df.columns.tolist()
                 data = df.values.tolist()
 
             except Exception as e:
                 columns = ["Error"]
-                data = [[f"Failed to load search_terms: {str(e)}"]]
+                data = [[
+                    f"Failed to load top sites file: {str(e)}"
+                ]]
 
         else:
             columns = ["Message"]
-            data = [["search_terms not found"]]
+            data = [["top sites data not found"]]
 
         total_count = len(data)
+        
         return self.table.create_table_page(
             self.title,
             columns,

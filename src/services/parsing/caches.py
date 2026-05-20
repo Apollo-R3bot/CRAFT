@@ -23,10 +23,7 @@ def extract_caches(browser, cache_path, user_profile):
                         file,
                         size,
                         created_time,
-                        last_used_time,
-                        browser,
-                        user_profile,
-                        file_path
+                        last_used_time
                     ])
 
         except Exception as e:

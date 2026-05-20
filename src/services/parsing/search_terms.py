@@ -22,11 +22,8 @@ def extract_search_terms(browser, files, user_profile):
             for url, term, time in cursor.fetchall():
                 results.append([
                     term,
-                    url,
-                    convert_webkit_time(time),
-                    browser,
-                    user_profile,
-                    db_file
+                    # url,
+                    convert_webkit_time(time)
                 ])
 
             conn.close()

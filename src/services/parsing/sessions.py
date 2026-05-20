@@ -25,20 +25,14 @@ def extract_session_and_tabs(browser, session_paths, user_profile):
                                     url = tab.get("url")
                                     if url:
                                         sessions.append([
-                                            url,
-                                            browser,
-                                            user_profile,
-                                            full_path
+                                            url
                                         ])
                         except:
                             pass
 
                     else:
                         sessions.append([
-                            file,
-                            browser,
-                            user_profile,
-                            session_dir
+                            file
                         ])
 
             # FIREFOX
@@ -48,10 +42,7 @@ def extract_session_and_tabs(browser, session_paths, user_profile):
                         full_path = os.path.join(session_dir, file)
 
                         sessions.append([
-                            file,
-                            browser,
-                            user_profile,
-                            full_path
+                            file
                         ])
 
         except Exception as e:

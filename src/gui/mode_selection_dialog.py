@@ -20,10 +20,6 @@ class ModeSelectionDialog(QDialog):
         layout.setSpacing(12)
         heading = QLabel("Welcome to CRAFT")
         heading.setStyleSheet("""font-size: 25px; font-weight: bold;""")
-        # title = QLabel("Cross-Browser Artifact Forensic Tool")
-        # title.setStyleSheet("""font-size: 11px; font-weight: bold; margin-top: -35px;""")
-        # layout.addWidget(title)
-        # title.setAlignment(Qt.AlignCenter)
         layout.addWidget(heading)
         heading.setAlignment(Qt.AlignCenter)
         label = QLabel("By continuing, you agree to the CRAFT Terms of Use and our Privacy Notice. Choose what you want to do.")
@@ -57,12 +53,8 @@ class ModeSelectionDialog(QDialog):
     def select_acquire(self):
         self.logger.info("User selected: Acquire Evidence")
         self.selected_mode = "acquire"
-        # self.acquire_dialog = EvidenceAcquisition(parent=self)
-        # if self.acquire_dialog.exec() == QDialog.Rejected:
-        #     return
         self.accept()
         
-
     def select_analyze(self):
         self.logger.info("User selected: Acquire Evidence")
         self.selected_mode = "analyze"

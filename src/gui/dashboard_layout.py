@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import (
+    QScrollArea,
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
@@ -30,7 +31,14 @@ class DashboardLayout:
 
         return card
 
-    def create_dashboard_page(self, top_left, top_right, bottom_left, bottom_right):
+    def create_dashboard_page(
+            self, 
+            top_left, 
+            top_right, 
+            middle_left, 
+            middle_right, 
+            # bottom_full_width
+        ):
         page = QWidget()
         main_layout = QVBoxLayout(page)
         main_layout.setContentsMargins(15, 15, 15, 15)
@@ -46,13 +54,35 @@ class DashboardLayout:
         top_row.addWidget(top_left)
         top_row.addWidget(top_right)
 
-        # Bottom Row
+        # Middle Row
+        middle_row = QHBoxLayout()
+        middle_row.setSpacing(15)
+        middle_row.addWidget(middle_left)
+        middle_row.addWidget(middle_right)
+
+        # Bottom Full Width Row
         bottom_row = QHBoxLayout()
-        bottom_row.setSpacing(15)
-        bottom_row.addWidget(bottom_left)
-        bottom_row.addWidget(bottom_right)
+        # bottom_row.addWidget(bottom_full_width)
 
         main_layout.addLayout(top_row)
+        main_layout.addLayout(middle_row)
         main_layout.addLayout(bottom_row)
+        main_layout.addStretch()
+
+        # Scroll Area
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(page)
+        scroll.setStyleSheet("""
+            QScrollArea {
+                border: none;
+                background: transparent;
+            }
+        """)
+
+        # Final page
+        page = QWidget()
+        page_layout = QVBoxLayout(page)
+        page_layout.addWidget(scroll)
 
         return page

@@ -1,6 +1,8 @@
 import json
 import traceback
 
+from services.utils.utils import convert_webkit_time
+
 def extract_bookmarks(browser, files, user_profile, logger=None):
     bookmarks = []
 
@@ -9,8 +11,8 @@ def extract_bookmarks(browser, files, user_profile, logger=None):
             bookmarks.append([
                 node.get("name"),
                 node.get("url"),
-                browser,
-                user_profile
+                node.get("date added"),
+                # convert_webkit_time(node.get("date added")),
             ])
         elif node.get("type") == "folder":
             for child in node.get("children", []):

@@ -1,12 +1,7 @@
 import os
-from pathlib import Path
 from PySide6.QtCore import QDir
-from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QRadioButton, QVBoxLayout
-from controllers.acquire_controller import AcquireEvidenceController
-from controllers.analysis_controller import AnalyzeEvidenceController
-from controllers.browser_controller import BrowserSelectionController
+from PySide6.QtWidgets import QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
 from controllers.user_profile_controller import UserProfileController
-from gui.main_window import MainWindow
 
 class EvidenceAnalysis(QDialog):
     def __init__(self, parent=None):
@@ -70,8 +65,11 @@ class EvidenceAnalysis(QDialog):
 
     def browse_evidence_file(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Evidence Folder")
+
         if folder:
             self.path_input.setText(QDir.toNativeSeparators(folder))
+            self.evidence_path = folder
+            # self.accept()
 
     def go_back(self):
         self.reject()

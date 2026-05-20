@@ -20,20 +20,20 @@ def extract_top_sites(browser, files, user_profile):
             # CHROMIUM (Chrome, Edge, Opera)
             if browser in ["chrome", "edge", "opera"]:
                 cursor.execute("""
-                    SELECT url, url_rank
-                    FROM top_sites
-                    ORDER BY url_rank ASC
+                    SELECT
+                        url,
+                        visit_count
+                    FROM urls
+                    WHERE visit_count > 0
+                    ORDER BY visit_count DESC
+                    LIMIT 20
                 """)
 
                 for row in cursor.fetchall():
-                    url, rank = row
-
+                    url, visit_count = row
                     top_sites.append([
-                        url,
-                        rank,
-                        browser,
-                        user_profile,
-                        db_file
+                        visit_count,
+                        url
                     ])
 
             # FIREFOX (approximation)
@@ -49,11 +49,8 @@ def extract_top_sites(browser, files, user_profile):
                     url, count = row
 
                     top_sites.append([
-                        url,
                         count,
-                        browser,
-                        user_profile,
-                        db_file
+                        url,
                     ])
 
             conn.close()

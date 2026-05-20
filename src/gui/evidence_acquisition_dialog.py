@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
-from PySide6.QtCore import QDir
-from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QRadioButton, QVBoxLayout
+from PySide6.QtCore import QDir, QTimer
+from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressBar, QPushButton, QRadioButton, QVBoxLayout
 from controllers.acquire_controller import AcquireEvidenceController
 from controllers.browser_controller import BrowserSelectionController
 from controllers.user_profile_controller import UserProfileController
@@ -19,6 +19,7 @@ class EvidenceAcquisition(QDialog):
         self.selected_browser_path = None
         self.selected_user = None
         self.parent_dialog = parent 
+        self.generated_evidence_path = None
 
         self.setWindowTitle("Select Profile and Browser Source")
         self.resize(450, 500)
@@ -47,7 +48,6 @@ class EvidenceAcquisition(QDialog):
 
         for browser, path in locations.items():
             select_browser_btn = QRadioButton(browser)
-
             if os.path.exists(path):
                 select_browser_btn.toggled.connect(
                     lambda checked, p=path: self.set_browser(p) if checked else None
@@ -151,6 +151,7 @@ class EvidenceAcquisition(QDialog):
     def start_acquire(self):
         output_path = self.path_input.text().strip()
 
+
         if not output_path or not self.selected_browser_path:
             QMessageBox.warning(
                 self,
@@ -159,26 +160,27 @@ class EvidenceAcquisition(QDialog):
             )
             return
 
+        try:
+            evidence_folder = self.acquire.start_parsing(
+                self.selected_user,
+                self.selected_browser_path
+            )
 
-        data = self.acquire.start_parsing(
-            self.selected_user,
-            self.selected_browser_path
-        )
-        QMessageBox.information(self, "Success", "Acquisition Completed Successfully")
+            self.generated_evidence_path = evidence_folder
 
-    # def go_next(self):
-    #     if not self.selected_browser_path:
-    #         QMessageBox.warning(self, "Missing Browser", "Select a browser to continue")
-    #         return
-        
-    #     self.destination_dialog = EvidenceDestination(
-    #         self.selected_user,
-    #         self.selected_browser_path,
-    #         parent=self
-    #     )
+            QMessageBox.information(
+                self,
+                "Success",
+                "Acquisition Completed Successfully"
+            )
 
-    #     if self.destination_dialog.exec() == QDialog.Rejected:
-    #         return
+        except Exception as e:
+            if self.logger:
+                self.logger.error(
+                    f"Acquisition failed: {str(e)}"
+                )
+
+            raise Exception(str(e))
 
     
     

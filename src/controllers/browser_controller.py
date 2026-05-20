@@ -12,7 +12,7 @@ class BrowserSelectionController:
         locations = {
             'Google Chrome': os.path.join(user_path, r'AppData\Local\Google\Chrome\User Data\Default\History'),
             'Microsoft Edge': os.path.join(user_path, r'AppData\Local\Microsoft\Edge\User Data\Default\History'),
-            'Opera': os.path.join(user_path, r'AppData\Roaming\Opera Software\Opera Stable\History'),
+            'Opera': os.path.join(user_path, r'AppData\Roaming\Opera Software\Opera Stable\Default\History'),
             'Mozilla Firefox': os.path.join(user_path, r'AppData\Roaming\Mozilla\Firefox\Profiles'), 
         }
 
