@@ -14,7 +14,7 @@ def main():
     log_folder = os.path.join(os.getcwd(), "Log")
     logger = setup_logger(log_folder)
 
-    logger.info("=== APPLICATION STARTED ===")
+    logger.info("=== CRAFT STARTED ===")
     
     while True:
         dialog = ModeSelectionDialog(logger=logger)
