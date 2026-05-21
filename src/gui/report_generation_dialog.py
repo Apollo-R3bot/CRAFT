@@ -31,7 +31,7 @@ class ReportGenerationDialog(QDialog):
         self.pdf_radio = QRadioButton("PDF")
         self.csv_radio = QRadioButton("CSV")
         self.json_radio = QRadioButton("JSON")
-        self.html_radio = QRadioButton("HTML")
+        # self.html_radio = QRadioButton("HTML")
 
         # Default selected
         self.pdf_radio.setChecked(True)
@@ -41,12 +41,12 @@ class ReportGenerationDialog(QDialog):
         self.format_group.addButton(self.pdf_radio)
         self.format_group.addButton(self.csv_radio)
         self.format_group.addButton(self.json_radio)
-        self.format_group.addButton(self.html_radio)
+        # self.format_group.addButton(self.html_radio)
 
         format_layout.addWidget(self.pdf_radio)
         format_layout.addWidget(self.csv_radio)
         format_layout.addWidget(self.json_radio)
-        format_layout.addWidget(self.html_radio)
+        # format_layout.addWidget(self.html_radio)
 
         layout.addLayout(format_layout)
 

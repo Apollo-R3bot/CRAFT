@@ -1,0 +1,93 @@
+FORENSIC HASH VERIFICATION REPORT
+============================================================
+
+INDIVIDUAL FILE HASHES
+------------------------------------------------------------
+FILE: autofill.csv
+MD5: 8a09e080cc8d5ac21a8df1bf5a802f08
+SHA1: a950f97d27b8525332808590b057bfa88e05fa0e
+SHA256: 098ea9f3cb6944ef0757839f1e4b95c0b27bb67dd150b54d6f3da9db49232d1b
+------------------------------------------------------------
+FILE: bookmarks.csv
+MD5: b3f476edb97b8ba5cf570383feede983
+SHA1: a0599893e647f4a57a43c43ead17ed364ac500ef
+SHA256: c50bb775eba721af64ddcf37f3bae1222f6948b3eda0a7dd4b1e10322f119c68
+------------------------------------------------------------
+FILE: caches.csv
+MD5: 05154d9c7a605b383c78ea0bfc51ce39
+SHA1: 2e2f05cd47432ef55f6ce62ac15587795fbc80b3
+SHA256: 37e37d1da997f4b88913847ba7aea9682150e6312bedcb2fd7f6b7f22a2c933c
+------------------------------------------------------------
+FILE: cookies.csv
+MD5: fbee435a374cbeb2086662a0b1bf2743
+SHA1: 35fd67f0cb3cc9e130292c7a9eadf58d7aa4caad
+SHA256: ddf2579d10247932d374d359ac2a21c6633145d765226be0b32a501c66bebaf1
+------------------------------------------------------------
+FILE: downloads.csv
+MD5: 0f0d5d1e68299a5647e9eb5e91b28614
+SHA1: d457b0e0f315734b9f3190f042f639cf1a4c6f67
+SHA256: 59aa0b8693a16efa74f74fd51a32abdb285d286086f7e5175eba4f7797ece345
+------------------------------------------------------------
+FILE: history.csv
+MD5: cd37e9537be0646912f22f5bded4a5c7
+SHA1: 916d5f55edb5a8368fa3fa98e64ee584fc217e92
+SHA256: 47f232fd06aa23e5d1de6bb2296ee17b04d13a832bbcda1ebd3dc8e1bca76974
+------------------------------------------------------------
+FILE: logins.csv
+MD5: bc64a3468a65a7fe4a4138e02bef7396
+SHA1: adb18c1078ea74c37b5ba58d33278708c83c45b8
+SHA256: eead2e077741f370d38aed0dbd7da5c45b959974e005e4ffe49130be271f7737
+------------------------------------------------------------
+FILE: preferences.json
+MD5: 52544f4f48332ca660639adcaeca0a89
+SHA1: 9378cea65b86f718ed44a39c84c1172924cfffad
+SHA256: d503e4144e20d70fa6cb73a25ed2e737f6cbf1fc4b4eff4dd083b8f5d5376a74
+------------------------------------------------------------
+FILE: search_terms.csv
+MD5: ede0adc80831e0a9967571a956d5b0a2
+SHA1: f9191aa9064f934438f18d87d09106c154516fbc
+SHA256: a96f21550d471ed1fabcb9bd7e94da7e631bef17613527f2c16462e978eed75d
+------------------------------------------------------------
+FILE: sessions.csv
+MD5: 25a0fa800b4672c7531ad5d893ea46d2
+SHA1: 515ca77a906698ee719ffcb8966367400e9ee74b
+SHA256: cac903f4d6ef50bfbdab75c65a44c786872e296eb65ac09ca78d41e1d3d06620
+------------------------------------------------------------
+FILE: signed_in_accounts.json
+MD5: d751713988987e9331980363e24189ce
+SHA1: 97d170e1550eee4afc0af065b78cda302a97674c
+SHA256: 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+------------------------------------------------------------
+FILE: top_sites.csv
+MD5: 0606fb62868126548fbfad932d321e08
+SHA1: c77fd4a24232a5636fca40db7e85fa48e5ea6711
+SHA256: ba99471bbe56d873b0e98c9435bbe343c4f92423877ea8f63b4747aea701bac3
+------------------------------------------------------------
+FILE: sessions\Session_13417013367037520
+MD5: 92fef2f389e331cec16c7c8d37b722a7
+SHA1: ce52a3c59f56f2fcbdb609d4c73600a8ce81d979
+SHA256: e8adfc1ac223fede51d61673ceaed8397d007a78373c8df000afc76bbcde27a9
+------------------------------------------------------------
+FILE: sessions\Session_13421309649054770
+MD5: 60efbb4fa2a8196864ac5a33684177e6
+SHA1: 93215da57415f9ebd2c80df0fd385d526df562ed
+SHA256: 252a65482ec7c46a72534224f6c9caa3bc0513e925777ee7ca38160405bc1cc5
+------------------------------------------------------------
+FILE: sessions\Tabs_13417013367482282
+MD5: a983ccf65b38291c7e8af36c4b006253
+SHA1: 0177c5e296674fbc87fe0ab5b374287b4025ceb2
+SHA256: 56760befa7d36203f3041c3d035f0171eb85c893c8c14935759ebc3b40e1de17
+------------------------------------------------------------
+FILE: sessions\Tabs_13421309649674784
+MD5: 6fff83297120efc334126c32b4d57984
+SHA1: 45c79931070a7d89070bcc91b043aa854ca15777
+SHA256: a4a2652daf1d1f4ec4bb67a26008c481e3d504873e06cfb1d258bc1cc8c5b969
+------------------------------------------------------------
+
+ZIP ARCHIVE HASH
+============================================================
+ZIP FILE: Mgeni_chrome_2026-05-21_11-28.zip
+MD5: a08227e2cc1f19110dc028f7698c21d9
+SHA1: 8f98127bbcc41a9f6721601627d81c31a164b30e
+SHA256: b843e7c574688e948fd48d0565eadea49b186cd0d0ab4d88b34ff4e8845166eb
+============================================================

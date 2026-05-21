@@ -61,8 +61,8 @@ class MainWindow(QMainWindow):
         analyze_evidence = fileMenu.addAction("Analyze Evicence")
         analyze_evidence.triggered.connect(self.open_analysis_dialog)
 
-        remove_evidence = fileMenu.addAction("Remove Evicence")
-        integrity_verify = fileMenu.addAction("Verify Artefact")
+        # remove_evidence = fileMenu.addAction("Remove Evicence")
+        # integrity_verify = fileMenu.addAction("Verify Artefact")
         
         report_menu = menuBar.addMenu("Report")
         report_action = QAction("Generate Report", self)
@@ -80,7 +80,7 @@ class MainWindow(QMainWindow):
         quit_app = editMenu.addAction("Cut")
         quit_app = editMenu.addAction("Paste")
 
-        settingMenu = menuBar.addMenu("Setting")
+        # settingMenu = menuBar.addMenu("Setting")
         helpMenu = menuBar.addMenu("Help")
 
         # Main container

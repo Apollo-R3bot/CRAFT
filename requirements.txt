@@ -1,3 +1,6 @@
 pandas
 pyside6
 lz4
+requests
+matplotlib
+reportlab

@@ -78,6 +78,21 @@ class EvidenceAcquisition(QDialog):
         hash_checkbox.setStyleSheet("QCheckBox { padding: 10px; }")
         layout.addWidget(hash_checkbox)
 
+        # Warning 
+        warning_label = QLabel(
+            "Please close all browser windows before starting acquisition "
+            "to ensure all forensic evidence can be collected successfully."
+        )
+        warning_label.setWordWrap(True)
+        warning_label.setStyleSheet("""
+            QLabel {
+                color: #d9534f;
+                padding: 8px;
+                font-size: 11px;
+            }
+        """)
+        layout.addWidget(warning_label)
+
         # Footer - Separator
         line = QFrame()
         line.setFrameShape(QFrame.Shape.HLine)
@@ -150,8 +165,6 @@ class EvidenceAcquisition(QDialog):
 
     def start_acquire(self):
         output_path = self.path_input.text().strip()
-
-
         if not output_path or not self.selected_browser_path:
             QMessageBox.warning(
                 self,

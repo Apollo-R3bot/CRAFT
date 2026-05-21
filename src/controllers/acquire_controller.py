@@ -39,11 +39,11 @@ class AcquireEvidenceController:
         # Step 1: Hash all files inside archive folder
         hash_output = os.path.join(
             self.output_folder,
-            f"hash_report_{user_name}_{browser}.txt"
+            f"hash_{user_name}_{browser}.txt"
         )
 
         with open(hash_output, "w", encoding="utf-8") as f:
-            f.write("FORENSIC HASH VERIFICATION REPORT\n")
+            f.write("HASH VERIFICATION\n")
             f.write("=" * 60 + "\n\n")
 
             f.write("INDIVIDUAL FILE HASHES\n")
