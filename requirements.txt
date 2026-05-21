@@ -4,4 +4,3 @@ lz4
 requests
 matplotlib
 reportlab
-#naongeza kitu
