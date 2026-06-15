@@ -5,16 +5,17 @@ from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
 from gui.main_window import MainWindow
 from gui.mode_selection_dialog import ModeSelectionDialog
-from services.utils.logger import setup_logger
+from services.utils.logger import log_system_info, setup_logger
 
 
 def main():
     app = QApplication(sys.argv)
 
-    log_folder = os.path.join(os.getcwd(), "Log")
+    log_folder = os.path.join(os.getcwd(), "Logs")
     logger = setup_logger(log_folder)
 
-    logger.info("=== CRAFT STARTED ===")
+    logger.info("=== CRAFT Application Started ===")
+    
     
     while True:
         dialog = ModeSelectionDialog(logger=logger)

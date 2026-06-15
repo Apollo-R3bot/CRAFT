@@ -1,0 +1,19 @@
+Craft               : v1.0.0 (Portable)
+Hostname            : Robot
+Username            : robot
+OS Release          : Windows 11
+Windows Version     : Windows 10 Pro x64 (Build 26100.8037)
+============================================================
+2026-06-14 19:28:31 | INFO | === CRAFT Application Started ===
+2026-06-14 19:28:35 | INFO | User selected: Acquire Evidence
+2026-06-14 19:28:54 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-14 19:28:54 | INFO | History extracted: 7 records
+2026-06-14 19:28:54 | INFO | Search terms extracted: 7 records
+2026-06-14 19:28:54 | INFO | Caches extracted: 797 records
+2026-06-14 19:28:54 | INFO | Downloads extracted: 2 records
+2026-06-14 19:28:54 | INFO | Cookies extracted: 282 records
+2026-06-14 19:28:55 | INFO | Logins data extracted: 3 records
+2026-06-14 19:28:55 | INFO | Bookmarks extracted: 1 records
+2026-06-14 19:28:55 | INFO | Sessions data extracted: 4 records
+2026-06-14 19:28:55 | INFO | Autofills data extracted: 60 records
+2026-06-14 19:28:55 | INFO | Signed-in accounts extracted: 0 records

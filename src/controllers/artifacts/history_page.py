@@ -5,8 +5,8 @@ from controllers.artifact_controller import ArtifactTableController
 
 
 class HistoryController:
-    def __init__(self, evidence_path=None):
-        self.table = ArtifactTableController()
+    def __init__(self, evidence_path, report_controller):
+        self.table = ArtifactTableController(report_controller)
         self.title = "History"
         self.evidence_path = evidence_path
 

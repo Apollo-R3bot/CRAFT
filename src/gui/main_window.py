@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.control = MainController()
         self.evidence_path = evidence_path
+        self.report_controller = ReportController(self.evidence_path)
         self.logger = logger
 
         if evidence_path:
@@ -60,25 +61,37 @@ class MainWindow(QMainWindow):
 
         analyze_evidence = fileMenu.addAction("Analyze Evicence")
         analyze_evidence.triggered.connect(self.open_analysis_dialog)
-
-        # remove_evidence = fileMenu.addAction("Remove Evicence")
-        # integrity_verify = fileMenu.addAction("Verify Artefact")
         
         report_menu = menuBar.addMenu("Report")
         report_action = QAction("Generate Report", self)
         report_menu.addAction(report_action)
         report = ReportController(self.evidence_path)
+        # report_action.triggered.connect(lambda: ReportGenerationDialog(report, self).exec())
         report_action.triggered.connect(
-            lambda: ReportGenerationDialog(report, self).exec()
+            lambda: ReportGenerationDialog(
+                self.report_controller,
+                report_mode="full",
+                parent=self
+            ).exec()
+        )
+
+        export_marked_btn = QAction("Export Evidence", self)
+        report_menu.addAction(export_marked_btn)
+        export_marked_btn.triggered.connect(
+            lambda: ReportGenerationDialog(
+                self.report_controller,
+                report_mode="marked",
+                parent=self
+            ).exec()
         )
 
         quit_app = fileMenu.addAction("Quit")
         quit_app.triggered.connect(self.control.quit_app)
         
-        editMenu = menuBar.addMenu("Edit")
-        quit_app = editMenu.addAction("Copy")
-        quit_app = editMenu.addAction("Cut")
-        quit_app = editMenu.addAction("Paste")
+        viewMenu = menuBar.addMenu("View")
+        timeline = viewMenu.addAction("Timeline Analysis")
+        domain = viewMenu.addAction("Domain Analysis")
+        category = viewMenu.addAction("Categorization")
 
         # settingMenu = menuBar.addMenu("Setting")
         helpMenu = menuBar.addMenu("Help")
@@ -96,14 +109,10 @@ class MainWindow(QMainWindow):
 
         # LEFT SIDEBAR NAVIGATION
         sidebar = QWidget()
-        sidebar.setFixedWidth(280)
+        sidebar.setFixedWidth(270)
         sidebar_layout = QVBoxLayout(sidebar)
-        sidebar_layout.setContentsMargins(10, 10, 10, 10)
-        sidebar_layout.setSpacing(10)
-
-        title = QLabel("Evidence Artifacts")
-        title.setStyleSheet("font-size: 18px; font-weight: bold;")
-        sidebar_layout.addWidget(title)
+        # sidebar_layout.setContentsMargins(10, 10, 10, 10)
+        # sidebar_layout.setSpacing(10)
 
         self.nav_list = QListWidget()
         self.nav_list.setStyleSheet("""
@@ -147,20 +156,21 @@ class MainWindow(QMainWindow):
         # RIGHT MAIN CONTENT AREA
         self.pages = QStackedWidget()
         splitter.addWidget(self.pages)
-        splitter.setSizes([290, 1200])
+        splitter.setSizes([270, 1400])
+        # self.pages.setStyleSheet("QStackedWidget { border: 2px solid black; }")
 
         self.page_controllers = [
-            DashboardController(evidence_path),
-            HistoryController(evidence_path),
-            DownloadController(evidence_path),
-            CookieController(evidence_path),
-            LoginsController(evidence_path),
-            CacheController(evidence_path),
-            SearchTermController(evidence_path),
-            BookmarkController(evidence_path),
-            AutofillController(evidence_path),
-            SessionsController(evidence_path),
-            TopSitesController(evidence_path)
+            DashboardController(self.evidence_path, self.report_controller),
+            HistoryController(self.evidence_path, self.report_controller),
+            DownloadController(self.evidence_path, self.report_controller),
+            CookieController(self.evidence_path, self.report_controller),
+            LoginsController(self.evidence_path, self.report_controller),
+            CacheController(self.evidence_path, self.report_controller),
+            SearchTermController(self.evidence_path, self.report_controller),
+            BookmarkController(self.evidence_path, self.report_controller),
+            AutofillController(self.evidence_path, self.report_controller),
+            SessionsController(self.evidence_path, self.report_controller),
+            TopSitesController(self.evidence_path, self.report_controller)
         ]
 
         for controller in self.page_controllers:
@@ -180,17 +190,17 @@ class MainWindow(QMainWindow):
             widget.deleteLater()
 
         # Reload controllers/pages
-        dashboard = DashboardController(evidence_path)
-        history = HistoryController(evidence_path)
-        downloads = DownloadController(evidence_path)
-        cookies = CookieController(evidence_path)
-        logins = LoginsController(evidence_path)
-        cache = CacheController(evidence_path)
-        search = SearchTermController(evidence_path)
-        bookmarks = BookmarkController(evidence_path)
-        autofill = AutofillController(evidence_path)
-        sessions = SessionsController(evidence_path)
-        top_sites = TopSitesController(evidence_path)
+        dashboard = DashboardController(self.evidence_path, self.report_controller)
+        history = HistoryController(self.evidence_path, self.report_controller)
+        downloads = DownloadController(self.evidence_path, self.report_controller)
+        cookies = CookieController(self.evidence_path, self.report_controller)
+        logins = LoginsController(self.evidence_path, self.report_controller)
+        cache = CacheController(self.evidence_path, self.report_controller)
+        search = SearchTermController(self.evidence_path, self.report_controller)
+        bookmarks = BookmarkController(self.evidence_path, self.report_controller)
+        autofill = AutofillController(self.evidence_path, self.report_controller)
+        sessions = SessionsController(self.evidence_path, self.report_controller)
+        top_sites = TopSitesController(self.evidence_path, self.report_controller)
         ReportController(self.current_case_path)
 
         self.pages.addWidget(dashboard.create_page())

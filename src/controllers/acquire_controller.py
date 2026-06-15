@@ -14,7 +14,7 @@ from services.parsing.bookmarks import extract_bookmarks
 from services.parsing.top_sites import extract_top_sites
 from services.parsing.firefox import extract_firefox_bookmarks, extract_firefox_cookies, extract_firefox_downloads, extract_firefox_logins
 from services.parsing.sessions import extract_session_and_tabs
-from services.utils.utils import hash_all_csv_to_txt, hash_file_multi, write_json, write_to_csv, zip_folder
+from services.utils.utils import hash_file_multi, write_to_csv, zip_folder
 
 
 class AcquireEvidenceController:
@@ -55,11 +55,7 @@ class AcquireEvidenceController:
 
                     try:
                         md5, sha1, sha256 = hash_file_multi(file_path)
-
-                        relative_path = os.path.relpath(
-                            file_path,
-                            archive_folder
-                        )
+                        relative_path = os.path.relpath(file_path,archive_folder)
 
                         f.write(f"FILE: {relative_path}\n")
                         f.write(f"MD5: {md5}\n")
@@ -104,7 +100,7 @@ class AcquireEvidenceController:
                     except Exception as e:
                         print(f"Session copy error: {e}")
 
-    def start_parsing(self, root_folder, browser_path):
+    def start_parsing(self, root_folder, browser_path, case_information=None):
         try:
             if self.logger:
                 self.logger.info(f"Acquisition started | User: {root_folder} | Path: {browser_path}")
@@ -251,19 +247,26 @@ class AcquireEvidenceController:
             if self.logger:
                 self.logger.info(f"Autofills data extracted: {len(autofill_data)} records")
 
-            # Parse Signed-in Accounts
-            accounts_data = extract_signed_in_accounts(base_path, user_name, archive_folder)
-            accounts_output = os.path.join(archive_folder, "signed_in_accounts.json")
-            write_json(accounts_data, accounts_output)
-            if self.logger:
-                self.logger.info(f"Signed-in accounts extracted: {len(accounts_data)} records")
-
             # Parse Top Sites
             top_sites_data = extract_top_sites(browser, profile_files["history"], user_name)
             top_sites_output = os.path.join(archive_folder, "top_sites.csv")
             write_to_csv(top_sites_data,[ "Visit Count", "URL"], top_sites_output)
 
-            extract_browser_info(browser_type=browser,profile_path=base_path,output_folder=archive_folder, username=user_name)
+
+            # Parse Signed-in Accounts
+            accounts_data = extract_signed_in_accounts(base_path, user_name, archive_folder)
+            if self.logger:
+                self.logger.info(f"Signed-in accounts extracted: {len(accounts_data)} records")
+
+            extract_browser_info(
+                browser_type=browser,
+                profile_path=base_path,
+                output_folder=archive_folder, 
+                username=user_name, 
+                accounts_data=accounts_data, 
+                case_information=case_information
+            )
+            
 
             if self.enable_hashing:
                 self.generate_hash(user_name, browser, archive_folder)

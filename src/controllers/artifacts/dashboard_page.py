@@ -8,13 +8,16 @@ from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from datetime import datetime
 
+from controllers.artifact_controller import ArtifactTableController
 from controllers.main_controller import MainController
 from gui.dashboard_layout import DashboardLayout
 from services.utils.utils import format_size
 
 
 class DashboardController:
-    def __init__(self, evidence_path=None):
+    def __init__(self, evidence_path=None, report_controller=None):
+        self.table = ArtifactTableController(report_controller)
+        
         self.evidence_path = evidence_path
         self.layout_builder = DashboardLayout()
         self.control = MainController()
@@ -69,12 +72,7 @@ class DashboardController:
         try:
             with open(json_file,"r",encoding="utf-8") as f:
                 browser_info = json.load(f)
-
-            # if saved as single object instead of list
-            if isinstance(browser_info, dict):
-                browser_info = [browser_info]
-
-            for item in browser_info:
+                item = browser_info.get("browser_info",{})
                 row = QWidget()
                 row_layout = QHBoxLayout(row)
 
@@ -223,7 +221,7 @@ class DashboardController:
 
         json_file = os.path.join(
             self.evidence_path,
-            "signed_in_accounts.json"
+            "preferences.json"
         )
 
         if not os.path.exists(json_file):
@@ -237,12 +235,12 @@ class DashboardController:
             )
 
         try:
-            with open(
-                json_file,
-                "r",
-                encoding="utf-8"
-            ) as f:
-                accounts = json.load(f)
+            with open(json_file,"r",encoding="utf-8") as f:
+                data = json.load(f)
+                accounts = data.get(
+                    "signed_in_accounts",
+                    []
+                )
 
             if not accounts:
                 layout.addWidget(

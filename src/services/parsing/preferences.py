@@ -139,13 +139,17 @@ def extract_signed_in_accounts(profile, username, output_folder):
     return entries
 
 
-def extract_browser_info(browser_type, profile_path, output_folder, username):
+def extract_browser_info(browser_type, profile_path, output_folder, username, accounts_data=None,case_information=None):
     browser_info = {
-        "browser_type": browser_type.title(),
-        "browser_version": "Unknown",
-        "installed_date": "Unknown",
-        "profile_user": username,
-        "source": ""
+        "case_information": case_information or {},
+        "browser_info": {
+            "browser_type": browser_type.title(),
+            "browser_version": "Unknown",
+            "installed_date": "Unknown",
+            "profile_user": username,
+            "source": ""
+        },
+        "signed_in_accounts": accounts_data or []
     }
 
     try:
@@ -159,12 +163,7 @@ def extract_browser_info(browser_type, profile_path, output_folder, username):
             )
 
             if os.path.exists(local_state_path):
-                with open(
-                    local_state_path,
-                    "r",
-                    encoding="utf-8",
-                    errors="replace"
-                ) as f:
+                with open(local_state_path,"r",encoding="utf-8",errors="replace") as f:
                     data = json.load(f)
 
                 def find_version(json_data):
@@ -188,12 +187,12 @@ def extract_browser_info(browser_type, profile_path, output_folder, username):
 
                 # Installed Date (using file creation time)
                 created_time = os.path.getctime(local_state_path)
-                browser_info["installed_date"] = datetime.fromtimestamp(
+                browser_info["browser_info"]["installed_date"] = datetime.fromtimestamp(
                     created_time
                 ).strftime("%Y-%m-%d %H:%M:%S")
 
-                browser_info["browser_version"] = browser_version
-                browser_info["source"] = "Local State"
+                browser_info["browser_info"]["browser_version"] = browser_version
+                browser_info["browser_info"]["source"] = "Local State"
 
         # FIREFOX
         elif browser_type.lower() == "firefox":
@@ -211,17 +210,17 @@ def extract_browser_info(browser_type, profile_path, output_folder, username):
                     if line.startswith("LastVersion="):
                         version_data = line.split("=", 1)[1]
                         browser_version = version_data.split("_")[0]
-                        browser_info["browser_version"] = browser_version
+                        browser_info["browser_info"]["browser_version"] = browser_version
 
                     elif line.startswith("LastAppDir="):
-                        browser_info["install_path"] = line.split("=", 1)[1]
+                        browser_info["browser_info"]["install_path"] = line.split("=", 1)[1]
 
                 created_time = os.path.getctime(compatibility_path)
-                browser_info["installed_date"] = (
+                browser_info["browser_info"]["installed_date"] = (
                     datetime.fromtimestamp(created_time)
                     .strftime("%Y-%m-%d %H:%M:%S")
                 )
-                browser_info["source"] = "compatibility.ini"
+                browser_info["browser_info"]["source"] = "compatibility.ini"
 
         # SAVE JSON
         output_path = os.path.join(
@@ -229,11 +228,7 @@ def extract_browser_info(browser_type, profile_path, output_folder, username):
             "preferences.json"
         )
 
-        with open(
-            output_path,
-            "w",
-            encoding="utf-8"
-        ) as f:
+        with open(output_path,"w",encoding="utf-8") as f:
             json.dump(
                 browser_info,
                 f,

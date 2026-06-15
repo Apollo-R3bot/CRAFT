@@ -3,8 +3,8 @@ from pathlib import Path
 from PySide6.QtCore import QDir, QTimer
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressBar, QPushButton, QRadioButton, QVBoxLayout
 from controllers.acquire_controller import AcquireEvidenceController
-from controllers.browser_controller import BrowserSelectionController
-from controllers.user_profile_controller import UserProfileController
+from controllers.browser_and_user_profile_controller import BrowserSelectionController
+from gui.case_information_dialog import CaseInformationDialog
 
 class EvidenceAcquisition(QDialog):
     def __init__(self, logger, parent=None):
@@ -14,7 +14,7 @@ class EvidenceAcquisition(QDialog):
         self.logger = logger
         self.acquire = AcquireEvidenceController(logger=self.logger)
         self.select_browser = BrowserSelectionController()
-        self.user_profile = UserProfileController()
+        self.user_profile = BrowserSelectionController()
 
         self.selected_browser_path = None
         self.selected_user = None
@@ -101,11 +101,11 @@ class EvidenceAcquisition(QDialog):
 
         footer = QHBoxLayout()
         back_btn = QPushButton("< Back")
-        start_btn = QPushButton("Start")
+        start_btn = QPushButton("Next >")
         cancel_btn = QPushButton("Cancel")
 
         back_btn.clicked.connect(self.go_back)
-        start_btn.clicked.connect(self.start_acquire)
+        start_btn.clicked.connect(self.open_case_information)
         cancel_btn.clicked.connect(self.accept)
 
         footer.addWidget(back_btn)
@@ -163,6 +163,17 @@ class EvidenceAcquisition(QDialog):
     def go_back(self):
         self.reject()
 
+
+    def open_case_information(self):
+        case_dialog = CaseInformationDialog(self)
+
+        if case_dialog.exec():
+            self.case_information = (
+                case_dialog.get_case_data()
+            )
+
+            self.start_acquire()
+
     def start_acquire(self):
         output_path = self.path_input.text().strip()
         if not output_path or not self.selected_browser_path:
@@ -176,7 +187,8 @@ class EvidenceAcquisition(QDialog):
         try:
             evidence_folder = self.acquire.start_parsing(
                 self.selected_user,
-                self.selected_browser_path
+                self.selected_browser_path,
+                self.case_information
             )
 
             self.generated_evidence_path = evidence_folder

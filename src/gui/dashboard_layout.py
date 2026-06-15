@@ -44,10 +44,6 @@ class DashboardLayout:
         main_layout.setContentsMargins(15, 15, 15, 15)
         main_layout.setSpacing(15)
 
-        heading = QLabel("Evidence Summary")
-        heading.setStyleSheet("font-size: 24px; font-weight: bold;")
-        main_layout.addWidget(heading)
-
         # Top Row
         top_row = QHBoxLayout()
         top_row.setSpacing(15)

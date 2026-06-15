@@ -5,8 +5,8 @@ from controllers.artifact_controller import ArtifactTableController
 
 
 class LoginsController:
-    def __init__(self, evidence_path=None):
-        self.table = ArtifactTableController()
+    def __init__(self, evidence_path=None, report_controller=None):
+        self.table = ArtifactTableController(report_controller)
         self.title = "Passwords"
         self.evidence_path = evidence_path
 

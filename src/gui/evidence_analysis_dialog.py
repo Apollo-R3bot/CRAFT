@@ -1,14 +1,14 @@
 import os
 from PySide6.QtCore import QDir
 from PySide6.QtWidgets import QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
-from controllers.user_profile_controller import UserProfileController
+from controllers.browser_and_user_profile_controller import BrowserSelectionController
 
 class EvidenceAnalysis(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
 
         # Controllers
-        self.user_profile = UserProfileController()
+        self.user_profile = BrowserSelectionController()
         self.evidence_path = None
 
         self.setWindowTitle("Select Evidence Source")

@@ -1,0 +1,61 @@
+Field Name,Value,First Used,Last Used,Count
+name,User request for the Ngao authenticator connectivity,2025-09-17 08:57:28,2025-09-17 08:58:58,4
+name,User request for the digital signature password recovery,2025-09-17 09:05:20,2025-09-17 09:49:39,7
+name,User requested assistance with connecting to the printer,2025-09-17 09:54:59,2025-09-17 09:56:13,4
+name,User Requested Email Credentials Recovery,2025-09-17 10:03:12,2025-09-17 10:04:31,4
+identifier,vancloudgaithan@gmail.com,2025-09-18 10:52:27,2025-09-18 10:52:27,1
+name,User request for the VPN installation,2025-09-18 10:55:50,2025-09-18 10:58:19,5
+name,User request for the internet problems,2025-09-18 12:24:03,2025-09-18 12:24:46,4
+email,vanclaud.gaithan,2025-09-18 14:04:23,2025-09-18 14:04:23,1
+email,vanclaud.gaithan@judiciary.go.tz,2025-09-18 14:04:45,2025-09-18 14:04:45,1
+LoginForm[username],T22-03-04278,2025-11-26 09:33:27,2025-11-26 14:16:36,4
+LoginForm[username],AT25-03-191998,2025-11-26 09:38:14,2025-11-26 09:58:38,2
+StudentDetails[first_name],EDITA,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[middle_name],ALFAYO,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[last_name],MMALATE,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[username],AT25-03-191998,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[admission_no],AT25-03-191998,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[avn],N/A,2025-11-26 10:01:27,2025-11-26 10:11:11,2
+StudentDetails[birth_date],2005-12-21,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[email],editammalate@gmail.com,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[nationality],Tanzanian,2025-11-26 10:01:27,2025-11-26 10:11:11,2
+StudentDetails[phone],+255670586206,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[department_name],Information Systems and Technology,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[specialization], Science in Information System,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[study_mode],FullTime,2025-11-26 10:01:27,2025-11-26 10:11:11,2
+StudentDetails[program_duration],3,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[form_four_index_number],S1540/0015/2022,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[other_form_four_index_number],N/A,2025-11-26 10:01:27,2025-11-26 10:11:11,2
+StudentDetails[form_six_index_number],S0215/0855/2025,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[other_form_six_index_number],N/A,2025-11-26 10:01:27,2025-11-26 10:11:11,2
+StudentDetails[program_code],DM004,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[nida_number],20051221636160000117,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[program_name],Bachelor of Science in Information System,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[bank_account_name],CRDB,2025-11-26 10:01:27,2025-11-26 10:11:11,2
+StudentDetails[bank_account_no],10137295828,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[next_of_kin_name],ALFAYO MMALATE,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[next_of_kin_address],MTWARA,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+StudentDetails[next_of_kin_relation],FATHER,2025-11-26 10:01:27,2025-11-26 10:11:11,2
+StudentDetails[next_of_kin_phone],0686462519,2025-11-26 10:01:27,2025-11-26 10:01:27,1
+LoginForm[username],AT25-03-135897,2025-11-26 10:08:14,2025-11-26 16:25:41,4
+StudentDetails[first_name],SOPHIA,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[middle_name],HAMISI,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[last_name],RAMADHANI,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[username],AT25-03-135897,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[admission_no],AT25-03-135897,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[birth_date],2005-12-12,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[email],ramadhanisophie99@gmail.com,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[phone],+255689622576,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[department_name],Electronics and Telecommunication Engineering,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[specialization], Science in Digital Content and Broadcasting,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[program_duration],4,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[form_four_index_number],S2891/0105/2022,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[form_six_index_number],S0580/0612/2025,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[program_code],DM085,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[nida_number],20051212411170000311,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[program_name],Bachelor of Science in Digital Content and Broadcasting Engineering,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[bank_account_no],0152001JKLW00,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[next_of_kin_name],HAMISI RAMADHANI,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[next_of_kin_address],ARUSHA,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+StudentDetails[next_of_kin_phone],0689944014,2025-11-26 10:11:11,2025-11-26 10:11:11,1
+LoginForm[username],T25-03-15338,2025-11-26 15:37:27,2025-11-26 15:47:48,2

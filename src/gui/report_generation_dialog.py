@@ -14,9 +14,10 @@ from PySide6.QtWidgets import (
 )
 
 class ReportGenerationDialog(QDialog):
-    def __init__(self, report_controller, parent=None):
+    def __init__(self, report_controller, report_mode="full", parent=None):
         super().__init__(parent)
         self.report_controller = report_controller
+        self.report_mode = report_mode
 
         self.setWindowTitle("Generate Report")
         self.resize(350, 150)
@@ -79,7 +80,7 @@ class ReportGenerationDialog(QDialog):
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             "Save Report",
-            f"forensic_report.{selected_format}",
+            f"report.{selected_format}",
             f"{selected_format.upper()} Files (*.{selected_format})"
         )
 
@@ -88,10 +89,35 @@ class ReportGenerationDialog(QDialog):
 
         try:
             if selected_format == "pdf":
-                self.report_controller.export_full_pdf(file_path)
+                if self.report_mode == "full":
+                    self.report_controller.export_full_pdf(
+                        file_path
+                    )
+
+                else:
+                    marked_data = self.report_controller.marked_evidence
+
+                    if not marked_data:
+                        QMessageBox.warning(
+                            self,
+                            "No Evidence",
+                            "No marked evidence selected."
+                        )
+                        return
+
+                    self.report_controller.export_full_pdf(
+                        file_path,
+                        marked_data=marked_data
+                    )
 
             elif selected_format == "csv":
-                self.report_controller.export_full_csv(file_path)
+                if self.report_mode == "full":
+                    self.report_controller.export_full_csv(file_path)
+                else:
+                    self.report_controller.export_marked_csv(
+                        file_path,
+                        self.report_controller.marked_evidence
+                    )
 
             elif selected_format == "json":
                 self.report_controller.export_full_json(file_path)
