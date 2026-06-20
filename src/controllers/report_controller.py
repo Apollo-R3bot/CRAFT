@@ -20,7 +20,6 @@ class ReportController:
             "downloads.csv",
             "cookies.csv",
             "logins.csv",
-            "caches.csv",
             "search_terms.csv",
             "bookmarks.csv",
             "autofill.csv",
@@ -41,7 +40,27 @@ class ReportController:
                 ("TOPPADDING", (0, 0), (-1, -1), 4),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
             ])
+    def get_case_information(self):
+        prefs_file = os.path.join(
+            self.evidence_path,
+            "preferences.json"
+        )
 
+        if not os.path.exists(prefs_file):
+            return {}
+
+        try:
+            with open(prefs_file,"r",encoding="utf-8") as f:
+                data = json.load(f)
+
+            return data.get(
+                "case_information",
+                {}
+            )
+
+        except Exception:
+            return {}
+    
     # LOAD ALL CSV FILES
     def load_all_data(self):
         report_data = {}
@@ -83,8 +102,9 @@ class ReportController:
 
         summary_table = Table(
             summary_data,
-            colWidths=[250, 120],
-            repeatRows=1
+            colWidths=[120, 250],
+            repeatRows=1,
+            hAlign="LEFT"
         )
         summary_table.setStyle(self.table_style)
 
@@ -105,9 +125,7 @@ class ReportController:
         canvas.drawRightString(width - 30,15,f"Page {doc.page}")
         canvas.restoreState()
         
-
     def export_full_pdf(self, output_file, marked_data=None):
-
         if marked_data:
             data = marked_data
         else:
@@ -144,6 +162,30 @@ class ReportController:
         elements.append(Spacer(0, 1))
         generated_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         elements.append(Paragraph(f"<font color='grey'>Report Generated on: {generated_date}</font>",styles["Normal"]))
+
+        #Case Info
+        case_info = self.get_case_information()
+        if case_info:
+            elements.append(Spacer(1, 10))
+            elements.append(
+                Paragraph("Case Information",heading_style))
+
+            case_table_data = [
+                ["Case Number", case_info.get("case_number", "")],
+                ["Evidence Number", case_info.get("evidence_number", "")],
+                ["Examiner Name", case_info.get("examiner_name", "")],
+                ["Notes", case_info.get("notes", "")]
+            ]
+
+            case_table = Table(
+                case_table_data,
+                colWidths=[120, 250],
+                hAlign="LEFT"
+            )
+
+            case_table.setStyle(self.table_style)
+            elements.append(case_table)
+            elements.append(Spacer(1, 15))
 
         #Summary
         elements.append(Paragraph("Findings Summary",heading_style))
@@ -215,19 +257,6 @@ class ReportController:
 
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(final_data,f,indent=4,ensure_ascii=False)
-
-    def export_full_html(self, output_file):
-        data = self.load_all_data()
-        html = "<h1>CRAFT Forensic Report</h1>"
-        for section, df in data.items():
-            html += f"<h2>{section.upper()}</h2>"
-            if df.empty:
-                html += "<p>No data found</p>"
-            else:
-                html += df.to_html(index=False)
-                
-        with open(output_file, "w", encoding="utf-8") as f:
-            f.write(html)
 
     def export_full_csv(self, output_file):
         data = self.load_all_data()

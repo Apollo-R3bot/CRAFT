@@ -30,7 +30,7 @@ def main():
             continue  
 
         elif dialog.selected_mode == "analyze":
-            analysis_dialog = EvidenceAnalysis()
+            analysis_dialog = EvidenceAnalysis(logger=logger)
             result = analysis_dialog.exec()
             if result == QDialog.Accepted:
                 evidence_path = analysis_dialog.evidence_path

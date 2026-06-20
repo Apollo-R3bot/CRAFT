@@ -1,4 +1,4 @@
-
+import json
 import csv
 from datetime import datetime, timedelta
 import hashlib
@@ -60,7 +60,6 @@ def zip_folder(folder_path, zip_path):
                 zipf.write(file_path, arcname)
     return zip_path
 
-
 def hash_file_multi(file_path):
     md5 = hashlib.md5()
     sha1 = hashlib.sha1()
@@ -73,7 +72,6 @@ def hash_file_multi(file_path):
             sha256.update(chunk)
 
     return md5.hexdigest(), sha1.hexdigest(), sha256.hexdigest()
-
 
 def hash_all_csv_to_txt(folder_path, output_file, zip_path=None):
     lines = []
@@ -125,8 +123,6 @@ def hash_all_csv_to_txt(folder_path, output_file, zip_path=None):
     return output_file
 
 def write_json(data, output_file):
-    import json
-
     with open(
         output_file,
         "w",

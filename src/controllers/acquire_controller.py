@@ -2,10 +2,10 @@ from datetime import datetime
 import os
 import shutil
 from PySide6.QtWidgets import QMessageBox
+import pandas as pd
 
 from services.parsing.preferences import extract_browser_info, extract_signed_in_accounts
 from services.parsing.autofills import extract_autofill
-from services.parsing.caches import extract_caches
 from services.parsing.history import extract_history
 from services.parsing.logins import  extract_logins
 from services.parsing.downloads import extract_downloads
@@ -83,6 +83,98 @@ class AcquireEvidenceController:
             f.write(f"SHA256: {zip_sha256}\n")
             f.write("=" * 60 + "\n")
 
+    def create_combined_evidence_csv(self, archive_folder):
+
+        csv_files = [
+            "history.csv",
+            "downloads.csv",
+            "cookies.csv",
+            "autofill.csv",
+            "logins.csv",
+            "bookmarks.csv",
+            "sessions.csv",
+            "search_terms.csv"
+        ]
+
+        combined = []
+
+        for filename in csv_files:
+            file_path = os.path.join(
+                archive_folder,
+                filename
+            )
+
+            if not os.path.exists(file_path):
+                continue
+
+            try:
+                df = pd.read_csv(file_path)
+
+                artifact_type = (
+                    filename
+                    .replace(".csv", "")
+                    .replace("_", " ")
+                    .title()
+                )
+
+                df.insert(0, "Source", filename)
+                df.insert(0, "Artifact Type", artifact_type)
+
+                # Try finding timestamp column
+                timestamp_column = None
+
+                for col in [
+                    "Visit Time",
+                    "Start Time",
+                    "End Time",
+                    "Creation Time",
+                    "Created Time",
+                    "Created Date",
+                    "Timestamp",
+                    "Date",
+                    "Time"
+                ]:
+                    if col in df.columns:
+                        timestamp_column = col
+                        break
+
+                if timestamp_column:
+                    df.insert(
+                        0,
+                        "Timestamp",
+                        df[timestamp_column]
+                    )
+                else:
+                    df.insert(
+                        0,
+                        "Timestamp",
+                        ""
+                    )
+
+                combined.append(df)
+
+            except Exception as e:
+                if self.logger:
+                    self.logger.error(
+                        f"Failed processing {filename}: {e}"
+                    )
+
+        if combined:
+            final_df = pd.concat(
+                combined,
+                ignore_index=True,
+                sort=False
+            )
+
+            final_df.to_csv(
+                os.path.join(
+                    archive_folder,
+                    "evidence.csv"
+                ),
+                index=False,
+                encoding="utf-8-sig"
+            )
+
     def copy_session_folder(self, session_source, output_folder):
         session_output = os.path.join(output_folder, "sessions")
         os.makedirs(session_output, exist_ok=True)
@@ -100,7 +192,7 @@ class AcquireEvidenceController:
                     except Exception as e:
                         print(f"Session copy error: {e}")
 
-    def start_parsing(self, root_folder, browser_path, case_information=None):
+    def start_parsing(self, root_folder, browser_path):
         try:
             if self.logger:
                 self.logger.info(f"Acquisition started | User: {root_folder} | Path: {browser_path}")
@@ -125,7 +217,6 @@ class AcquireEvidenceController:
                 cookies_path = os.path.join(base_path, "Network", "Cookies")
                 logins_path = os.path.join(base_path, "Login Data")
                 bookmarks_path = os.path.join(base_path, "Bookmarks")
-                cache_path = os.path.join(base_path, "Cache")
                 session_path = os.path.join(base_path, "Sessions")
                 autofill_path = os.path.join(base_path, "Web Data")
                 top_sites_path = os.path.join(base_path, "Top Sites")
@@ -136,7 +227,6 @@ class AcquireEvidenceController:
                 cookies_path = os.path.join(base_path, "Network","Cookies")
                 logins_path = os.path.join(base_path, "Login Data")
                 bookmarks_path = os.path.join(base_path, "Bookmarks")
-                cache_path = os.path.join(base_path, "Cache")
                 session_path = os.path.join(base_path, "Sessions")
                 autofill_path = os.path.join(base_path, "Web Data")
                 top_sites_path = os.path.join(base_path, "Top Sites")
@@ -147,7 +237,6 @@ class AcquireEvidenceController:
                 cookies_path = os.path.join(base_path, "cookies.sqlite")
                 logins_path = os.path.join(base_path, "logins.json")
                 bookmarks_path = browser_path  # bookmarks ipo ndani ya places.sqlite
-                cache_path =  os.path.join(base_path, "cache2")
                 session_path = os.path.join(base_path, "sessionstore-backups")
                 autofill_path = os.path.join(base_path, "formhistory.sqlite")
                 top_sites_path = browser_path
@@ -158,7 +247,6 @@ class AcquireEvidenceController:
                 "cookies": [cookies_path],
                 "logins": [logins_path],
                 "bookmarks": [bookmarks_path],
-                "cache": [cache_path],
                 "sessions": [session_path],
                 "autofill": [autofill_path],
                 "top_sites": [top_sites_path]
@@ -177,16 +265,9 @@ class AcquireEvidenceController:
 
             # Parse Search Terms
             search_output = os.path.join(archive_folder, "search_terms.csv")
-            write_to_csv(search_data, ["Search Term", "Time"], search_output)
+            write_to_csv(search_data, ["Time", "Domain", "Search Term"], search_output)
             if self.logger:
                 self.logger.info(f"Search terms extracted: {len(history_data)} records")
-
-            # Parse Caches
-            cache_data = extract_caches(browser, profile_files["cache"], user_name)
-            cache_output = os.path.join(archive_folder, "caches.csv")
-            write_to_csv(cache_data, ["Field", "Size", "Created", "Last Used"], cache_output)
-            if self.logger:
-                self.logger.info(f"Caches extracted: {len(cache_data)} records")
 
             # Parse Downloads
             if browser == "firefox":
@@ -196,7 +277,7 @@ class AcquireEvidenceController:
             else:
                 downloads_data = extract_downloads(browser, profile_files["history"], user_name)
                 downloads_output = os.path.join(archive_folder, "downloads.csv")
-                write_to_csv(downloads_data, ["Start Time", "End Time", "File Path", "Size", "Danger Type", "Interrupt Reason", "Opened"], downloads_output)
+                write_to_csv(downloads_data, ["Start Time", "End Time", "File Path", "Referrer", "Tab URL", "Size", "Danger Type", "Interrupt Reason", "Opened"], downloads_output)
             if self.logger:
                 self.logger.info(f"Downloads extracted: {len(downloads_data)} records")
 
@@ -263,8 +344,7 @@ class AcquireEvidenceController:
                 profile_path=base_path,
                 output_folder=archive_folder, 
                 username=user_name, 
-                accounts_data=accounts_data, 
-                case_information=case_information
+                accounts_data=accounts_data
             )
             
 
@@ -273,7 +353,13 @@ class AcquireEvidenceController:
                 if self.logger:
                     self.logger.info("Hash verification started..")
 
+            # self.create_combined_evidence_csv(
+            #     archive_folder
+            # )
+
             return archive_folder
+        
+
 
         except Exception as e:
             QMessageBox.critical(self, "Error", "Acquisition not completed.!")

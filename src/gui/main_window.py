@@ -4,7 +4,6 @@ from PySide6.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QListWidget, QLi
 from controllers.artifacts.artifact_count_controller import get_artifact_count
 from controllers.artifacts.autofill_page import AutofillController
 from controllers.artifacts.bookmark_page import BookmarkController
-from controllers.artifacts.cache_page import CacheController
 from controllers.artifacts.cookie_page import CookieController
 from controllers.artifacts.download_page import DownloadController
 from controllers.artifacts.history_page import HistoryController
@@ -56,6 +55,7 @@ class MainWindow(QMainWindow):
             }
         """)
         fileMenu = menuBar.addMenu("File")
+
         acquire_evidence = fileMenu.addAction("Acquire Evicence")
         acquire_evidence.triggered.connect(self.open_acquisition_dialog)
 
@@ -91,7 +91,6 @@ class MainWindow(QMainWindow):
         viewMenu = menuBar.addMenu("View")
         timeline = viewMenu.addAction("Timeline Analysis")
         domain = viewMenu.addAction("Domain Analysis")
-        category = viewMenu.addAction("Categorization")
 
         # settingMenu = menuBar.addMenu("Setting")
         helpMenu = menuBar.addMenu("Help")
@@ -111,8 +110,6 @@ class MainWindow(QMainWindow):
         sidebar = QWidget()
         sidebar.setFixedWidth(270)
         sidebar_layout = QVBoxLayout(sidebar)
-        # sidebar_layout.setContentsMargins(10, 10, 10, 10)
-        # sidebar_layout.setSpacing(10)
 
         self.nav_list = QListWidget()
         self.nav_list.setStyleSheet("""
@@ -136,12 +133,11 @@ class MainWindow(QMainWindow):
             (" Downloads"),
             (" Cookies"),
             (" Password"),
-            (" Cache"),
             (" Search Terms"),
             (" Bookmarks"),
-            (" Autofill"),
-            (" Sessions"),
-            (" Top Sites")
+            (" Form Data"),
+            # (" Sessions"),
+            (" Frequently Websites")
         ]
 
         for name in artifacts:
@@ -165,11 +161,10 @@ class MainWindow(QMainWindow):
             DownloadController(self.evidence_path, self.report_controller),
             CookieController(self.evidence_path, self.report_controller),
             LoginsController(self.evidence_path, self.report_controller),
-            CacheController(self.evidence_path, self.report_controller),
             SearchTermController(self.evidence_path, self.report_controller),
             BookmarkController(self.evidence_path, self.report_controller),
             AutofillController(self.evidence_path, self.report_controller),
-            SessionsController(self.evidence_path, self.report_controller),
+            # SessionsController(self.evidence_path, self.report_controller),
             TopSitesController(self.evidence_path, self.report_controller)
         ]
 
@@ -195,11 +190,10 @@ class MainWindow(QMainWindow):
         downloads = DownloadController(self.evidence_path, self.report_controller)
         cookies = CookieController(self.evidence_path, self.report_controller)
         logins = LoginsController(self.evidence_path, self.report_controller)
-        cache = CacheController(self.evidence_path, self.report_controller)
         search = SearchTermController(self.evidence_path, self.report_controller)
         bookmarks = BookmarkController(self.evidence_path, self.report_controller)
         autofill = AutofillController(self.evidence_path, self.report_controller)
-        sessions = SessionsController(self.evidence_path, self.report_controller)
+        # sessions = SessionsController(self.evidence_path, self.report_controller)
         top_sites = TopSitesController(self.evidence_path, self.report_controller)
         ReportController(self.current_case_path)
 
@@ -208,11 +202,10 @@ class MainWindow(QMainWindow):
         self.pages.addWidget(downloads.create_page())
         self.pages.addWidget(cookies.create_page())
         self.pages.addWidget(logins.create_page())
-        self.pages.addWidget(cache.create_page())
         self.pages.addWidget(search.create_page())
         self.pages.addWidget(bookmarks.create_page())
         self.pages.addWidget(autofill.create_page())
-        self.pages.addWidget(sessions.create_page())
+        # self.pages.addWidget(sessions.create_page())
         self.pages.addWidget(top_sites.create_page())
 
     def open_analysis_dialog(self):

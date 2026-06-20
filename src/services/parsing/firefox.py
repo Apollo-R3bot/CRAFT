@@ -26,19 +26,10 @@ def extract_firefox_downloads(
 
             cursor.execute("""
                 SELECT
-                    p.url,
-
-                    dest.content AS download_path,
-
-                    meta.content AS metadata,
-
-                    dest.dateAdded
-
+                    p.url, dest.content AS download_path, meta.content AS metadata, dest.dateAdded
                 FROM moz_annos dest
-
                 LEFT JOIN moz_annos meta
                     ON dest.place_id = meta.place_id
-
                 JOIN moz_places p
                     ON dest.place_id = p.id
 
@@ -70,16 +61,8 @@ def extract_firefox_downloads(
 
                 try:
                     metadata = json.loads(metadata_json)
-
-                    size = metadata.get(
-                        "fileSize",
-                        ""
-                    )
-
-                    end_time_raw = metadata.get(
-                        "endTime",
-                        ""
-                    )
+                    size = metadata.get("fileSize", "")
+                    end_time_raw = metadata.get("endTime","")
 
                     if end_time_raw:
                         end_time = convert_firefox_time(

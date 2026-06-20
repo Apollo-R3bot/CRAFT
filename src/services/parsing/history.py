@@ -36,7 +36,10 @@ def extract_search_term_from_url(url):
 
         for key in ["q", "query", "search", "search_query"]:  # supports Google, Bing, Yahoo, Youtube
             if key in query:
-                return query[key][0]
+                return {
+                    "search_term": query[key][0],
+                    "domain": parsed.netloc.replace("www.", "")
+                }
     except:
         pass
 
@@ -75,14 +78,22 @@ def extract_history(browser, files, user_profile, logger=None):
                     # visit_duration_sec = visit_duration / 1000000 if visit_duration else 0
                     visit_type = TRANSITION_TYPES.get(transition & 0xFF, 'Unknown')
                     history.append([visit_time_utc, url, title, visit_count, visit_type])
-                    term = extract_search_term_from_url(url)
+                    search_info = extract_search_term_from_url(url)
 
-                    if term:
-                        term = term.replace("+", " ").strip()
-                        key = term.lower()
+                    if search_info:
+                        term = search_info["search_term"].replace("+", " ").strip()
+                        domain = search_info["domain"]
+
+                        key = f"{term.lower()}|{domain}"
+
+                        # key = term.lower()
                         if key not in seen:
                             seen.add(key)
-                            search_terms.append([term,visit_time_utc])
+                            search_terms.append([
+                                visit_time_utc,
+                                domain,
+                                term
+                            ])
 
             elif 'moz_places' in tables and 'moz_historyvisits' in tables:
                 # Firefox history
@@ -102,13 +113,20 @@ def extract_history(browser, files, user_profile, logger=None):
                     visit_time_utc = convert_firefox_time(visit_time)
                     visit_type = FIREFOX_TRANSITION_TYPES.get(url_visit_type, 'Unknown')
                     history.append([visit_time_utc, url, title, visit_count, visit_type])
-                    term = extract_search_term_from_url(url)
-                    if term:
-                        term = term.replace("+", " ").strip()
-                        key = term.lower()
+                    search_info = extract_search_term_from_url(url)
+                    if search_info:
+                        term = search_info["search_term"].replace("+", " ").strip()
+                        domain = search_info["domain"]
+
+                        key = f"{term.lower()}|{domain}"
+                        # key = term.lower()
                         if key not in seen:
                             seen.add(key)
-                        search_terms.append([term,visit_time_utc])
+                            search_terms.append([
+                                visit_time_utc,
+                                domain,
+                                term
+                            ])
 
             conn.close()
         except sqlite3.Error as e:

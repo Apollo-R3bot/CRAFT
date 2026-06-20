@@ -139,9 +139,8 @@ def extract_signed_in_accounts(profile, username, output_folder):
     return entries
 
 
-def extract_browser_info(browser_type, profile_path, output_folder, username, accounts_data=None,case_information=None):
+def extract_browser_info(browser_type, profile_path, output_folder, username, accounts_data=None):
     browser_info = {
-        "case_information": case_information or {},
         "browser_info": {
             "browser_type": browser_type.title(),
             "browser_version": "Unknown",

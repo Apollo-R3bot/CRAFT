@@ -4,7 +4,6 @@ from PySide6.QtCore import QDir, QTimer
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressBar, QPushButton, QRadioButton, QVBoxLayout
 from controllers.acquire_controller import AcquireEvidenceController
 from controllers.browser_and_user_profile_controller import BrowserSelectionController
-from gui.case_information_dialog import CaseInformationDialog
 
 class EvidenceAcquisition(QDialog):
     def __init__(self, logger, parent=None):
@@ -101,11 +100,11 @@ class EvidenceAcquisition(QDialog):
 
         footer = QHBoxLayout()
         back_btn = QPushButton("< Back")
-        start_btn = QPushButton("Next >")
+        start_btn = QPushButton("Start")
         cancel_btn = QPushButton("Cancel")
 
         back_btn.clicked.connect(self.go_back)
-        start_btn.clicked.connect(self.open_case_information)
+        start_btn.clicked.connect(self.start_acquire)
         cancel_btn.clicked.connect(self.accept)
 
         footer.addWidget(back_btn)
@@ -163,17 +162,6 @@ class EvidenceAcquisition(QDialog):
     def go_back(self):
         self.reject()
 
-
-    def open_case_information(self):
-        case_dialog = CaseInformationDialog(self)
-
-        if case_dialog.exec():
-            self.case_information = (
-                case_dialog.get_case_data()
-            )
-
-            self.start_acquire()
-
     def start_acquire(self):
         output_path = self.path_input.text().strip()
         if not output_path or not self.selected_browser_path:
@@ -187,8 +175,7 @@ class EvidenceAcquisition(QDialog):
         try:
             evidence_folder = self.acquire.start_parsing(
                 self.selected_user,
-                self.selected_browser_path,
-                self.case_information
+                self.selected_browser_path
             )
 
             self.generated_evidence_path = evidence_folder
