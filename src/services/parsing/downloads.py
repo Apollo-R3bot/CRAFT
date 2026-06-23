@@ -37,20 +37,20 @@ def extract_downloads(browser, files, user_profile):
             cursor = conn.cursor()
 
             query = '''
-            SELECT target_path, referrer, tab_url, start_time, total_bytes, danger_type, interrupt_reason, end_time, opened
+            SELECT target_path, tab_url, start_time, total_bytes, interrupt_reason, state
             FROM downloads
             '''
             cursor.execute(query)
-            
+            DOWNLOAD_STATE = {1: 'COMPLETE', 2: 'CANCELLED', 4: 'INTERRUPTED'}
+
             for row in cursor.fetchall():
-                target_path, referrer, tab_url, start_time, total_bytes, danger_type, interrupt_reason, end_time, opened = row
+                target_path, tab_url, start_time, total_bytes, interrupt_reason, state = row
                 start_time_utc = convert_webkit_time(start_time)
-                end_time_utc = convert_webkit_time(end_time) if end_time else None
-                danger_description = DANGER_TYPE_MAP.get(danger_type, "Unknown")
                 interrupt_description = INTERRUPT_REASON_MAP.get(interrupt_reason, "Unknown")
-                opened_description = "Yes" if opened == 1 else "No"
                 total_size = format_size(total_bytes) if total_bytes else "0 B"
-                downloads.append([start_time_utc, end_time_utc, target_path, referrer, tab_url, total_size, danger_description, interrupt_description, opened_description])
+                status = DOWNLOAD_STATE.get(state, f'state={state}')
+                file_name = os.path.basename(target_path)
+                downloads.append([start_time_utc, file_name, tab_url, total_size, interrupt_description, status, target_path])
             conn.close()
         except sqlite3.Error as e:
             print(f"Error extracting downloads from {db_file}: {e}")

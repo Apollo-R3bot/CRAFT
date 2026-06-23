@@ -1,6 +1,7 @@
 import sys, os
 from PySide6.QtWidgets import QApplication, QDialog
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QAction, QIcon, Qt
 from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
 from gui.main_window import MainWindow
@@ -10,6 +11,8 @@ from services.utils.logger import log_system_info, setup_logger
 
 def main():
     app = QApplication(sys.argv)
+
+    app.setWindowIcon(QIcon("./resources/craft.png"))
 
     log_folder = os.path.join(os.getcwd(), "Logs")
     logger = setup_logger(log_folder)

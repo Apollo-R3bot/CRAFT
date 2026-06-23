@@ -104,7 +104,6 @@ class DashboardController:
 
                 if os.path.exists(icon_path):
                     pixmap = QPixmap(icon_path)
-
                     pixmap = pixmap.scaled(
                         64,
                         64,

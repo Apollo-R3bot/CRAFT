@@ -63,37 +63,50 @@ def extract_history(browser, files, user_profile, logger=None):
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
             tables = [table[0] for table in cursor.fetchall()]
 
+            previous_id = None
+            previous_time = None
+
             if 'urls' in tables:
                 # Chromium-based history
                 query = '''
-                SELECT urls.url, urls.title, urls.visit_count, urls.last_visit_time, visits.visit_time, visits.visit_duration, visits.from_visit, visits.transition
+                SELECT visits.id, urls.url, urls.title, urls.visit_count, visits.visit_time, visits.transition
                 FROM urls
                 JOIN visits ON urls.id = visits.url
+                ORDER BY visits.id ASC
                 '''
                 cursor.execute(query)
 
+
                 for row in cursor.fetchall():
-                    url, title, visit_count, last_visit_time, visit_time, visit_duration, from_visit, transition = row
+                    visit_id, url, title, visit_count, visit_time, transition = row
                     visit_time_utc = convert_webkit_time(visit_time)
-                    # visit_duration_sec = visit_duration / 1000000 if visit_duration else 0
                     visit_type = TRANSITION_TYPES.get(transition & 0xFF, 'Unknown')
-                    history.append([visit_time_utc, url, title, visit_count, visit_type])
+
+                    comment = ""
+
+                    if previous_id is not None:
+                        gap = visit_id - previous_id - 1
+                        comment = (
+                            f"Possible deletion occurred: {gap} visit record(s) "
+                            f"missing between between "
+                            f"{previous_time} and {visit_time_utc}"
+                        )
+                        if gap > 0:
+                            history.append(["Deleted",previous_time,"",f"GAP of {gap} deleted visits","","",comment])
+                    history.append(["Active", visit_time_utc, url or "", title, visit_count, visit_type,"Link"])
+                    previous_id = visit_id
+                    previous_time = visit_time_utc
+
                     search_info = extract_search_term_from_url(url)
 
                     if search_info:
                         term = search_info["search_term"].replace("+", " ").strip()
                         domain = search_info["domain"]
-
                         key = f"{term.lower()}|{domain}"
 
-                        # key = term.lower()
                         if key not in seen:
                             seen.add(key)
-                            search_terms.append([
-                                visit_time_utc,
-                                domain,
-                                term
-                            ])
+                            search_terms.append([visit_time_utc,domain,term])
 
             elif 'moz_places' in tables and 'moz_historyvisits' in tables:
                 # Firefox history
@@ -102,24 +115,41 @@ def extract_history(browser, files, user_profile, logger=None):
                     moz_places.url, 
                     moz_places.title, 
                     moz_places.visit_count, 
+                    moz_historyvisits.id,
                     moz_historyvisits.visit_date,
                     moz_historyvisits.visit_type
                 FROM moz_places
                 JOIN moz_historyvisits ON moz_places.id = moz_historyvisits.place_id
+                ORDER BY moz_historyvisits.id ASC
                 '''
                 cursor.execute(query)
                 for row in cursor.fetchall():
-                    url, title, visit_count, visit_time, url_visit_type = row
+                    url, title, visit_count, visit_id, visit_time, url_visit_type = row
                     visit_time_utc = convert_firefox_time(visit_time)
                     visit_type = FIREFOX_TRANSITION_TYPES.get(url_visit_type, 'Unknown')
-                    history.append([visit_time_utc, url, title, visit_count, visit_type])
+
+                    comment = ""
+
+                    if previous_id is not None:
+                        gap = visit_id - previous_id - 1
+                        comment = (
+                            f"Possible deletion occurred: {gap} visit record(s) "
+                            f"missing between between "
+                            f"{previous_time} and {visit_time_utc}"
+                        )
+                        if gap > 0:
+                            history.append(["Deleted",previous_time,"",f"GAP of {gap} deleted visits","","",comment])
+                    history.append(["Active", visit_time_utc, url or "", title, visit_count, visit_type,""])
+                    previous_id = visit_id
+                    previous_time = visit_time_utc
+
                     search_info = extract_search_term_from_url(url)
+
                     if search_info:
                         term = search_info["search_term"].replace("+", " ").strip()
                         domain = search_info["domain"]
 
                         key = f"{term.lower()}|{domain}"
-                        # key = term.lower()
                         if key not in seen:
                             seen.add(key)
                             search_terms.append([

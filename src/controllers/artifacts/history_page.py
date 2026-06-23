@@ -4,6 +4,7 @@ import pandas as pd
 from controllers.artifact_controller import ArtifactTableController
 
 
+
 class HistoryController:
     def __init__(self, evidence_path, report_controller):
         self.table = ArtifactTableController(report_controller)
@@ -16,23 +17,9 @@ class HistoryController:
         columns = []
         data = []
 
-        required_columns = [
-            "Visit Time",
-            "URL",
-            "Title",
-            "Visit Count",
-            "Visit Type",
-            "Duration"
-        ]
-
         if os.path.exists(csv_file):
             try:
                 df = pd.read_csv(csv_file)
-                existing_columns = [
-                    col for col in required_columns
-                    if col in df.columns
-                ]
-                df = df[existing_columns]
 
                 columns = df.columns.tolist()
                 data = df.values.tolist()

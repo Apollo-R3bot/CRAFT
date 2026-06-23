@@ -1,5 +1,8 @@
+import os
+
 from PySide6.QtWidgets import QDialog, QFrame, QHBoxLayout, QPushButton, QVBoxLayout, QLabel
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap
 
 from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
@@ -18,14 +21,21 @@ class ModeSelectionDialog(QDialog):
         layout = QVBoxLayout()
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(12)
+
+        logo = QLabel()
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        image_path = os.path.join(base_dir, "../resources", "craft.png")
+        pixmap = QPixmap(image_path)
+        pixmap = QPixmap(image_path)
+        pixmap = pixmap.scaled(160,160,Qt.KeepAspectRatio,Qt.SmoothTransformation)
+        logo.setPixmap(pixmap)
+        logo.setAlignment(Qt.AlignCenter)
+        layout.insertWidget(0, logo)
+
         heading = QLabel("Welcome to CRAFT")
         heading.setStyleSheet("""font-size: 25px; font-weight: bold;""")
         layout.addWidget(heading)
         heading.setAlignment(Qt.AlignCenter)
-        label = QLabel("Cross Browser Artifact Forensic Tool.")
-        label.setWordWrap(True)
-        layout.addWidget(label)
-        label.setAlignment(Qt.AlignCenter)
         label2 = QLabel("Choose what you want to do.")
         label2.setWordWrap(True)
         layout.addWidget(label2)

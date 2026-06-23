@@ -14,9 +14,11 @@ from controllers.artifacts.session_page import SessionsController
 from controllers.artifacts.top_sites_page import TopSitesController
 from controllers.main_controller import MainController
 from controllers.report_controller import ReportController
+from controllers.timeline_analysis_controller import TimelineController
 from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
 from gui.report_generation_dialog import ReportGenerationDialog
+from gui.timeline_analysis_dialog import TimelineAnalysisDialog
 
 class MainWindow(QMainWindow):
     def __init__(self, evidence_path=None, logger=None):
@@ -90,6 +92,7 @@ class MainWindow(QMainWindow):
         
         viewMenu = menuBar.addMenu("View")
         timeline = viewMenu.addAction("Timeline Analysis")
+        timeline.triggered.connect(self.open_timeline_analysis)
         domain = viewMenu.addAction("Domain Analysis")
 
         # settingMenu = menuBar.addMenu("Setting")
@@ -229,3 +232,14 @@ class MainWindow(QMainWindow):
     def change_page(self, index):
         if index >= 0:
             self.pages.setCurrentIndex(index)
+
+
+    def open_timeline_analysis(self):
+        dialog = TimelineAnalysisDialog(
+            TimelineController(
+                self.evidence_path
+            ),
+            self
+        )
+
+        dialog.exec()

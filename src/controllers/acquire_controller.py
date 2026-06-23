@@ -259,7 +259,7 @@ class AcquireEvidenceController:
             # Parse History Files
             history_data, search_data = extract_history(browser, profile_files["history"], user_name, logger=self.logger)
             history_output = os.path.join(archive_folder, "history.csv")
-            write_to_csv(history_data, ["Visit Time", "URL", "Title", "Visit Count", "Visit Type"], history_output)
+            write_to_csv(history_data, ["Status","Visit Time", "URL", "Title", "Visit Count", "Visit Type", "Comments"], history_output)
             if self.logger:
                 self.logger.info(f"History extracted: {len(history_data)} records")
 
@@ -273,11 +273,11 @@ class AcquireEvidenceController:
             if browser == "firefox":
                 downloads_data = extract_firefox_downloads(profile_files["history"], user_name)
                 downloads_output = os.path.join(archive_folder, "downloads.csv")
-                write_to_csv(downloads_data, ["Start Time", "End Time", "File Path", "Size", "URL"], downloads_output)
+                write_to_csv(downloads_data, ["Start Time", "File Name", "Size", "URL", "Saved In"], downloads_output)
             else:
                 downloads_data = extract_downloads(browser, profile_files["history"], user_name)
                 downloads_output = os.path.join(archive_folder, "downloads.csv")
-                write_to_csv(downloads_data, ["Start Time", "End Time", "File Path", "Referrer", "Tab URL", "Size", "Danger Type", "Interrupt Reason", "Opened"], downloads_output)
+                write_to_csv(downloads_data, ["Start Time", "File Name", "URL", "Size", "Interrupt Reason", "Status", "Saved In"], downloads_output)
             if self.logger:
                 self.logger.info(f"Downloads extracted: {len(downloads_data)} records")
 

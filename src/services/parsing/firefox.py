@@ -73,12 +73,13 @@ def extract_firefox_downloads(
                     pass
                 
                 total_size = format_size(size) if size else "0 B"
+                file_name = os.path.basename(download_path)
                 downloads.append([
-                    convert_firefox_time(date_added),
-                    end_time,                          
-                    download_path,                  
+                    convert_firefox_time(date_added),                         
+                    file_name,                  
                     total_size,                           
-                    url                              
+                    url,
+                    download_path                              
                 ])
 
             conn.close()
