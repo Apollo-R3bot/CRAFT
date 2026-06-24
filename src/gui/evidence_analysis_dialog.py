@@ -192,8 +192,8 @@ class EvidenceAnalysis(QDialog):
             "autofill.csv",
             "logins.csv",
             "bookmarks.csv",
-            "sessions.csv",
-            "search_terms.csv"
+            "search_terms.csv",
+            "preferences.json"
         ]
 
         missing_files = []

@@ -92,8 +92,8 @@ def extract_history(browser, files, user_profile, logger=None):
                             f"{previous_time} and {visit_time_utc}"
                         )
                         if gap > 0:
-                            history.append(["Deleted",previous_time,"",f"GAP of {gap} deleted visits","","",comment])
-                    history.append(["Active", visit_time_utc, url or "", title, visit_count, visit_type,"Link"])
+                            history.append(["Deleted",previous_time,"",f"GAP of {gap} deleted visits","",comment])
+                    history.append(["Active", visit_time_utc, url or "", title, visit_count, visit_type])
                     previous_id = visit_id
                     previous_time = visit_time_utc
 
@@ -138,8 +138,8 @@ def extract_history(browser, files, user_profile, logger=None):
                             f"{previous_time} and {visit_time_utc}"
                         )
                         if gap > 0:
-                            history.append(["Deleted",previous_time,"",f"GAP of {gap} deleted visits","","",comment])
-                    history.append(["Active", visit_time_utc, url or "", title, visit_count, visit_type,""])
+                            history.append(["Deleted",previous_time,"",f"GAP of {gap} deleted visits","",comment])
+                    history.append(["Active", visit_time_utc, url or "", title, visit_count, visit_type])
                     previous_id = visit_id
                     previous_time = visit_time_utc
 

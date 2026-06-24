@@ -1,6 +1,10 @@
 from datetime import datetime
+import getpass
 import os
 import json
+import socket
+import platform
+import winreg
 import requests
 
 
@@ -138,7 +142,37 @@ def extract_signed_in_accounts(profile, username, output_folder):
 
     return entries
 
+def get_windows_version_string():
+    try:
+        key = winreg.OpenKey(
+            winreg.HKEY_LOCAL_MACHINE,
+            r"SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+        )
 
+        product_name = winreg.QueryValueEx(key,"ProductName")[0]
+        edition = winreg.QueryValueEx(key,"EditionID")[0]
+        current_build = winreg.QueryValueEx(key,"CurrentBuild")[0]
+        ubr = winreg.QueryValueEx(key,"UBR")[0]
+        architecture = ("x64"if platform.machine().endswith("64")else "x86")
+
+        return (
+            # f"{product_name} "
+            f"{edition} "
+            f"{architecture} "
+            f"(Build {current_build}.{ubr})"
+        )
+
+    except Exception:
+        return "Unknown Windows Version"
+    
+def get_machine_info():
+    return {
+        "hostname": socket.gethostname(),
+        "username": getpass.getuser(),
+        "os_version": f"{platform.system()} {platform.release()} {get_windows_version_string()}"
+    }
+
+    
 def extract_browser_info(browser_type, profile_path, output_folder, username, accounts_data=None):
     browser_info = {
         "browser_info": {
@@ -148,6 +182,7 @@ def extract_browser_info(browser_type, profile_path, output_folder, username, ac
             "profile_user": username,
             "source": ""
         },
+        "machine_info": get_machine_info(),
         "signed_in_accounts": accounts_data or []
     }
 
@@ -192,6 +227,7 @@ def extract_browser_info(browser_type, profile_path, output_folder, username, ac
 
                 browser_info["browser_info"]["browser_version"] = browser_version
                 browser_info["browser_info"]["source"] = "Local State"
+                browser_info["machine_info"] = get_machine_info()
 
         # FIREFOX
         elif browser_type.lower() == "firefox":
@@ -220,6 +256,7 @@ def extract_browser_info(browser_type, profile_path, output_folder, username, ac
                     .strftime("%Y-%m-%d %H:%M:%S")
                 )
                 browser_info["browser_info"]["source"] = "compatibility.ini"
+                browser_info["machine_info"] = get_machine_info()
 
         # SAVE JSON
         output_path = os.path.join(

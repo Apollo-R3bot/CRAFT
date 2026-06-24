@@ -2,291 +2,369 @@ import json
 from matplotlib import colors
 import pandas as pd
 
-from PySide6.QtCore import Qt, QDate
-from PySide6.QtWidgets import QCheckBox, QComboBox, QDateEdit, QFileDialog, QHBoxLayout, QHeaderView, QLineEdit, QMessageBox, QPushButton, QWidget, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem
+from PySide6.QtCore import Qt, QDate, QRect, QSize
+from PySide6.QtGui import QColor, QPainter, QPen, QBrush, QFont
+from PySide6.QtWidgets import (
+    QCheckBox, QComboBox, QDateEdit, QFileDialog, QHBoxLayout,
+    QHeaderView, QLineEdit, QMessageBox, QPushButton, QWidget,
+    QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem,
+    QStyledItemDelegate, QStyleOptionViewItem, QApplication
+)
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 
+
+STATUS_COLORS = {
+    'Active':  (QColor("#0a381d"), QColor('#4ade80')),  # dark green bg, bright green text
+    'Deleted': (QColor("#310d0d"), QColor('#f87171')),  # dark red bg, bright red text
+    'COMPLETE':  (QColor('#0a381d'), QColor('#4ade80')),  # green  — same as Active
+    'CANCELLED': (QColor('#310d0d'), QColor('#f87171')),  # red    — same as Deleted
+    'INTERRUPTED':(QColor('#2d1f00'), QColor('#fbbf24')), # amber  — warning
+}
+
+PRIMARY_CL = "#1e3a5f"
+SECONDARY_CL = "#1A7FAE"
+BG_CL = "#1e3a5f"
+
+class StatusBadgeDelegate(QStyledItemDelegate):
+    PADDING_H = 10  # horizontal padding inside the pill (px)
+    PADDING_V = 3   # vertical padding inside the pill (px)
+    RADIUS    = 8   # corner radius of the rounded rect (px)
+
+    def paint(self, painter: QPainter, option, index):
+        from PySide6.QtWidgets import QStyle
+        status = index.data(Qt.DisplayRole)
+
+        if status not in STATUS_COLORS:
+            super().paint(painter, option, index)
+            return
+
+        pill_bg, pill_fg = STATUS_COLORS[status]
+
+        painter.save()
+        painter.setRenderHint(QPainter.Antialiasing)
+
+        cell_bg = index.data(Qt.BackgroundRole)
+        if cell_bg is not None:
+            painter.fillRect(option.rect, cell_bg)
+        else:
+            painter.fillRect(option.rect, option.palette.base())
+
+        if option.state & QStyle.State_Selected:
+            sel_color = option.palette.highlight().color()
+            sel_color.setAlpha(120)
+            painter.fillRect(option.rect, sel_color)
+
+        font = QFont(option.font)
+        font.setPointSize(max(font.pointSize() - 1, 8))
+        font.setBold(True)
+        painter.setFont(font)
+
+        fm       = painter.fontMetrics()
+        text_w   = fm.horizontalAdvance(status)
+        text_h   = fm.height()
+        pill_w   = text_w + self.PADDING_H * 2
+        pill_h   = text_h + self.PADDING_V * 2
+
+        cell     = option.rect
+        pill_x   = cell.x() + (cell.width()  - pill_w) // 2
+        pill_y   = cell.y() + (cell.height() - pill_h) // 2
+        pill_rect = QRect(pill_x, pill_y, pill_w, pill_h)
+
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QBrush(pill_bg))
+        painter.drawRoundedRect(pill_rect, self.RADIUS, self.RADIUS)
+
+        painter.setPen(QPen(pill_fg))
+        painter.drawText(pill_rect, Qt.AlignCenter, status)
+
+        painter.restore()
+
+    def sizeHint(self, option, index) -> QSize:
+        status = index.data(Qt.DisplayRole)
+        if status not in STATUS_COLORS:
+            return super().sizeHint(option, index)
+        fm = option.fontMetrics
+        return QSize(
+            fm.horizontalAdvance(status) + self.PADDING_H * 2,
+            fm.height() + self.PADDING_V * 2 + 4,
+        )
+
 class ArtifactTableController:
     def __init__(self, report_controller=None):
-        self.table = None
+        self.table            = None
         self.file_type_dropdown = None
-        self.report_controller = report_controller
-        self.title = ""
+        self.report_controller  = report_controller
+        self.title            = ""
+
+        self._badge_delegate  = StatusBadgeDelegate()
 
     def create_table_page(self, title, columns=None, data=None, total_count=0, time_column=0):
         self.title = title
 
-        page = QWidget()
+        page   = QWidget()
         layout = QVBoxLayout(page)
 
         heading = QLabel(f"{title} ({total_count})")
         heading.setStyleSheet("font-size: 20px; font-weight: bold;")
         layout.addWidget(heading)
 
-        # Filter Section
+        # ── Controls ──────────────────────────────────────────────────────
         controls_layout = QHBoxLayout()
 
-        # Search input (auto search)
         self.search_input = QLineEdit()
+        self.search_input.setStyleSheet(f"""
+            QLineEdit {{
+                color: #e2e8f0;
+                border: 1px solid {PRIMARY_CL};
+                border-radius: 6px;
+                padding: 6px;
+            }}
+        """)
+
         self.search_input.setPlaceholderText("Search URL, title, domain, keywords...")
         controls_layout.addWidget(self.search_input)
 
-        # Start date
         self.start_date = QDateEdit()
+        self.start_date.setStyleSheet(f"""QDateEdit {{border: 1px solid {PRIMARY_CL};border-radius: 6px;padding: 4px;}}""")
         self.start_date.setCalendarPopup(True)
         self.start_date.setDisplayFormat("yyyy-MM-dd")
         self.start_date.setDate(QDate.currentDate())
         controls_layout.addWidget(self.start_date)
 
-        # End date
         self.end_date = QDateEdit()
+        self.end_date.setStyleSheet(f"""QDateEdit {{border: 1px solid {PRIMARY_CL};border-radius: 6px;padding: 4px;}}""")
         self.end_date.setCalendarPopup(True)
         self.end_date.setDisplayFormat("yyyy-MM-dd")
         self.end_date.setDate(QDate.currentDate())
         controls_layout.addWidget(self.end_date)
 
-        # Filter button
         self.filter_btn = QPushButton("Apply Filter")
+        self.filter_btn.setStyleSheet(f"""
+            QPushButton {{
+                border: 1px solid {PRIMARY_CL};
+                border-radius: 6px;
+                padding: 6px;
+            }}
+            QPushButton:hover {{
+                background: {SECONDARY_CL};
+                border-color: {SECONDARY_CL};
+            }}
+        """)
         controls_layout.addWidget(self.filter_btn)
         layout.addLayout(controls_layout)
 
         export_button = QPushButton("Save Table as CSV")
+        export_button.setStyleSheet(f"""
+            QPushButton {{
+                border: 1px solid {PRIMARY_CL};
+                border-radius: 6px;
+                padding: 6px;
+            }}
+            QPushButton:hover {{
+                background: {SECONDARY_CL};
+                border-color: {SECONDARY_CL};
+            }}
+        """)
         export_button.clicked.connect(self.export_results_to_csv)
         controls_layout.addWidget(export_button)
 
+        # ── Table ─────────────────────────────────────────────────────────
         self.table = QTableWidget()
-        table = self.table
+        table      = self.table
         table.setSortingEnabled(True)
+        table.verticalHeader().setVisible(False) 
         table.setColumnCount(len(columns) + 1)
-        table.setHorizontalHeaderLabels(
-            ["Mark"] + columns
-        )
+        table.setHorizontalHeaderLabels(["Mark"] + columns)
+        table.setStyleSheet(f"""
+            QTableWidget {{
+                color: #e2e8f0;
+                gridline-color: #1e3a5f;
+                border-bottom: 1px solid #1e3a5f;
+                border-radius: 6px;
+            }}
+            QTableWidget::item {{
+                padding: 6px 8px;
+                border: none;
+                color: #e2e8f0;
+            }}
+            QHeaderView::section {{
+                background: {PRIMARY_CL};
+                color: #38bdf8;
+                border: none;
+                border-bottom: 1px solid {PRIMARY_CL};
+                font-size: 13px;
+            }}
+            QCheckBox {{
+                margin: 6px;
+                color: #e2e8f0;
+            }}
+            QCheckBox::indicator {{
+                width: 15px;
+                height: 15px;
+                border: 1px solid {PRIMARY_CL};
+                border-radius: 4px;
+            }}
+            QCheckBox::indicator:checked {{
+                background: {SECONDARY_CL};
+                border: 1px solid {SECONDARY_CL};
+            }}
+            QCheckBox::indicator:hover {{
+                border-color: {SECONDARY_CL};
+            }}
+        """)
+
+        STATUS_COL = (columns.index("Status") + 1) if "Status" in columns else 1
+        table.setItemDelegateForColumn(STATUS_COL, self._badge_delegate)
+        self._status_col = STATUS_COL 
 
         header = table.horizontalHeader()
         header.setStretchLastSection(True)
         layout.addWidget(table)
 
-        # Load Table Function
+        # ── load_table ────────────────────────────────────────────────────
         def load_table(filtered_data):
             table.setRowCount(len(filtered_data))
 
             for row_index, row_data in enumerate(filtered_data):
+                # Checkbox in column 0
                 checkbox = QCheckBox()
                 existing = self.report_controller.marked_evidence.get(
-                    self.title,
-                    pd.DataFrame()
+                    self.title, pd.DataFrame()
                 )
-
                 if not existing.empty:
-                    row_dict = {
-                        columns[i]: str(row_data[i])
-                        for i in range(len(columns))
-                    }
-
-                    existing_rows = existing.astype(str).to_dict("records")
-
-                    if row_dict in existing_rows:
+                    row_dict = {columns[i]: str(row_data[i]) for i in range(len(columns))}
+                    if row_dict in existing.astype(str).to_dict("records"):
                         checkbox.setChecked(True)
 
                 checkbox.stateChanged.connect(
                     lambda _, r=row_index: self.save_marked_evidence()
                 )
-                checkbox_widget = QWidget()
+                cb_widget = QWidget()
+                cb_layout = QHBoxLayout(cb_widget)
+                cb_layout.addWidget(checkbox)
+                cb_layout.setAlignment(Qt.AlignCenter)
+                cb_layout.setContentsMargins(0, 0, 0, 0)
+                table.setCellWidget(row_index, 0, cb_widget)
 
-                checkbox_layout = QHBoxLayout(checkbox_widget)
-                checkbox_layout.addWidget(checkbox)
-                checkbox_layout.setAlignment(Qt.AlignCenter)
-                checkbox_layout.setContentsMargins(0, 0, 0, 0)
-
-                table.setCellWidget(
-                    row_index,
-                    0,
-                    checkbox_widget
-                )
-
+                # Data columns start at table column 1
                 for col_index, value in enumerate(row_data):
-                    table.setItem(
-                        row_index,
-                        col_index + 1,
-                        QTableWidgetItem(str(value))
-                    )
+                    item = QTableWidgetItem(str(value))
+
+                    if (col_index + 1) == self._status_col and str(value) in STATUS_COLORS:
+                        _, fg = STATUS_COLORS[str(value)]
+                        item.setForeground(QBrush(fg))
+
+                    table.setItem(row_index, col_index + 1, item)
+
         load_table(data)
 
-        # Auto Search Function
+        # ── Auto search ───────────────────────────────────────────────────
         def auto_search():
-            keyword = self.search_input.text().lower().strip()
-            filtered = []
-
-            for row in data:
-                row_text = " ".join(
-                    [str(cell).lower() for cell in row]
-                )
-
-                if keyword in row_text:
-                    filtered.append(row)
-
+            keyword  = self.search_input.text().lower().strip()
+            filtered = [
+                row for row in data
+                if keyword in " ".join(str(c).lower() for c in row)
+            ]
             load_table(filtered)
+
         self.search_input.textChanged.connect(auto_search)
 
-        # Date Filter Function
+        # ── Date filter ───────────────────────────────────────────────────
         possible_time_columns = [
-            "Visit Time",
-            "Start Time",
-            "End Time",
-            "Creation Time",
-            "Created Time",
-            "Created Date",
-            "Last Access Time",
-            "Expiry Time",
-            "First Used",
-            "Last Used",
-            "Timestamp",
-            "Time",
-            "Date"
+            "Visit Time", "Start Time", "End Time", "Creation Time",
+            "Created Time", "Created Date", "Last Access Time",
+            "Expiry Time", "First Used", "Last Used",
+            "Timestamp", "Time", "Date",
         ]
-
-        detected_time_column = None
-        for col in possible_time_columns:
-            if col in columns:
-                detected_time_column = col
-                break
+        detected_time_column = next(
+            (col for col in possible_time_columns if col in columns), None
+        )
 
         def apply_date_filter():
             if not detected_time_column:
                 load_table(data)
                 return
 
-            filtered = []
             time_index = columns.index(detected_time_column)
+            start      = self.start_date.date().toPython()
+            end        = self.end_date.date().toPython()
+            filtered   = []
 
-            start = self.start_date.date().toPython()
-            end = self.end_date.date().toPython()
             for row in data:
                 try:
-                    row_date = str(row[time_index]).split(" ")[0]
-                    parsed_date = QDate.fromString(
-                        row_date,
-                        "yyyy-MM-dd"
-                    ).toPython()
-
+                    row_date    = str(row[time_index]).split(" ")[0]
+                    parsed_date = QDate.fromString(row_date, "yyyy-MM-dd").toPython()
                     if start <= parsed_date <= end:
                         filtered.append(row)
-
                 except Exception:
                     continue
 
             load_table(filtered)
+
         self.filter_btn.clicked.connect(apply_date_filter)
 
         return page
 
     def save_marked_evidence(self):
-        if not self.table:
-            return
-
-        if not self.report_controller:
+        if not self.table or not self.report_controller:
             return
 
         marked_rows = self.get_marked_rows()
-
-        # Remove empty selection
         if not marked_rows:
-            if self.title in self.report_controller.marked_evidence:
-                del self.report_controller.marked_evidence[
-                    self.title
-                ]
-
+            self.report_controller.marked_evidence.pop(self.title, None)
             return
 
-        self.report_controller.marked_evidence[
-            self.title
-        ] = pd.DataFrame(marked_rows)
-        
+        self.report_controller.marked_evidence[self.title] = pd.DataFrame(marked_rows)
+
     def export_results_to_csv(self):
         if not self.table:
             return
 
         file_path, _ = QFileDialog.getSaveFileName(
-            None,
-            "Save CSV",
-            "",
-            "CSV Files (*.csv)"
+            None, "Save CSV", "", "CSV Files (*.csv)"
         )
-
         if not file_path:
             return
 
-        headers = []
-
-        for col in range(self.table.columnCount()):
-            header_item = self.table.horizontalHeaderItem(col)
-            if header_item:
-                headers.append(header_item.text())
-            else:
-                headers.append(f"Column {col}")
+        headers = [
+            self.table.horizontalHeaderItem(col).text()
+            if self.table.horizontalHeaderItem(col) else f"Column {col}"
+            for col in range(self.table.columnCount())
+        ]
         rows = []
-
         for row in range(self.table.rowCount()):
             if self.table.isRowHidden(row):
                 continue
+            rows.append([
+                self.table.item(row, col).text()
+                if self.table.item(row, col) else ""
+                for col in range(self.table.columnCount())
+            ])
 
-            row_data = []
-
-            for col in range(self.table.columnCount()):
-                item = self.table.item(row, col)
-                if item:
-                    row_data.append(item.text())
-                else:
-                    row_data.append("")
-
-            rows.append(row_data)
-
-        df = pd.DataFrame(rows, columns=headers)
-        df.to_csv(file_path,index=False,encoding="utf-8-sig")
-
-        QMessageBox.information(
-            None,
-            "Success",
-            f"CSV exported successfully:\n{file_path}"
+        pd.DataFrame(rows, columns=headers).to_csv(
+            file_path, index=False, encoding="utf-8-sig"
         )
+        QMessageBox.information(None, "Success", f"CSV exported successfully:\n{file_path}")
 
     def get_marked_rows(self):
+        headers = [
+            self.table.horizontalHeaderItem(col).text()
+            for col in range(1, self.table.columnCount())
+        ]
         marked_rows = []
-
-        headers = []
-
-        for col in range(1, self.table.columnCount()):
-            headers.append(
-                self.table.horizontalHeaderItem(col).text()
-            )
-
         for row in range(self.table.rowCount()):
-
             widget = self.table.cellWidget(row, 0)
-
             if not widget:
                 continue
-
             checkbox = widget.findChild(QCheckBox)
-
             if checkbox and checkbox.isChecked():
-
-                row_data = {}
-
-                for col in range(1, self.table.columnCount()):
-
-                    header = headers[col - 1]
-
-                    item = self.table.item(row, col)
-
-                    row_data[header] = (
-                        item.text()
-                        if item else ""
+                marked_rows.append({
+                    headers[col - 1]: (
+                        self.table.item(row, col).text()
+                        if self.table.item(row, col) else ""
                     )
-
-                marked_rows.append(row_data)
-
+                    for col in range(1, self.table.columnCount())
+                })
         return marked_rows
-    

@@ -6,7 +6,7 @@ from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
 from gui.main_window import MainWindow
 from gui.mode_selection_dialog import ModeSelectionDialog
-from services.utils.logger import log_system_info, setup_logger
+from services.utils.logger import setup_logger
 
 
 def main():

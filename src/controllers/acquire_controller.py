@@ -13,7 +13,6 @@ from services.parsing.cookies import extract_cookies
 from services.parsing.bookmarks import extract_bookmarks
 from services.parsing.top_sites import extract_top_sites
 from services.parsing.firefox import extract_firefox_bookmarks, extract_firefox_cookies, extract_firefox_downloads, extract_firefox_logins
-from services.parsing.sessions import extract_session_and_tabs
 from services.utils.utils import hash_file_multi, write_to_csv, zip_folder
 
 
@@ -83,98 +82,6 @@ class AcquireEvidenceController:
             f.write(f"SHA256: {zip_sha256}\n")
             f.write("=" * 60 + "\n")
 
-    def create_combined_evidence_csv(self, archive_folder):
-
-        csv_files = [
-            "history.csv",
-            "downloads.csv",
-            "cookies.csv",
-            "autofill.csv",
-            "logins.csv",
-            "bookmarks.csv",
-            "sessions.csv",
-            "search_terms.csv"
-        ]
-
-        combined = []
-
-        for filename in csv_files:
-            file_path = os.path.join(
-                archive_folder,
-                filename
-            )
-
-            if not os.path.exists(file_path):
-                continue
-
-            try:
-                df = pd.read_csv(file_path)
-
-                artifact_type = (
-                    filename
-                    .replace(".csv", "")
-                    .replace("_", " ")
-                    .title()
-                )
-
-                df.insert(0, "Source", filename)
-                df.insert(0, "Artifact Type", artifact_type)
-
-                # Try finding timestamp column
-                timestamp_column = None
-
-                for col in [
-                    "Visit Time",
-                    "Start Time",
-                    "End Time",
-                    "Creation Time",
-                    "Created Time",
-                    "Created Date",
-                    "Timestamp",
-                    "Date",
-                    "Time"
-                ]:
-                    if col in df.columns:
-                        timestamp_column = col
-                        break
-
-                if timestamp_column:
-                    df.insert(
-                        0,
-                        "Timestamp",
-                        df[timestamp_column]
-                    )
-                else:
-                    df.insert(
-                        0,
-                        "Timestamp",
-                        ""
-                    )
-
-                combined.append(df)
-
-            except Exception as e:
-                if self.logger:
-                    self.logger.error(
-                        f"Failed processing {filename}: {e}"
-                    )
-
-        if combined:
-            final_df = pd.concat(
-                combined,
-                ignore_index=True,
-                sort=False
-            )
-
-            final_df.to_csv(
-                os.path.join(
-                    archive_folder,
-                    "evidence.csv"
-                ),
-                index=False,
-                encoding="utf-8-sig"
-            )
-
     def copy_session_folder(self, session_source, output_folder):
         session_output = os.path.join(output_folder, "sessions")
         os.makedirs(session_output, exist_ok=True)
@@ -217,7 +124,6 @@ class AcquireEvidenceController:
                 cookies_path = os.path.join(base_path, "Network", "Cookies")
                 logins_path = os.path.join(base_path, "Login Data")
                 bookmarks_path = os.path.join(base_path, "Bookmarks")
-                session_path = os.path.join(base_path, "Sessions")
                 autofill_path = os.path.join(base_path, "Web Data")
                 top_sites_path = os.path.join(base_path, "Top Sites")
 
@@ -227,7 +133,6 @@ class AcquireEvidenceController:
                 cookies_path = os.path.join(base_path, "Network","Cookies")
                 logins_path = os.path.join(base_path, "Login Data")
                 bookmarks_path = os.path.join(base_path, "Bookmarks")
-                session_path = os.path.join(base_path, "Sessions")
                 autofill_path = os.path.join(base_path, "Web Data")
                 top_sites_path = os.path.join(base_path, "Top Sites")
 
@@ -237,7 +142,6 @@ class AcquireEvidenceController:
                 cookies_path = os.path.join(base_path, "cookies.sqlite")
                 logins_path = os.path.join(base_path, "logins.json")
                 bookmarks_path = browser_path  # bookmarks ipo ndani ya places.sqlite
-                session_path = os.path.join(base_path, "sessionstore-backups")
                 autofill_path = os.path.join(base_path, "formhistory.sqlite")
                 top_sites_path = browser_path
             
@@ -247,7 +151,6 @@ class AcquireEvidenceController:
                 "cookies": [cookies_path],
                 "logins": [logins_path],
                 "bookmarks": [bookmarks_path],
-                "sessions": [session_path],
                 "autofill": [autofill_path],
                 "top_sites": [top_sites_path]
             }
@@ -259,7 +162,7 @@ class AcquireEvidenceController:
             # Parse History Files
             history_data, search_data = extract_history(browser, profile_files["history"], user_name, logger=self.logger)
             history_output = os.path.join(archive_folder, "history.csv")
-            write_to_csv(history_data, ["Status","Visit Time", "URL", "Title", "Visit Count", "Visit Type", "Comments"], history_output)
+            write_to_csv(history_data, ["Status","Visit Time", "URL", "Title", "Visit Count", "Comment/Type"], history_output)
             if self.logger:
                 self.logger.info(f"History extracted: {len(history_data)} records")
 
@@ -285,11 +188,11 @@ class AcquireEvidenceController:
             if browser == "firefox":
                 cookies_data = extract_firefox_cookies(profile_files["cookies"], user_name)
                 cookies_output = os.path.join(archive_folder, "cookies.csv")
-                write_to_csv(cookies_data, ["Host", "Name", "Value", "Creation Time", "Last Access Time", "Expiry Time", "Secure", "HTTP Only"], cookies_output)
+                write_to_csv(cookies_data, ["Creation Time", "Host", "Name", "Value", "Last Access Time", "Comment"], cookies_output)
             else:
                 cookies_data = extract_cookies(browser, profile_files["cookies"], user_name)
                 cookies_output = os.path.join(archive_folder, "cookies.csv")
-                write_to_csv(cookies_data, ["Host", "Name", "Creation Time", "Last Access Time", "Expiry Time", "Secure", "HTTP Only"], cookies_output)
+                write_to_csv(cookies_data, [ "Creation Time", "Host", "Name", "Last Access Time", "Comment"], cookies_output)
             if self.logger:
                 self.logger.info(f"Cookies extracted: {len(cookies_data)} records")
 
@@ -299,7 +202,7 @@ class AcquireEvidenceController:
             else:
                 logins_data = extract_logins(browser, profile_files["logins"], user_name)
             logins_output = os.path.join(archive_folder, "logins.csv")
-            write_to_csv(logins_data, ["URL","Username","Password","Created Time"], logins_output)
+            write_to_csv(logins_data, ["Created Time","Username","Password","URL"], logins_output)
             if self.logger:
                 self.logger.info(f"Logins data extracted: {len(logins_data)} records")
 
@@ -312,19 +215,11 @@ class AcquireEvidenceController:
             write_to_csv(bookmarks_data, ["Name","URL", "Date Added"], bookmarks_output)
             if self.logger:
                 self.logger.info(f"Bookmarks extracted: {len(bookmarks_data)} records")
-
-            # Parse Sessions and Tabs
-            sessions_data = extract_session_and_tabs(browser, profile_files["sessions"], user_name)
-            sessions_output = os.path.join(archive_folder, "sessions.csv")
-            write_to_csv(sessions_data, ["Session/Tab Info"], sessions_output)
-            if self.logger:
-                self.logger.info(f"Sessions data extracted: {len(sessions_data)} records")
-            self.copy_session_folder(session_path, archive_folder)
             
             # Parse Autofill
             autofill_data = extract_autofill(browser, profile_files["autofill"], user_name, logger=self.logger)
             autofill_output = os.path.join(archive_folder, "autofill.csv")
-            write_to_csv(autofill_data, ["Field Name", "Value", "First Used", "Last Used", "Count"], autofill_output)
+            write_to_csv(autofill_data, [ "Created", "Field Name", "Value", "Comment"], autofill_output)
             if self.logger:
                 self.logger.info(f"Autofills data extracted: {len(autofill_data)} records")
 
@@ -353,13 +248,7 @@ class AcquireEvidenceController:
                 if self.logger:
                     self.logger.info("Hash verification started..")
 
-            # self.create_combined_evidence_csv(
-            #     archive_folder
-            # )
-
             return archive_folder
         
-
-
         except Exception as e:
             QMessageBox.critical(self, "Error", "Acquisition not completed.!")

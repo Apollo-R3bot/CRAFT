@@ -1,18 +1,14 @@
 import os
 
-from PySide6.QtWidgets import QDialog, QFrame, QHBoxLayout, QPushButton, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QDialog, QPushButton, QVBoxLayout, QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
-
-from gui.evidence_acquisition_dialog import EvidenceAcquisition
-from gui.evidence_analysis_dialog import EvidenceAnalysis
 
 class ModeSelectionDialog(QDialog):
     def __init__(self, logger):
         super().__init__()
 
         self.setWindowTitle("CRAFT - Cross Browser Artifact Forensics Tool v1.0.0")
-        # self.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint)
         self.resize(400, 300)
 
         self.selected_mode = None

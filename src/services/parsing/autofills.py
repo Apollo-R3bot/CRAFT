@@ -23,13 +23,13 @@ def extract_autofill(browser, files, user_profile, logger=None):
                 """)
 
                 for row in cursor.fetchall():
-                    value = str(row[4])
+                    count = str(row[4])
+                    comment = f'Used={count} times, Last time used {convert_webkit_date(row[3])}'
                     autofill.append([
+                        convert_webkit_date(row[2]),
                         row[0],
                         row[1],
-                        convert_webkit_date(row[2]),
-                        convert_webkit_date(row[3]),
-                        value
+                        comment
                     ])
 
             # FIREFOX
@@ -40,12 +40,13 @@ def extract_autofill(browser, files, user_profile, logger=None):
                 """)
 
                 for row in cursor.fetchall():
+                    count = str(row[2])
+                    comment = f'Used={count} times, Last time used {convert_firefox_time(row[4])}'
                     autofill.append([
+                        convert_firefox_time(row[3]), 
                         row[0],
                         row[1],
-                        convert_firefox_time(row[3]), 
-                        convert_firefox_time(row[4]), 
-                        row[2]
+                        comment
                     ])
 
             conn.close()

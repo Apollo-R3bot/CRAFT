@@ -4,16 +4,321 @@ Username            : robot
 OS Release          : Windows 11
 Windows Version     : Windows 10 Pro x64 (Build 26200.8655)
 ============================================================
-2026-06-23 16:40:32 | INFO | === CRAFT Application Started ===
-2026-06-23 16:40:35 | INFO | User selected: Acquire Evidence
-2026-06-23 16:40:44 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
-2026-06-23 16:40:44 | INFO | History extracted: 5 records
-2026-06-23 16:40:44 | INFO | Search terms extracted: 5 records
-2026-06-23 16:40:44 | INFO | Downloads extracted: 2 records
-2026-06-23 16:40:44 | INFO | Cookies extracted: 114 records
-2026-06-23 16:40:44 | INFO | Logins data extracted: 3 records
-2026-06-23 16:40:44 | INFO | Bookmarks extracted: 1 records
-2026-06-23 16:40:44 | INFO | Sessions data extracted: 4 records
-2026-06-23 16:40:44 | INFO | Autofills data extracted: 60 records
-2026-06-23 16:40:44 | INFO | Signed-in accounts extracted: 0 records
-2026-06-23 16:40:48 | INFO | User selected: Acquire Evidence
+2026-06-24 08:43:32 | INFO | === CRAFT Application Started ===
+2026-06-24 08:43:33 | INFO | User selected: Acquire Evidence
+2026-06-24 08:49:00 | INFO | === CRAFT Application Started ===
+2026-06-24 08:49:01 | INFO | User selected: Acquire Evidence
+2026-06-24 08:49:09 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 08:49:09 | INFO | History extracted: 5 records
+2026-06-24 08:49:09 | INFO | Search terms extracted: 5 records
+2026-06-24 08:49:09 | INFO | Downloads extracted: 2 records
+2026-06-24 08:49:09 | INFO | Cookies extracted: 114 records
+2026-06-24 08:49:09 | INFO | Logins data extracted: 3 records
+2026-06-24 08:49:09 | INFO | Bookmarks extracted: 1 records
+2026-06-24 08:49:09 | INFO | Autofills data extracted: 60 records
+2026-06-24 08:49:09 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 08:55:53 | INFO | === CRAFT Application Started ===
+2026-06-24 08:55:57 | INFO | User selected: Acquire Evidence
+2026-06-24 08:55:59 | INFO | User selected: Acquire Evidence
+2026-06-24 08:56:07 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 08:56:07 | INFO | History extracted: 5 records
+2026-06-24 08:56:07 | INFO | Search terms extracted: 5 records
+2026-06-24 08:56:07 | INFO | Downloads extracted: 2 records
+2026-06-24 08:56:07 | INFO | Cookies extracted: 114 records
+2026-06-24 08:56:07 | INFO | Logins data extracted: 3 records
+2026-06-24 08:56:07 | INFO | Bookmarks extracted: 1 records
+2026-06-24 08:56:07 | INFO | Autofills data extracted: 60 records
+2026-06-24 08:56:07 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 09:00:20 | INFO | === CRAFT Application Started ===
+2026-06-24 09:00:21 | INFO | User selected: Acquire Evidence
+2026-06-24 09:00:29 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 09:00:29 | INFO | History extracted: 5 records
+2026-06-24 09:00:29 | INFO | Search terms extracted: 5 records
+2026-06-24 09:00:29 | INFO | Downloads extracted: 2 records
+2026-06-24 09:00:29 | INFO | Cookies extracted: 114 records
+2026-06-24 09:00:29 | INFO | Logins data extracted: 3 records
+2026-06-24 09:00:29 | INFO | Bookmarks extracted: 1 records
+2026-06-24 09:00:29 | INFO | Autofills data extracted: 60 records
+2026-06-24 09:00:29 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 09:00:33 | INFO | User selected: Acquire Evidence
+2026-06-24 09:10:26 | INFO | === CRAFT Application Started ===
+2026-06-24 09:10:28 | INFO | User selected: Acquire Evidence
+2026-06-24 09:11:43 | INFO | === CRAFT Application Started ===
+2026-06-24 09:11:45 | INFO | User selected: Acquire Evidence
+2026-06-24 09:13:43 | INFO | === CRAFT Application Started ===
+2026-06-24 09:13:44 | INFO | User selected: Acquire Evidence
+2026-06-24 09:22:45 | INFO | === CRAFT Application Started ===
+2026-06-24 09:23:08 | INFO | User selected: Acquire Evidence
+2026-06-24 09:24:58 | INFO | === CRAFT Application Started ===
+2026-06-24 09:25:00 | INFO | User selected: Acquire Evidence
+2026-06-24 09:33:10 | INFO | === CRAFT Application Started ===
+2026-06-24 09:33:11 | INFO | User selected: Acquire Evidence
+2026-06-24 09:39:01 | INFO | === CRAFT Application Started ===
+2026-06-24 09:39:04 | INFO | User selected: Acquire Evidence
+2026-06-24 09:49:18 | INFO | === CRAFT Application Started ===
+2026-06-24 09:49:19 | INFO | User selected: Acquire Evidence
+2026-06-24 09:52:19 | INFO | === CRAFT Application Started ===
+2026-06-24 09:52:21 | INFO | User selected: Acquire Evidence
+2026-06-24 09:55:14 | INFO | === CRAFT Application Started ===
+2026-06-24 09:55:16 | INFO | User selected: Acquire Evidence
+2026-06-24 10:00:19 | INFO | === CRAFT Application Started ===
+2026-06-24 10:00:20 | INFO | User selected: Acquire Evidence
+2026-06-24 10:02:08 | INFO | === CRAFT Application Started ===
+2026-06-24 10:02:10 | INFO | User selected: Acquire Evidence
+2026-06-24 10:04:45 | INFO | === CRAFT Application Started ===
+2026-06-24 10:04:46 | INFO | User selected: Acquire Evidence
+2026-06-24 10:07:14 | INFO | === CRAFT Application Started ===
+2026-06-24 10:07:16 | INFO | User selected: Acquire Evidence
+2026-06-24 10:14:48 | INFO | === CRAFT Application Started ===
+2026-06-24 10:14:50 | INFO | User selected: Acquire Evidence
+2026-06-24 10:23:51 | INFO | === CRAFT Application Started ===
+2026-06-24 10:23:53 | INFO | User selected: Acquire Evidence
+2026-06-24 10:29:00 | INFO | === CRAFT Application Started ===
+2026-06-24 10:29:10 | INFO | User selected: Acquire Evidence
+2026-06-24 10:30:39 | INFO | === CRAFT Application Started ===
+2026-06-24 10:30:40 | INFO | User selected: Acquire Evidence
+2026-06-24 10:32:25 | INFO | === CRAFT Application Started ===
+2026-06-24 10:32:37 | INFO | User selected: Acquire Evidence
+2026-06-24 10:35:42 | INFO | === CRAFT Application Started ===
+2026-06-24 10:35:44 | INFO | User selected: Acquire Evidence
+2026-06-24 10:38:14 | INFO | === CRAFT Application Started ===
+2026-06-24 10:38:16 | INFO | User selected: Acquire Evidence
+2026-06-24 10:43:42 | INFO | === CRAFT Application Started ===
+2026-06-24 10:43:43 | INFO | User selected: Acquire Evidence
+2026-06-24 10:53:32 | INFO | === CRAFT Application Started ===
+2026-06-24 10:53:34 | INFO | User selected: Acquire Evidence
+2026-06-24 10:55:41 | INFO | === CRAFT Application Started ===
+2026-06-24 10:55:48 | INFO | User selected: Acquire Evidence
+2026-06-24 10:57:14 | INFO | === CRAFT Application Started ===
+2026-06-24 10:57:21 | INFO | User selected: Acquire Evidence
+2026-06-24 11:18:34 | INFO | === CRAFT Application Started ===
+2026-06-24 11:18:47 | INFO | User selected: Acquire Evidence
+2026-06-24 11:19:14 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 11:19:14 | INFO | History extracted: 5 records
+2026-06-24 11:19:14 | INFO | Search terms extracted: 5 records
+2026-06-24 11:19:14 | INFO | Downloads extracted: 2 records
+2026-06-24 11:19:15 | INFO | Cookies extracted: 114 records
+2026-06-24 11:19:15 | INFO | Logins data extracted: 3 records
+2026-06-24 11:19:15 | INFO | Bookmarks extracted: 1 records
+2026-06-24 11:19:15 | INFO | Autofills data extracted: 60 records
+2026-06-24 11:19:15 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 11:19:18 | INFO | User selected: Acquire Evidence
+2026-06-24 11:26:24 | INFO | === CRAFT Application Started ===
+2026-06-24 11:26:27 | INFO | User selected: Acquire Evidence
+2026-06-24 11:30:25 | INFO | === CRAFT Application Started ===
+2026-06-24 11:30:27 | INFO | User selected: Acquire Evidence
+2026-06-24 12:13:15 | INFO | === CRAFT Application Started ===
+2026-06-24 12:13:16 | INFO | User selected: Acquire Evidence
+2026-06-24 12:13:23 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Microsoft\Edge\User Data\Default\History
+2026-06-24 12:13:23 | INFO | History extracted: 24 records
+2026-06-24 12:13:23 | INFO | Search terms extracted: 24 records
+2026-06-24 12:13:23 | INFO | Downloads extracted: 2 records
+2026-06-24 12:13:23 | INFO | Cookies extracted: 0 records
+2026-06-24 12:13:23 | INFO | Logins data extracted: 3 records
+2026-06-24 12:13:23 | ERROR | Bookmark extraction failed from C:\Users\Mgeni\AppData\Local\Microsoft\Edge\User Data\Default\Bookmarks: [Errno 2] No such file or directory: 'C:\\Users\\Mgeni\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Bookmarks'
+2026-06-24 12:13:23 | INFO | Bookmarks extracted: 0 records
+2026-06-24 12:13:23 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:13:23 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:13:54 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:13:54 | INFO | History extracted: 5 records
+2026-06-24 12:13:54 | INFO | Search terms extracted: 5 records
+2026-06-24 12:13:54 | INFO | Downloads extracted: 2 records
+2026-06-24 12:13:54 | ERROR | Acquisition failed: 'PySide6.QtWidgets.QMessageBox.critical' called with wrong argument types:
+  PySide6.QtWidgets.QMessageBox.critical(AcquireEvidenceController, str, str)
+Supported signatures:
+  PySide6.QtWidgets.QMessageBox.critical(parent: PySide6.QtWidgets.QWidget | None, title: str, text: str, /, buttons: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.Ok), defaultButton: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.NoButton))
+2026-06-24 12:16:04 | INFO | === CRAFT Application Started ===
+2026-06-24 12:16:05 | INFO | User selected: Acquire Evidence
+2026-06-24 12:16:11 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:16:11 | INFO | History extracted: 5 records
+2026-06-24 12:16:11 | INFO | Search terms extracted: 5 records
+2026-06-24 12:16:11 | INFO | Downloads extracted: 2 records
+2026-06-24 12:16:12 | ERROR | Acquisition failed: 'PySide6.QtWidgets.QMessageBox.critical' called with wrong argument types:
+  PySide6.QtWidgets.QMessageBox.critical(AcquireEvidenceController, str, str)
+Supported signatures:
+  PySide6.QtWidgets.QMessageBox.critical(parent: PySide6.QtWidgets.QWidget | None, title: str, text: str, /, buttons: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.Ok), defaultButton: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.NoButton))
+2026-06-24 12:17:21 | INFO | === CRAFT Application Started ===
+2026-06-24 12:17:28 | INFO | User selected: Acquire Evidence
+2026-06-24 12:17:34 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:17:34 | INFO | History extracted: 5 records
+2026-06-24 12:17:34 | INFO | Search terms extracted: 5 records
+2026-06-24 12:17:34 | INFO | Downloads extracted: 2 records
+2026-06-24 12:17:34 | INFO | Cookies extracted: 114 records
+2026-06-24 12:17:34 | INFO | Logins data extracted: 3 records
+2026-06-24 12:17:34 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:17:34 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:17:34 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:20:43 | INFO | === CRAFT Application Started ===
+2026-06-24 12:20:51 | INFO | User selected: Acquire Evidence
+2026-06-24 12:20:58 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:20:58 | INFO | History extracted: 5 records
+2026-06-24 12:20:58 | INFO | Search terms extracted: 5 records
+2026-06-24 12:20:58 | INFO | Downloads extracted: 2 records
+2026-06-24 12:20:58 | INFO | Cookies extracted: 114 records
+2026-06-24 12:20:58 | INFO | Logins data extracted: 3 records
+2026-06-24 12:20:58 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:20:58 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:20:58 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:21:05 | INFO | User selected: Acquire Evidence
+2026-06-24 12:29:19 | INFO | === CRAFT Application Started ===
+2026-06-24 12:29:21 | INFO | User selected: Acquire Evidence
+2026-06-24 12:29:35 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:29:35 | INFO | History extracted: 5 records
+2026-06-24 12:29:35 | INFO | Search terms extracted: 5 records
+2026-06-24 12:29:35 | INFO | Downloads extracted: 2 records
+2026-06-24 12:29:35 | INFO | Cookies extracted: 114 records
+2026-06-24 12:29:35 | INFO | Logins data extracted: 3 records
+2026-06-24 12:29:35 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:29:35 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:29:35 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:29:47 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-24 12:29:47 | INFO | History extracted: 12 records
+2026-06-24 12:29:47 | INFO | Search terms extracted: 12 records
+2026-06-24 12:29:47 | INFO | Downloads extracted: 0 records
+2026-06-24 12:29:47 | INFO | Cookies extracted: 22 records
+2026-06-24 12:29:47 | INFO | Logins data extracted: 0 records
+2026-06-24 12:29:47 | INFO | Bookmarks extracted: 4 records
+2026-06-24 12:29:47 | INFO | Autofills data extracted: 4 records
+2026-06-24 12:29:47 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:29:52 | INFO | User selected: Acquire Evidence
+2026-06-24 12:33:11 | INFO | === CRAFT Application Started ===
+2026-06-24 12:33:12 | INFO | User selected: Acquire Evidence
+2026-06-24 12:33:24 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:33:24 | INFO | History extracted: 5 records
+2026-06-24 12:33:24 | INFO | Search terms extracted: 5 records
+2026-06-24 12:33:24 | INFO | Downloads extracted: 2 records
+2026-06-24 12:33:24 | INFO | Cookies extracted: 114 records
+2026-06-24 12:33:24 | INFO | Logins data extracted: 3 records
+2026-06-24 12:33:24 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:33:24 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:33:24 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:36:31 | INFO | === CRAFT Application Started ===
+2026-06-24 12:36:32 | INFO | User selected: Acquire Evidence
+2026-06-24 12:36:38 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:36:38 | INFO | History extracted: 5 records
+2026-06-24 12:36:38 | INFO | Search terms extracted: 5 records
+2026-06-24 12:36:38 | INFO | Downloads extracted: 2 records
+2026-06-24 12:36:38 | INFO | Cookies extracted: 114 records
+2026-06-24 12:36:38 | INFO | Logins data extracted: 3 records
+2026-06-24 12:36:38 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:36:38 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:36:38 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:37:44 | INFO | === CRAFT Application Started ===
+2026-06-24 12:37:46 | INFO | User selected: Acquire Evidence
+2026-06-24 12:37:53 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:37:53 | INFO | History extracted: 5 records
+2026-06-24 12:37:53 | INFO | Search terms extracted: 5 records
+2026-06-24 12:37:53 | INFO | Downloads extracted: 2 records
+2026-06-24 12:37:53 | INFO | Cookies extracted: 114 records
+2026-06-24 12:37:53 | INFO | Logins data extracted: 3 records
+2026-06-24 12:37:53 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:37:53 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:37:53 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:38:34 | INFO | === CRAFT Application Started ===
+2026-06-24 12:38:35 | INFO | User selected: Acquire Evidence
+2026-06-24 12:38:41 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:38:41 | INFO | History extracted: 5 records
+2026-06-24 12:38:41 | INFO | Search terms extracted: 5 records
+2026-06-24 12:38:41 | INFO | Downloads extracted: 2 records
+2026-06-24 12:38:41 | INFO | Cookies extracted: 114 records
+2026-06-24 12:38:41 | INFO | Logins data extracted: 3 records
+2026-06-24 12:38:41 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:38:41 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:38:41 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:44:53 | INFO | === CRAFT Application Started ===
+2026-06-24 12:44:55 | INFO | User selected: Acquire Evidence
+2026-06-24 12:45:03 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:45:03 | INFO | History extracted: 5 records
+2026-06-24 12:45:03 | INFO | Search terms extracted: 5 records
+2026-06-24 12:45:03 | INFO | Downloads extracted: 2 records
+2026-06-24 12:45:04 | ERROR | Acquisition failed: 'PySide6.QtWidgets.QMessageBox.critical' called with wrong argument types:
+  PySide6.QtWidgets.QMessageBox.critical(AcquireEvidenceController, str, str)
+Supported signatures:
+  PySide6.QtWidgets.QMessageBox.critical(parent: PySide6.QtWidgets.QWidget | None, title: str, text: str, /, buttons: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.Ok), defaultButton: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.NoButton))
+2026-06-24 12:46:18 | INFO | === CRAFT Application Started ===
+2026-06-24 12:46:19 | INFO | User selected: Acquire Evidence
+2026-06-24 12:46:26 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:46:26 | INFO | History extracted: 5 records
+2026-06-24 12:46:26 | INFO | Search terms extracted: 5 records
+2026-06-24 12:46:26 | INFO | Downloads extracted: 2 records
+2026-06-24 12:46:26 | INFO | Cookies extracted: 114 records
+2026-06-24 12:46:26 | INFO | Logins data extracted: 3 records
+2026-06-24 12:46:26 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:46:26 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:46:26 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:47:51 | INFO | === CRAFT Application Started ===
+2026-06-24 12:47:52 | INFO | User selected: Acquire Evidence
+2026-06-24 12:47:59 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:47:59 | INFO | History extracted: 5 records
+2026-06-24 12:47:59 | INFO | Search terms extracted: 5 records
+2026-06-24 12:47:59 | INFO | Downloads extracted: 2 records
+2026-06-24 12:47:59 | INFO | Cookies extracted: 114 records
+2026-06-24 12:47:59 | INFO | Logins data extracted: 3 records
+2026-06-24 12:47:59 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:47:59 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:47:59 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:48:03 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-24 12:48:03 | INFO | History extracted: 12 records
+2026-06-24 12:48:03 | INFO | Search terms extracted: 12 records
+2026-06-24 12:48:03 | INFO | Downloads extracted: 0 records
+2026-06-24 12:48:03 | INFO | Cookies extracted: 22 records
+2026-06-24 12:48:03 | INFO | Logins data extracted: 0 records
+2026-06-24 12:48:03 | INFO | Bookmarks extracted: 4 records
+2026-06-24 12:48:03 | INFO | Autofills data extracted: 4 records
+2026-06-24 12:48:03 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:48:07 | INFO | User selected: Acquire Evidence
+2026-06-24 12:50:27 | INFO | === CRAFT Application Started ===
+2026-06-24 12:50:28 | INFO | User selected: Acquire Evidence
+2026-06-24 12:50:35 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:50:35 | INFO | History extracted: 5 records
+2026-06-24 12:50:35 | INFO | Search terms extracted: 5 records
+2026-06-24 12:50:35 | INFO | Downloads extracted: 2 records
+2026-06-24 12:50:35 | INFO | Cookies extracted: 114 records
+2026-06-24 12:50:35 | INFO | Logins data extracted: 3 records
+2026-06-24 12:50:35 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:50:35 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:50:35 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:50:40 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-24 12:50:40 | INFO | History extracted: 12 records
+2026-06-24 12:50:40 | INFO | Search terms extracted: 12 records
+2026-06-24 12:50:40 | INFO | Downloads extracted: 0 records
+2026-06-24 12:50:40 | INFO | Cookies extracted: 22 records
+2026-06-24 12:50:40 | INFO | Logins data extracted: 0 records
+2026-06-24 12:50:40 | INFO | Bookmarks extracted: 4 records
+2026-06-24 12:50:40 | INFO | Autofills data extracted: 4 records
+2026-06-24 12:50:40 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:50:43 | INFO | User selected: Acquire Evidence
+2026-06-24 12:56:12 | INFO | === CRAFT Application Started ===
+2026-06-24 12:56:18 | INFO | User selected: Acquire Evidence
+2026-06-24 12:56:25 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-24 12:56:25 | INFO | History extracted: 5 records
+2026-06-24 12:56:25 | INFO | Search terms extracted: 5 records
+2026-06-24 12:56:25 | INFO | Downloads extracted: 2 records
+2026-06-24 12:56:25 | INFO | Cookies extracted: 114 records
+2026-06-24 12:56:25 | INFO | Logins data extracted: 3 records
+2026-06-24 12:56:25 | INFO | Bookmarks extracted: 1 records
+2026-06-24 12:56:25 | INFO | Autofills data extracted: 60 records
+2026-06-24 12:56:25 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 12:56:28 | INFO | User selected: Acquire Evidence
+2026-06-24 13:11:54 | INFO | === CRAFT Application Started ===
+2026-06-24 13:11:59 | INFO | User selected: Acquire Evidence
+2026-06-24 13:15:39 | INFO | === CRAFT Application Started ===
+2026-06-24 13:15:41 | INFO | User selected: Acquire Evidence
+2026-06-24 13:16:36 | INFO | === CRAFT Application Started ===
+2026-06-24 13:16:39 | INFO | User selected: Acquire Evidence
+2026-06-24 13:17:15 | INFO | === CRAFT Application Started ===
+2026-06-24 13:17:17 | INFO | User selected: Acquire Evidence
+2026-06-24 13:19:23 | INFO | === CRAFT Application Started ===
+2026-06-24 13:19:26 | INFO | User selected: Acquire Evidence
+2026-06-24 13:20:39 | INFO | === CRAFT Application Started ===
+2026-06-24 13:20:41 | INFO | User selected: Acquire Evidence
+2026-06-24 13:22:40 | INFO | === CRAFT Application Started ===
+2026-06-24 13:22:43 | INFO | User selected: Acquire Evidence
+2026-06-24 13:28:44 | INFO | === CRAFT Application Started ===
+2026-06-24 13:28:47 | INFO | User selected: Acquire Evidence
+2026-06-24 13:29:35 | INFO | === CRAFT Application Started ===
+2026-06-24 13:29:36 | INFO | User selected: Acquire Evidence
+2026-06-24 13:31:16 | INFO | === CRAFT Application Started ===
+2026-06-24 13:31:19 | INFO | User selected: Acquire Evidence
+2026-06-24 13:37:00 | INFO | === CRAFT Application Started ===
+2026-06-24 13:37:02 | INFO | User selected: Acquire Evidence

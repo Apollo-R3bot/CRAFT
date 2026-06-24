@@ -3,25 +3,16 @@ import json
 import sqlite3
 from services.utils.utils import convert_firefox_time, format_size, safe_copy
 
-def extract_firefox_downloads(
-    files,
-    user_profile,
-    logger=None
-):
+def extract_firefox_downloads(files, user_profile, logger=None):
     downloads = []
 
     for db_file in files:
         try:
             safe_db = safe_copy(db_file)
-
             if not safe_db:
                 continue
 
-            conn = sqlite3.connect(
-                f"file:{safe_db}?mode=ro",
-                uri=True
-            )
-
+            conn = sqlite3.connect(f"file:{safe_db}?mode=ro",uri=True)
             cursor = conn.cursor()
 
             cursor.execute("""
@@ -49,13 +40,7 @@ def extract_firefox_downloads(
             rows = cursor.fetchall()
 
             for row in rows:
-                (
-                    url,
-                    download_path,
-                    metadata_json,
-                    date_added
-                ) = row
-
+                url, download_path, metadata_json, date_added = row
                 size = ""
                 end_time = ""
 
@@ -111,15 +96,15 @@ def extract_firefox_cookies(files, user_profile):
             """)
 
             for row in cursor.fetchall():
+                url = 'https://' + row[0].strip('.')
+                comment = f'expires in {convert_firefox_time(row[5])} ' + f"| {'secure' if row[6] else ''} " + f", {'httponly' if row[7] else ''}"
                 cookies.append([
-                    row[0],
+                    convert_firefox_time(row[3]),
+                    url,
                     row[1],
                     row[2],
-                    convert_firefox_time(row[3]),
                     convert_firefox_time(row[4]),
-                    convert_firefox_time(row[5]),
-                    "Yes" if row[6] else "No",
-                    "Yes" if row[7] else "No"
+                    comment
                 ])
 
             conn.close()
@@ -143,10 +128,10 @@ def extract_firefox_logins(files, user_profile):
 
             for entry in data.get("logins", []):
                 logins.append([
-                    entry.get("hostname"),
+                    entry.get("timeCreated"),
                     entry.get("encryptedUsername"),
                     entry.get("encryptedPassword"),
-                    entry.get("timeCreated")
+                    entry.get("hostname")
                 ])
 
         except Exception as e:

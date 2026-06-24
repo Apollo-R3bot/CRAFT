@@ -7,7 +7,6 @@ class TimelineController:
         self.evidence_path = evidence_path
 
     def build_timeline(self):
-
         timeline = []
 
         files = {
