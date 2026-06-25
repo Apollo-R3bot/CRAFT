@@ -19,8 +19,8 @@ Web browsers store a wealth of information that can be invaluable in investigati
 
 ## Key Forensic Features
 
-**Deleted history detection** — `CLEARED_GAP` entries identify gaps in internal visit ID sequence. A gap of N means N visit records were deleted. The timestamp range shows when the deletion likely occurred.
-
 **Multi-browser, multi-profile** — Automatically discovers all browser profiles across all Windows user accounts under the scanned path. Each entry is tagged with the Windows username.
+
+**Deleted history detection** — `CLEARED_GAP` entries identify gaps in internal visit ID sequence. A gap of N means N visit records were deleted. The timestamp range shows when the deletion likely occurred.
 
 ---
