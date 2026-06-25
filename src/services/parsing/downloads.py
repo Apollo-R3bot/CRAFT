@@ -25,6 +25,14 @@ INTERRUPT_REASON_MAP = {
     12: "Browser Shutdown"
 }
 
+DOWNLOAD_STATE = {
+    0: 'In Progress', 
+    1: 'Complete', 
+    2: 'Cancelled', 
+    3: 'Interrupted',
+    4: 'Interrupted'
+    }
+
 def extract_downloads(browser, files, user_profile):
     downloads = []
     for db_file in files:
@@ -41,7 +49,6 @@ def extract_downloads(browser, files, user_profile):
             FROM downloads
             '''
             cursor.execute(query)
-            DOWNLOAD_STATE = {1: 'COMPLETE', 2: 'CANCELLED', 4: 'INTERRUPTED'}
 
             for row in cursor.fetchall():
                 target_path, tab_url, start_time, total_bytes, interrupt_reason, state = row

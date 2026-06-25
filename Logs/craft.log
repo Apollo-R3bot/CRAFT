@@ -322,3 +322,120 @@ Supported signatures:
 2026-06-24 13:31:19 | INFO | User selected: Acquire Evidence
 2026-06-24 13:37:00 | INFO | === CRAFT Application Started ===
 2026-06-24 13:37:02 | INFO | User selected: Acquire Evidence
+2026-06-24 15:27:01 | INFO | === CRAFT Application Started ===
+2026-06-24 15:27:05 | INFO | User selected: Acquire Evidence
+2026-06-24 15:27:13 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-24 15:27:13 | INFO | History extracted: 12 records
+2026-06-24 15:27:13 | INFO | Search terms extracted: 12 records
+2026-06-24 15:27:13 | INFO | Downloads extracted: 0 records
+2026-06-24 15:27:13 | INFO | Cookies extracted: 22 records
+2026-06-24 15:27:13 | INFO | Logins data extracted: 0 records
+2026-06-24 15:27:13 | INFO | Bookmarks extracted: 4 records
+2026-06-24 15:27:13 | INFO | Autofills data extracted: 4 records
+2026-06-24 15:27:13 | INFO | Signed-in accounts extracted: 0 records
+2026-06-24 15:27:16 | INFO | User selected: Acquire Evidence
+2026-06-25 12:48:52 | INFO | === CRAFT Application Started ===
+2026-06-25 12:49:27 | INFO | User selected: Acquire Evidence
+2026-06-25 12:54:05 | INFO | === CRAFT Application Started ===
+2026-06-25 12:54:16 | INFO | User selected: Acquire Evidence
+2026-06-25 12:54:24 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-25 12:54:24 | INFO | History extracted: 12 records
+2026-06-25 12:54:24 | INFO | Search terms extracted: 12 records
+2026-06-25 12:54:24 | INFO | Downloads extracted: 0 records
+2026-06-25 12:54:24 | INFO | Cookies extracted: 22 records
+2026-06-25 12:54:24 | INFO | Logins data extracted: 0 records
+2026-06-25 12:54:24 | INFO | Bookmarks extracted: 4 records
+2026-06-25 12:54:24 | INFO | Autofills data extracted: 4 records
+2026-06-25 12:54:25 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 12:54:50 | INFO | === CRAFT Application Started ===
+2026-06-25 12:54:53 | INFO | User selected: Acquire Evidence
+2026-06-25 12:55:02 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-25 12:55:02 | INFO | History extracted: 12 records
+2026-06-25 12:55:02 | INFO | Search terms extracted: 12 records
+2026-06-25 12:55:02 | INFO | Downloads extracted: 0 records
+2026-06-25 12:55:02 | INFO | Cookies extracted: 0 records
+2026-06-25 12:55:02 | INFO | Logins data extracted: 0 records
+2026-06-25 12:55:02 | INFO | Bookmarks extracted: 4 records
+2026-06-25 12:55:02 | INFO | Autofills data extracted: 4 records
+2026-06-25 12:55:02 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 12:56:01 | INFO | === CRAFT Application Started ===
+2026-06-25 12:56:03 | INFO | User selected: Acquire Evidence
+2026-06-25 12:56:11 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Opera Software\Opera Stable\Default\History
+2026-06-25 12:56:11 | INFO | History extracted: 31 records
+2026-06-25 12:56:11 | INFO | Search terms extracted: 31 records
+2026-06-25 12:56:11 | INFO | Downloads extracted: 0 records
+2026-06-25 12:56:11 | INFO | Cookies extracted: 65 records
+2026-06-25 12:56:11 | INFO | Logins data extracted: 0 records
+2026-06-25 12:56:11 | INFO | Bookmarks extracted: 0 records
+2026-06-25 12:56:11 | INFO | Autofills data extracted: 0 records
+2026-06-25 12:56:11 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 12:56:15 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-25 12:56:15 | INFO | History extracted: 12 records
+2026-06-25 12:56:15 | INFO | Search terms extracted: 12 records
+2026-06-25 12:56:15 | INFO | Downloads extracted: 0 records
+2026-06-25 12:56:15 | INFO | Cookies extracted: 22 records
+2026-06-25 12:56:15 | INFO | Logins data extracted: 0 records
+2026-06-25 12:56:15 | INFO | Bookmarks extracted: 4 records
+2026-06-25 12:56:15 | INFO | Autofills data extracted: 4 records
+2026-06-25 12:56:15 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 12:57:28 | INFO | === CRAFT Application Started ===
+2026-06-25 12:57:30 | INFO | User selected: Acquire Evidence
+2026-06-25 12:57:38 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-25 12:57:38 | INFO | History extracted: 12 records
+2026-06-25 12:57:38 | INFO | Search terms extracted: 12 records
+2026-06-25 12:57:38 | INFO | Downloads extracted: 0 records
+2026-06-25 12:57:38 | INFO | Cookies extracted: 0 records
+2026-06-25 12:57:38 | INFO | Logins data extracted: 0 records
+2026-06-25 12:57:38 | INFO | Bookmarks extracted: 4 records
+2026-06-25 12:57:38 | INFO | Autofills data extracted: 4 records
+2026-06-25 12:57:38 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 13:00:43 | INFO | === CRAFT Application Started ===
+2026-06-25 13:00:45 | INFO | User selected: Acquire Evidence
+2026-06-25 13:00:53 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-25 13:00:54 | INFO | History extracted: 12 records
+2026-06-25 13:00:54 | INFO | Search terms extracted: 12 records
+2026-06-25 13:00:54 | INFO | Downloads extracted: 0 records
+2026-06-25 13:00:54 | INFO | Cookies extracted: 22 records
+2026-06-25 13:00:54 | INFO | Logins data extracted: 0 records
+2026-06-25 13:00:54 | INFO | Bookmarks extracted: 4 records
+2026-06-25 13:00:54 | INFO | Autofills data extracted: 4 records
+2026-06-25 13:00:54 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 13:02:53 | INFO | User selected: Acquire Evidence
+2026-06-25 13:03:01 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Mozilla\Firefox\Profiles\DXZj7CxP.Profile 3\places.sqlite
+2026-06-25 13:03:01 | INFO | History extracted: 12 records
+2026-06-25 13:03:01 | INFO | Search terms extracted: 12 records
+2026-06-25 13:03:01 | INFO | Downloads extracted: 0 records
+2026-06-25 13:03:01 | INFO | Cookies extracted: 22 records
+2026-06-25 13:03:01 | INFO | Logins data extracted: 0 records
+2026-06-25 13:03:01 | INFO | Bookmarks extracted: 4 records
+2026-06-25 13:03:01 | INFO | Autofills data extracted: 4 records
+2026-06-25 13:03:01 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 13:03:05 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Roaming\Opera Software\Opera Stable\Default\History
+2026-06-25 13:03:05 | INFO | History extracted: 31 records
+2026-06-25 13:03:05 | INFO | Search terms extracted: 31 records
+2026-06-25 13:03:05 | INFO | Downloads extracted: 0 records
+2026-06-25 13:03:05 | INFO | Cookies extracted: 65 records
+2026-06-25 13:03:05 | INFO | Logins data extracted: 0 records
+2026-06-25 13:03:05 | INFO | Bookmarks extracted: 0 records
+2026-06-25 13:03:05 | INFO | Autofills data extracted: 0 records
+2026-06-25 13:03:05 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 13:03:08 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Local\Microsoft\Edge\User Data\Default\History
+2026-06-25 13:03:09 | INFO | History extracted: 4096 records
+2026-06-25 13:03:09 | INFO | Search terms extracted: 4096 records
+2026-06-25 13:03:09 | INFO | Downloads extracted: 21 records
+2026-06-25 13:03:09 | INFO | Cookies extracted: 0 records
+2026-06-25 13:03:09 | INFO | Logins data extracted: 34 records
+2026-06-25 13:03:09 | INFO | Bookmarks extracted: 1 records
+2026-06-25 13:03:09 | INFO | Autofills data extracted: 301 records
+2026-06-25 13:03:09 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 13:03:12 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-25 13:03:12 | INFO | History extracted: 5597 records
+2026-06-25 13:03:12 | INFO | Search terms extracted: 5597 records
+2026-06-25 13:03:12 | INFO | Downloads extracted: 254 records
+2026-06-25 13:03:12 | INFO | Cookies extracted: 0 records
+2026-06-25 13:03:12 | INFO | Logins data extracted: 0 records
+2026-06-25 13:03:12 | ERROR | Bookmark extraction failed from C:\Users\robot\AppData\Local\Google\Chrome\User Data\Default\Bookmarks: [Errno 2] No such file or directory: 'C:\\Users\\robot\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks'
+2026-06-25 13:03:12 | INFO | Bookmarks extracted: 0 records
+2026-06-25 13:03:12 | INFO | Autofills data extracted: 236 records
+2026-06-25 13:03:16 | INFO | Signed-in accounts extracted: 3 records
+2026-06-25 13:03:24 | INFO | User selected: Acquire Evidence

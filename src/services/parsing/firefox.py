@@ -1,7 +1,7 @@
 import os
 import json
 import sqlite3
-from services.utils.utils import convert_firefox_time, format_size, safe_copy
+from services.utils.utils import convert_firefox_expiry, convert_firefox_time, format_size, safe_copy
 
 def extract_firefox_downloads(files, user_profile, logger=None):
     downloads = []
@@ -97,7 +97,8 @@ def extract_firefox_cookies(files, user_profile):
 
             for row in cursor.fetchall():
                 url = 'https://' + row[0].strip('.')
-                comment = f'expires in {convert_firefox_time(row[5])} ' + f"| {'secure' if row[6] else ''} " + f", {'httponly' if row[7] else ''}"
+                comment = f'expires in {convert_firefox_expiry(row[5])} ' + f"| {'secure' if row[6] else ''} " + f", {'httponly' if row[7] else ''}"
+                print(comment)
                 cookies.append([
                     convert_firefox_time(row[3]),
                     url,

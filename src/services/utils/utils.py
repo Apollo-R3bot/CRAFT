@@ -19,6 +19,20 @@ def convert_webkit_time(microseconds):
 def convert_firefox_time(milliseconds):
     return datetime.utcfromtimestamp(milliseconds / 1000000).strftime('%Y-%m-%d %H:%M:%S')
 
+def convert_firefox_expiry(expiry):
+    try:
+        if not expiry or expiry == 0:
+            return "Session Cookie"
+        expiry = int(expiry)
+
+        # milliseconds
+        if expiry > 9999999999:
+            expiry = expiry / 1000
+        return datetime.utcfromtimestamp(expiry).strftime("%Y-%m-%d %H:%M:%S")
+
+    except Exception as e:
+        return "Unknown"
+    
 def format_size(bytes_size):
     if bytes_size < 1024:
         return f"{bytes_size} B"
