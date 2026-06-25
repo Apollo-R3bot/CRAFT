@@ -20,9 +20,7 @@ def extract_top_sites(browser, files, user_profile):
             # CHROMIUM (Chrome, Edge, Opera)
             if browser in ["chrome", "edge", "opera"]:
                 cursor.execute("""
-                    SELECT
-                        url,
-                        visit_count
+                    SELECT url,visit_count
                     FROM urls
                     WHERE visit_count > 0
                     ORDER BY visit_count DESC
