@@ -1,3 +1,5 @@
+import json
+import os
 import sqlite3
 
 import urllib
@@ -28,6 +30,15 @@ FIREFOX_TRANSITION_TYPES = {
     7: 'Download',
     8: 'Framed Link'
 }
+
+CLEAR_PERIOD = {
+    0: 'Last hour / Last 15 minutes', 
+    1: 'Last 24 hours', 
+    2: 'Last 7 days', 
+    3: 'Last 4 weeks',
+    4: 'All time'
+}
+
 
 def extract_search_term_from_url(url):
     try:
@@ -76,6 +87,18 @@ def extract_history(browser, files, user_profile, logger=None):
                 '''
                 cursor.execute(query)
 
+                clear_period = 'Unknown'
+                for pf in ('Preferences', 'Secure Preferences'):
+                    pp = os.path.join(user_profile, pf)
+                    if os.path.isfile(pp):
+                        try:
+                            pd = json.load(open(pp, encoding='utf-8', errors='replace'))
+                            tp = pd.get('browser', {}).get('clear_data', {}).get('time_period')
+                            if tp is not None:
+                                clear_period = CLEAR_PERIOD.get(tp, f'period={tp}')
+                                break
+                        except Exception:
+                            pass
 
                 for row in cursor.fetchall():
                     visit_id, url, title, visit_count, visit_time, transition = row
@@ -90,6 +113,7 @@ def extract_history(browser, files, user_profile, logger=None):
                             f"Possible deletion occurred: {gap} visit record(s) "
                             f"missing between between "
                             f"{previous_time} and {visit_time_utc}"
+                            # f" and Clear browsing data range={clear_period}"
                         )
                         if gap > 0:
                             history.append(["Deleted",previous_time,"",f"GAP of {gap} deleted visits","",comment])

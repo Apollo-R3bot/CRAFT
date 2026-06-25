@@ -21,8 +21,25 @@ INTERRUPT_REASON_MAP = {
     5: "Network Error",
     7: "Virus Detected",
     10: "Timeout",
-    11: "Canceled",
-    12: "Browser Shutdown"
+    11: "Blocked",
+    12: "Browser Shutdown",
+    20: "Network Error",
+    21: "Operation Timed Out",
+    22: "Connection Lost",
+    23: "Server Down",
+    30: "Server Error",
+    31: "Range Request Error",
+    32: "Server Precondition Error",
+    33: "Unable to get file",
+    34: "Server Unauthorized",
+    35: "Server Certificate Problem",
+    36: "Server Access Forbidden",
+    37: "Server Unreachable",
+    38: "Content Length Mismatch",
+    39: "Cross Origin Redirect",
+    40: "Cancelled",
+    41: "Browser Shutdown",
+    50: "Browser Crashed"
 }
 
 DOWNLOAD_STATE = {
@@ -31,7 +48,7 @@ DOWNLOAD_STATE = {
     2: 'Cancelled', 
     3: 'Interrupted',
     4: 'Interrupted'
-    }
+}
 
 def extract_downloads(browser, files, user_profile):
     downloads = []

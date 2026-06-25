@@ -4,7 +4,6 @@ import pandas as pd
 from controllers.artifact_controller import ArtifactTableController
 
 
-
 class HistoryController:
     def __init__(self, evidence_path, report_controller):
         self.table = ArtifactTableController(report_controller)
@@ -13,14 +12,12 @@ class HistoryController:
 
     def create_page(self):
         csv_file = os.path.join(self.evidence_path, "history.csv")
-
         columns = []
         data = []
 
         if os.path.exists(csv_file):
             try:
                 df = pd.read_csv(csv_file)
-
                 columns = df.columns.tolist()
                 data = df.values.tolist()
 
@@ -36,9 +33,4 @@ class HistoryController:
 
         total_count = len(data)
         
-        return self.table.create_table_page(
-            self.title,
-            columns,
-            data,
-            total_count
-        )
+        return self.table.create_table_page(self.title, columns, data, total_count)

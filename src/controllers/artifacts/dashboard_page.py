@@ -195,10 +195,9 @@ class DashboardController:
                 print(f"Top sites chart error: {e}")
 
         # Fallback if no data
-        if not sites:
-            figure.addWidget(
-                QLabel("No data found")
-            )
+        if df.empty:
+            ax.text(0.5,0.5,"No Data",ha="center",va="center")
+            ax.axis("off")
 
         # PIE CHART
         ax.pie(

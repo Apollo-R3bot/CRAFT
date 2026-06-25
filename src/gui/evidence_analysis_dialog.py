@@ -3,7 +3,6 @@ import os
 from PySide6.QtCore import QDir
 from PySide6.QtWidgets import QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QTextEdit, QVBoxLayout
 from controllers.browser_and_user_profile_controller import BrowserSelectionController
-from gui.case_information_dialog import CaseInformationDialog
 
 class EvidenceAnalysis(QDialog):
     def __init__(self, logger, parent=None):

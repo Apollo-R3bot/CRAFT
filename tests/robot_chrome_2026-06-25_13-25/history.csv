@@ -5596,3 +5596,9 @@ Active,2026-06-25 09:47:51,https://www.youtube.com/embed/zdvzrNi8N0g?controls=0,
 Active,2026-06-25 09:47:51,https://youtube.com/embed/VuTaQ3GN_sc?controls=0,,1,Manual Subframe
 Active,2026-06-25 09:47:51,https://www.youtube.com/embed/VuTaQ3GN_sc?controls=0,,1,Manual Subframe
 Active,2026-06-25 09:48:03,https://www.foxtonforensics.com/browser-history-examiner/,Browser History Examiner - Analyse & report on web browser history,2,Reload
+Active,2026-06-25 10:08:05,https://www.google.com/search?q=INTERRUPT_REASON_MAP+in+Google+crome&oq=INTERRUPT_REASON_MAP+in+Google+crome+&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIJCAEQIRgKGKABMgkIAhAhGAoYoAEyCQgDECEYChigATIJCAQQIRgKGKABMgkIBRAhGAoYoAEyBwgGECEYjwIyBwgHECEYjwIyBwgIECEYjwLSAQkxMDczNGowajeoAgCwAgA&sourceid=chrome&ie=UTF-8,INTERRUPT_REASON_MAP in Google crome - Google Search,1,Generated
+Active,2026-06-25 10:08:21,https://dfir.blog/chrome-values-lookup-tables/,Chrome Values Lookup Tables,1,Link
+Active,2026-06-25 10:13:19,https://cs.chromium.org/chromium/src/components/download/public/common/download_interrupt_reason_values.h?ref=dfir.blog,download_interrupt_reason_values.h - Chromium Code Search,1,Link
+Active,2026-06-25 10:13:19,https://source.chromium.org/chromium/chromium/src/+/main:components/download/public/common/download_interrupt_reason_values.h,download_interrupt_reason_values.h - Chromium Code Search,2,Link
+Active,2026-06-25 10:15:44,https://source.chromium.org/chromium/chromium/src/+/main:components/download/public/common/download_interrupt_reasons.h,download_interrupt_reasons.h - Chromium Code Search,1,Link
+Active,2026-06-25 10:15:53,https://source.chromium.org/chromium/chromium/src/+/main:components/download/public/common/download_interrupt_reason_values.h,download_interrupt_reason_values.h - Chromium Code Search,2,Link

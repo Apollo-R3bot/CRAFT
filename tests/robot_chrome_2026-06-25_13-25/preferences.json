@@ -17,7 +17,7 @@
             "full_name": "Air ng",
             "account_id": "103074650864878953852",
             "picture_url": "https://lh3.googleusercontent.com/a/ACg8ocK1QKsL-3TdaxeRJwZM5hrijgraNXW82oNozlnGiLjjOjk3hGE=s96-c",
-            "local_picture_path": "D:\\PROJECTS\\FYP\\CRAFT\\tests\\robot_chrome_2026-06-25_13-02\\profile_pictures\\ngair72_gmail_com_profile.jpg",
+            "local_picture_path": "D:\\PROJECTS\\FYP\\CRAFT\\tests\\robot_chrome_2026-06-25_13-25\\profile_pictures\\ngair72_gmail_com_profile.jpg",
             "source": "Preferences",
             "profile_user": "robot"
         },
@@ -26,7 +26,7 @@
             "full_name": "Prof Apollo",
             "account_id": "109755987883718042440",
             "picture_url": "https://lh3.googleusercontent.com/a/ACg8ocIFWLkTGT33Vj2m0lmTV0rhYZux0SicUi5O6lItVss3Uw4UJTcO=s96-c",
-            "local_picture_path": "D:\\PROJECTS\\FYP\\CRAFT\\tests\\robot_chrome_2026-06-25_13-02\\profile_pictures\\benapollowizzy_gmail_com_profile.jpg",
+            "local_picture_path": "D:\\PROJECTS\\FYP\\CRAFT\\tests\\robot_chrome_2026-06-25_13-25\\profile_pictures\\benapollowizzy_gmail_com_profile.jpg",
             "source": "Preferences",
             "profile_user": "robot"
         },
@@ -35,15 +35,15 @@
             "full_name": "Benjamin Apollo",
             "account_id": "102666531750827485296",
             "picture_url": "https://lh3.googleusercontent.com/a/ACg8ocLZkyg6Ql1IoQd9peymIo0Qf74BJvwvx3V6H_y1N1Q3xHZoDg=s256-c-ns",
-            "local_picture_path": "D:\\PROJECTS\\FYP\\CRAFT\\tests\\robot_chrome_2026-06-25_13-02\\profile_pictures\\benjaminapollo24_gmail_com_profile.jpg",
+            "local_picture_path": "D:\\PROJECTS\\FYP\\CRAFT\\tests\\robot_chrome_2026-06-25_13-25\\profile_pictures\\benjaminapollo24_gmail_com_profile.jpg",
             "source": "Local State",
             "profile_user": "robot"
         }
     ],
     "case_information": {
-        "case_number": "001",
-        "evidence_number": "001",
-        "examiner_name": "Apollo",
-        "notes": "Chome examination"
+        "case_number": "",
+        "evidence_number": "",
+        "examiner_name": "",
+        "notes": ""
     }
 }

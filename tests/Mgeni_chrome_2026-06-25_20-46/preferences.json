@@ -1,0 +1,21 @@
+{
+    "browser_info": {
+        "browser_type": "Chrome",
+        "browser_version": "149.0.7827.196",
+        "installed_date": "2025-09-17 07:48:00",
+        "profile_user": "Mgeni",
+        "source": "Local State"
+    },
+    "machine_info": {
+        "hostname": "Robot",
+        "username": "robot",
+        "os_version": "Windows 11 Professional x64 (Build 26200.8655)"
+    },
+    "signed_in_accounts": [],
+    "case_information": {
+        "case_number": "",
+        "evidence_number": "",
+        "examiner_name": "",
+        "notes": ""
+    }
+}

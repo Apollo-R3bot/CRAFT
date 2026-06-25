@@ -439,3 +439,62 @@ Supported signatures:
 2026-06-25 13:03:12 | INFO | Autofills data extracted: 236 records
 2026-06-25 13:03:16 | INFO | Signed-in accounts extracted: 3 records
 2026-06-25 13:03:24 | INFO | User selected: Acquire Evidence
+2026-06-25 13:25:07 | INFO | === CRAFT Application Started ===
+2026-06-25 13:25:11 | INFO | User selected: Acquire Evidence
+2026-06-25 13:25:20 | INFO | Acquisition started | User: C:\Users\robot | Path: C:\Users\robot\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-25 13:25:21 | INFO | History extracted: 5603 records
+2026-06-25 13:25:21 | INFO | Search terms extracted: 5603 records
+2026-06-25 13:25:21 | INFO | Downloads extracted: 254 records
+2026-06-25 13:25:21 | INFO | Cookies extracted: 0 records
+2026-06-25 13:25:21 | INFO | Logins data extracted: 0 records
+2026-06-25 13:25:21 | ERROR | Bookmark extraction failed from C:\Users\robot\AppData\Local\Google\Chrome\User Data\Default\Bookmarks: [Errno 2] No such file or directory: 'C:\\Users\\robot\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks'
+2026-06-25 13:25:21 | INFO | Bookmarks extracted: 0 records
+2026-06-25 13:25:21 | INFO | Autofills data extracted: 236 records
+2026-06-25 13:25:23 | INFO | Signed-in accounts extracted: 3 records
+2026-06-25 13:25:27 | INFO | User selected: Acquire Evidence
+2026-06-25 18:54:13 | INFO | === CRAFT Application Started ===
+2026-06-25 18:54:24 | INFO | User selected: Acquire Evidence
+2026-06-25 18:54:32 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-25 18:54:32 | INFO | History extracted: 1 records
+2026-06-25 18:54:32 | INFO | Search terms extracted: 1 records
+2026-06-25 18:54:32 | INFO | Downloads extracted: 2 records
+2026-06-25 18:54:32 | INFO | Cookies extracted: 105 records
+2026-06-25 18:54:32 | INFO | Logins data extracted: 3 records
+2026-06-25 18:54:32 | INFO | Bookmarks extracted: 1 records
+2026-06-25 18:54:32 | INFO | Autofills data extracted: 60 records
+2026-06-25 18:54:32 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 18:54:36 | INFO | User selected: Acquire Evidence
+2026-06-25 19:02:10 | INFO | === CRAFT Application Started ===
+2026-06-25 19:02:11 | INFO | User selected: Acquire Evidence
+2026-06-25 19:08:05 | INFO | === CRAFT Application Started ===
+2026-06-25 19:08:07 | INFO | User selected: Acquire Evidence
+2026-06-25 20:36:29 | INFO | === CRAFT Application Started ===
+2026-06-25 20:36:31 | INFO | User selected: Acquire Evidence
+2026-06-25 20:36:37 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-25 20:36:37 | INFO | History extracted: 13 records
+2026-06-25 20:36:37 | INFO | Search terms extracted: 13 records
+2026-06-25 20:36:37 | INFO | Downloads extracted: 1 records
+2026-06-25 20:36:37 | INFO | Cookies extracted: 5 records
+2026-06-25 20:36:37 | INFO | Logins data extracted: 3 records
+2026-06-25 20:36:37 | INFO | Bookmarks extracted: 1 records
+2026-06-25 20:36:37 | INFO | Autofills data extracted: 61 records
+2026-06-25 20:36:37 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 20:36:40 | INFO | User selected: Acquire Evidence
+2026-06-25 20:46:03 | INFO | === CRAFT Application Started ===
+2026-06-25 20:46:04 | INFO | User selected: Acquire Evidence
+2026-06-25 20:46:12 | INFO | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-25 20:46:12 | INFO | History extracted: 13 records
+2026-06-25 20:46:12 | INFO | Search terms extracted: 13 records
+2026-06-25 20:46:12 | INFO | Downloads extracted: 1 records
+2026-06-25 20:46:12 | INFO | Cookies extracted: 5 records
+2026-06-25 20:46:12 | INFO | Logins data extracted: 3 records
+2026-06-25 20:46:12 | INFO | Bookmarks extracted: 1 records
+2026-06-25 20:46:12 | INFO | Autofills data extracted: 61 records
+2026-06-25 20:46:12 | INFO | Signed-in accounts extracted: 0 records
+2026-06-25 20:46:15 | INFO | User selected: Acquire Evidence
+2026-06-25 20:54:31 | INFO | === CRAFT Application Started ===
+2026-06-25 20:54:32 | INFO | User selected: Acquire Evidence
+2026-06-25 20:55:47 | INFO | === CRAFT Application Started ===
+2026-06-25 20:55:49 | INFO | User selected: Acquire Evidence
+2026-06-25 21:05:08 | INFO | === CRAFT Application Started ===
+2026-06-25 21:05:10 | INFO | User selected: Acquire Evidence

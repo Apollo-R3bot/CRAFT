@@ -18,9 +18,9 @@ from reportlab.lib.pagesizes import A4
 STATUS_COLORS = {
     'Active':  (QColor("#0a381d"), QColor('#4ade80')),  # dark green bg, bright green text
     'Deleted': (QColor("#310d0d"), QColor('#f87171')),  # dark red bg, bright red text
-    'COMPLETE':  (QColor('#0a381d'), QColor('#4ade80')),  # green  — same as Active
-    'CANCELLED': (QColor('#310d0d'), QColor('#f87171')),  # red    — same as Deleted
-    'INTERRUPTED':(QColor('#2d1f00'), QColor('#fbbf24')), # amber  — warning
+    'Complete':  (QColor('#0a381d'), QColor('#4ade80')),  # green  — same as Active
+    'Cancelled': (QColor('#310d0d'), QColor('#f87171')),  # red    — same as Deleted
+    'Interrupted':(QColor('#2d1f00'), QColor('#fbbf24')), # amber  — warning
 }
 
 PRIMARY_CL = "#1e3a5f"

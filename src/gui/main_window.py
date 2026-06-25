@@ -20,11 +20,9 @@ from controllers.artifacts.search_term_page import SearchTermController
 from controllers.artifacts.top_sites_page import TopSitesController
 from controllers.main_controller import MainController
 from controllers.report_controller import ReportController
-from controllers.timeline_analysis_controller import TimelineController
 from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
 from gui.report_generation_dialog import ReportGenerationDialog
-from gui.timeline_analysis_dialog import TimelineAnalysisDialog
 
 
 SIDEBAR_BG    = "#06080f"
@@ -144,12 +142,6 @@ class MainWindow(QMainWindow):
 
         quit_app = fileMenu.addAction("Quit")
         quit_app.triggered.connect(self.control.quit_app)
-
-        viewMenu = menuBar.addMenu("View")
-        timeline = viewMenu.addAction("Timeline Analysis")
-        timeline.triggered.connect(self.open_timeline_analysis)
-        viewMenu.addAction("Domain Analysis")
-
         helpMenu = menuBar.addMenu("Help")
 
         # ── Central widget ─────────────────────────────────────────────
@@ -330,9 +322,3 @@ class MainWindow(QMainWindow):
     def change_page(self, index):
         if index >= 0:
             self.pages.setCurrentIndex(index)
-
-    def open_timeline_analysis(self):
-        dialog = TimelineAnalysisDialog(
-            TimelineController(self.evidence_path), self
-        )
-        dialog.exec()
