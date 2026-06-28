@@ -1,6 +1,10 @@
 # CRAFT - Cross-Browser Artifact Forensics Tool
 A forensic tool for web browser analysis that can extract, analyze, and report browser artifacts to support digital forensic investigations. It's Browser history extractor and analyzer for Windows - parses browsing history, cookies, downloads and browser artifacts from Live machines into a timestamped CSV.
 
+<p align="center">
+  <img src="screenshot.png" alt="Screenshot" width="400">
+</p>
+
 # Project Summary
 Web browsers store a wealth of information that can be invaluable in investigations, including browsing history, downloaded files, and cookies. BrowserForensicsToolkit simplifies the process of extracting and analyzing this data from major browsers like:
 
