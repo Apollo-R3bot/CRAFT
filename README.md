@@ -2,7 +2,7 @@
 A forensic tool for web browser analysis that can extract, analyze, and report browser artifacts to support digital forensic investigations. It's Browser history extractor and analyzer for Windows - parses browsing history, cookies, downloads and browser artifacts from Live machines into a timestamped CSV.
 
 <p align="center">
-  <img src="screenshot.png" alt="Screenshot" width="400">
+  <img src="screenshot.png" alt="Screenshot">
 </p>
 
 # Project Summary
