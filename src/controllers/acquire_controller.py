@@ -176,11 +176,11 @@ class AcquireEvidenceController:
             if browser == "firefox":
                 downloads_data = extract_firefox_downloads(profile_files["history"], user_name)
                 downloads_output = os.path.join(archive_folder, "downloads.csv")
-                write_to_csv(downloads_data, ["Start Time", "File Name", "Size", "URL", "Saved In"], downloads_output)
+                write_to_csv(downloads_data, ["Start Time", "File Name", "Size", "URL", "Comment"], downloads_output)
             else:
                 downloads_data = extract_downloads(browser, profile_files["history"], user_name)
                 downloads_output = os.path.join(archive_folder, "downloads.csv")
-                write_to_csv(downloads_data, ["Start Time", "File Name", "URL", "Size", "Interrupt Reason", "Status", "Saved In"], downloads_output)
+                write_to_csv(downloads_data, ["Start Time", "File Name", "Size", "URL", "Interrupt Reason", "Status", "Comment"], downloads_output)
             if self.logger:
                 self.logger.info(f"Downloads extracted: {len(downloads_data)} records")
 
@@ -212,7 +212,7 @@ class AcquireEvidenceController:
             else:
                 bookmarks_data = extract_bookmarks(browser, profile_files["bookmarks"], user_name, logger=self.logger)
             bookmarks_output = os.path.join(archive_folder, "bookmarks.csv")
-            write_to_csv(bookmarks_data, ["Name","URL", "Date Added"], bookmarks_output)
+            write_to_csv(bookmarks_data, [ "Date Added","Name","URL"], bookmarks_output)
             if self.logger:
                 self.logger.info(f"Bookmarks extracted: {len(bookmarks_data)} records")
             
@@ -226,7 +226,7 @@ class AcquireEvidenceController:
             # Parse Top Sites
             top_sites_data = extract_top_sites(browser, profile_files["history"], user_name)
             top_sites_output = os.path.join(archive_folder, "top_sites.csv")
-            write_to_csv(top_sites_data,[ "Visit Count", "URL"], top_sites_output)
+            write_to_csv(top_sites_data,["Last Visit", "Visit Count", "Domain"], top_sites_output)
 
 
             # Parse Signed-in Accounts

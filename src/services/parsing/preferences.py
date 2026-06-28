@@ -7,6 +7,14 @@ import platform
 import winreg
 import requests
 
+CLEAR_PERIOD = {
+    0: 'Last hour / Last 15 minutes', 
+    1: 'Last 24 hours', 
+    2: 'Last 7 days', 
+    3: 'Last 4 weeks',
+    4: 'All time'
+}
+
 
 def download_profile_picture(url, save_folder, email):
     if not url:
@@ -149,7 +157,7 @@ def get_windows_version_string():
             r"SOFTWARE\Microsoft\Windows NT\CurrentVersion"
         )
 
-        product_name = winreg.QueryValueEx(key,"ProductName")[0]
+        # product_name = winreg.QueryValueEx(key,"ProductName")[0]
         edition = winreg.QueryValueEx(key,"EditionID")[0]
         current_build = winreg.QueryValueEx(key,"CurrentBuild")[0]
         ubr = winreg.QueryValueEx(key,"UBR")[0]
@@ -228,6 +236,25 @@ def extract_browser_info(browser_type, profile_path, output_folder, username, ac
                 browser_info["browser_info"]["browser_version"] = browser_version
                 browser_info["browser_info"]["source"] = "Local State"
                 browser_info["machine_info"] = get_machine_info()
+
+            preferences_path = os.path.join(
+                profile_path,
+                "Preferences"
+            )
+
+            if os.path.exists(preferences_path):
+                with open(preferences_path, "r", encoding="utf-8", errors="replace") as f:
+                    prefs = json.load(f)
+
+                time_period = (
+                    prefs.get("browser", {})
+                        .get("clear_data", {})
+                        .get("time_period")
+                )
+
+                browser_info["browser_info"]["last_selected_clear_data_range"] = (
+                    CLEAR_PERIOD.get(time_period, "Unknown")
+                )
 
         # FIREFOX
         elif browser_type.lower() == "firefox":

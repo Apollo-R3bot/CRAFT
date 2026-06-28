@@ -61,20 +61,39 @@ def extract_downloads(browser, files, user_profile):
             conn = sqlite3.connect(f"file:{safe_db}?mode=ro", uri=True)
             cursor = conn.cursor()
 
+            previous_id = None
+            previous_time = None
+
             query = '''
-            SELECT target_path, tab_url, start_time, total_bytes, interrupt_reason, state
+            SELECT id, target_path, tab_url, start_time, total_bytes, interrupt_reason, state
             FROM downloads
+            ORDER BY id ASC
             '''
             cursor.execute(query)
 
             for row in cursor.fetchall():
-                target_path, tab_url, start_time, total_bytes, interrupt_reason, state = row
+                download_id, target_path, tab_url, start_time, total_bytes, interrupt_reason, state = row
                 start_time_utc = convert_webkit_time(start_time)
                 interrupt_description = INTERRUPT_REASON_MAP.get(interrupt_reason, "Unknown")
                 total_size = format_size(total_bytes) if total_bytes else "0 B"
                 status = DOWNLOAD_STATE.get(state, f'state={state}')
                 file_name = os.path.basename(target_path)
-                downloads.append([start_time_utc, file_name, tab_url, total_size, interrupt_description, status, target_path])
+
+                comment = ""
+
+                if previous_id is not None:
+                    gap = download_id - previous_id - 1
+                    comment = (
+                        f"Possible deletion occurred: {gap} download record(s) "
+                        f"missing between between "
+                        f"{previous_time} and {start_time_utc}"
+                    )
+                    if gap > 0:
+                        downloads.append([start_time_utc, f"GAP of {gap} deleted downloads", "", "", "Unknown", "Deleted", comment])
+                downloads.append([start_time_utc, file_name, total_size, tab_url, interrupt_description, status, f"Saved in {target_path}"])
+                previous_id = download_id
+                previous_time = start_time_utc
+                
             conn.close()
         except sqlite3.Error as e:
             print(f"Error extracting downloads from {db_file}: {e}")

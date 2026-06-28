@@ -188,10 +188,7 @@ class EvidenceAcquisition(QDialog):
 
         except Exception as e:
             if self.logger:
-                self.logger.error(
-                    f"Acquisition failed: {str(e)}"
-                )
-
+                self.logger.error(f"Acquisition failed: {str(e)}")
             raise Exception(str(e))
 
     

@@ -66,6 +66,6 @@ class ModeSelectionDialog(QDialog):
         self.accept()
         
     def select_analyze(self):
-        self.logger.info("User selected: Acquire Evidence")
+        self.logger.info("User selected: Analyze Evidence")
         self.selected_mode = "analyze"
         self.accept()

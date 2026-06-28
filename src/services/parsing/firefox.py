@@ -23,13 +23,11 @@ def extract_firefox_downloads(files, user_profile, logger=None):
                     ON dest.place_id = meta.place_id
                 JOIN moz_places p
                     ON dest.place_id = p.id
-
                 WHERE dest.anno_attribute_id = (
                     SELECT id
                     FROM moz_anno_attributes
                     WHERE name='downloads/destinationFileURI'
                 )
-
                 AND meta.anno_attribute_id = (
                     SELECT id
                     FROM moz_anno_attributes
@@ -98,7 +96,6 @@ def extract_firefox_cookies(files, user_profile):
             for row in cursor.fetchall():
                 url = 'https://' + row[0].strip('.')
                 comment = f'expires in {convert_firefox_expiry(row[5])} ' + f"| {'secure' if row[6] else ''} " + f", {'httponly' if row[7] else ''}"
-                print(comment)
                 cookies.append([
                     convert_firefox_time(row[3]),
                     url,

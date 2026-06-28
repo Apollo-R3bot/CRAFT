@@ -10,9 +10,9 @@ def extract_bookmarks(browser, files, user_profile, logger=None):
     def parse_node(node):
         if node.get("type") == "url":
             bookmarks.append([
+                convert_webkit_time(int(node.get("date_added"))),
                 node.get("name"),
-                node.get("url"),
-                convert_webkit_time(int(node.get("date_added")))
+                node.get("url")
             ])
         elif node.get("type") == "folder":
             for child in node.get("children", []):

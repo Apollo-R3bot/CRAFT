@@ -5,8 +5,9 @@ from PySide6.QtWidgets import QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayo
 from controllers.browser_and_user_profile_controller import BrowserSelectionController
 
 class EvidenceAnalysis(QDialog):
-    def __init__(self, logger, parent=None):
+    def __init__(self, logger=None, parent=None):
         super().__init__(parent)
+        self.logger = logger
 
         # Controllers
         self.user_profile = BrowserSelectionController()
@@ -112,7 +113,10 @@ class EvidenceAnalysis(QDialog):
             self.desc.setPlainText(case_info.get("notes", ""))
 
         except Exception as e:
-            print(f"Load case information error: {e}")
+            if self.logger:
+                self.logger.error("Load case information error")
+            QMessageBox.critical(self,"Error","Load case information error")
+
 
     def browse_evidence_file(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Evidence Folder")
@@ -134,6 +138,8 @@ class EvidenceAnalysis(QDialog):
         )
 
         if not os.path.exists(prefs_file):
+            if self.logger:
+                self.logger.error("Preferences file not found")
             QMessageBox.warning(
                 self,
                 "Error",
@@ -163,14 +169,18 @@ class EvidenceAnalysis(QDialog):
                 )
 
             if not case_exists:
+                if self.logger:
+                    self.logger.info("Case information saved successful")
                 QMessageBox.information(
                     self,
                     "Success",
                     "Case information saved successful."
                 )
 
-        except Exception as e:
-            QMessageBox.critical(self,"Error",str(e))
+        except Exception:
+            if self.logger:
+                self.logger.exception("Acquisition failed")
+            QMessageBox.critical(self,"Error","An unexpected error occurred. Please check the application log for details.")
 
     def open_analysis(self):
         input_path = self.path_input.text().strip()

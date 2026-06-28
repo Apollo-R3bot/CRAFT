@@ -1,7 +1,7 @@
 import json
 import os
 
-from PySide6.QtGui import QAction, Qt
+from PySide6.QtGui import QAction, QCloseEvent, Qt
 from PySide6.QtWidgets import (
     QFileDialog, QFrame, QHBoxLayout, QLabel, QListWidget, QListWidgetItem,
     QMainWindow, QSplitter, QStackedWidget, QTableWidget, QTableWidgetItem,
@@ -35,9 +35,14 @@ TEXT_DIM      = "#475569"
 ACCENT        = "#38bdf8"
 NAV_HOVER     = "#0f141f"
 NAV_SELECTED     = "#0f141f"
-# NAV_SELECTED  = "#0f2460"
 
 class MainWindow(QMainWindow):
+    def closeEvent(self, event: QCloseEvent):
+        if self.logger:
+            self.logger.info("CRAFT application closed.")
+
+        super().closeEvent(event)
+        
     def load_machine_info(self):
         if not self.evidence_path:
             return {}
@@ -72,6 +77,8 @@ class MainWindow(QMainWindow):
         self.logger            = logger
 
         if evidence_path:
+            if self.logger:
+                self.logger.info(f"Evidence loaded successful from: {evidence_path}")
             self.control.load_evidence(evidence_path)
 
         self.setWindowTitle("CRAFT - Evidence Analysis")
@@ -247,7 +254,7 @@ class MainWindow(QMainWindow):
             " Search Terms",
             " Bookmarks",
             " Form Data",
-            " Frequently Websites",
+            " Frequently Websites"
         ]:
             self.nav_list.addItem(QListWidgetItem(name))
 
@@ -306,7 +313,7 @@ class MainWindow(QMainWindow):
         ReportController(self.current_case_path)
 
     def open_analysis_dialog(self):
-        dialog = EvidenceAnalysis(self)
+        dialog = EvidenceAnalysis(logger=self.logger, parent=self)
         if dialog.exec():
             selected_path = dialog.evidence_path
             if selected_path:

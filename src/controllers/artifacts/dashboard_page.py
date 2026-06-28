@@ -31,22 +31,18 @@ class DashboardController:
 
         try:
             created_time = os.path.getctime(folder_path)
-            return datetime.fromtimestamp(created_time).strftime(
-                "%Y-%m-%d %H:%M:%S"
-            )
+            return datetime.fromtimestamp(created_time).strftime("%Y-%m-%d %H:%M:%S")
         except Exception:
             return "Unknown"
 
     def get_folder_size(self, folder_path):
         total_size = 0
-
         if not folder_path or not os.path.exists(folder_path):
             return "0 B"
 
         for dirpath, dirnames, filenames in os.walk(folder_path):
             for file in filenames:
                 file_path = os.path.join(dirpath, file)
-
                 if os.path.exists(file_path):
                     total_size += os.path.getsize(file_path)
                     
@@ -174,22 +170,14 @@ class DashboardController:
         if os.path.exists(history_file):
             try:
                 df = pd.read_csv(history_file)
-                if "URL" in df.columns and "Visit Count" in df.columns:
-                    df["Domain"] = df["URL"].apply(
-                        lambda x: urlparse(str(x)).netloc.replace("www.", "")
-                        if pd.notna(x) else "Unknown"
-                    )
+                if "Domain" in df.columns and "Visit Count" in df.columns:
+                    df = df.sort_values(
+                        "Visit Count",
+                        ascending=False
+                    ).head(5)
 
-                    # Group by domain and sum visit counts
-                    grouped = (
-                        df.groupby("Domain")["Visit Count"]
-                        .sum()
-                        .sort_values(ascending=False)
-                        .head(5)
-                    )
-
-                    sites = grouped.index.tolist()
-                    visits = grouped.values.tolist()
+                    sites = df["Domain"].tolist()
+                    visits = df["Visit Count"].tolist()
 
             except Exception as e:
                 print(f"Top sites chart error: {e}")
