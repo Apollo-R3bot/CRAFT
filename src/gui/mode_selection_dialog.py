@@ -2,7 +2,9 @@ import os
 
 from PySide6.QtWidgets import QDialog, QPushButton, QVBoxLayout, QLabel
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QIcon, QPixmap
+
+from services.utils.utils import resource_path
 
 class ModeSelectionDialog(QDialog):
     def __init__(self, logger):
@@ -19,11 +21,10 @@ class ModeSelectionDialog(QDialog):
         layout.setSpacing(12)
 
         logo = QLabel()
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        image_path = os.path.join(base_dir, "../resources", "craft.png")
-        pixmap = QPixmap(image_path)
-        pixmap = QPixmap(image_path)
-        pixmap = pixmap.scaled(160,160,Qt.KeepAspectRatio,Qt.SmoothTransformation)
+        pixmap = QPixmap(
+            resource_path("resources/icons/craft.png")
+        )
+        pixmap = pixmap.scaled(120,120,Qt.KeepAspectRatio,Qt.SmoothTransformation)
         logo.setPixmap(pixmap)
         logo.setAlignment(Qt.AlignCenter)
         layout.insertWidget(0, logo)

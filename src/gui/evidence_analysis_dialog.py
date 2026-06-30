@@ -182,7 +182,7 @@ class EvidenceAnalysis(QDialog):
                 self.logger.exception("Acquisition failed")
             QMessageBox.critical(self,"Error","An unexpected error occurred. Please check the application log for details.")
 
-    def open_analysis(self):
+    def open_analysis(self, logger=None):
         input_path = self.path_input.text().strip()
 
         if not input_path:
@@ -215,6 +215,8 @@ class EvidenceAnalysis(QDialog):
 
         # If evidence is invalid
         if missing_files:
+            if logger:
+                logger.error("Invalid evidence folder. Please try another evidence source")
             QMessageBox.critical(
                 self,
                 "Invalid Evidence",
@@ -223,9 +225,7 @@ class EvidenceAnalysis(QDialog):
             return
     
         self.evidence_path = input_path
-
         self.save_case_information()
-
         self.accept() 
 
     

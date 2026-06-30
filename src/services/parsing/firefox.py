@@ -3,7 +3,7 @@ import json
 import sqlite3
 from services.utils.utils import convert_firefox_expiry, convert_firefox_time, format_size, safe_copy
 
-def extract_firefox_downloads(files, user_profile, logger=None):
+def extract_firefox_downloads(files, logger=None):
     downloads = []
 
     for db_file in files:
@@ -69,14 +69,12 @@ def extract_firefox_downloads(files, user_profile, logger=None):
 
         except Exception as e:
             if logger:
-                logger.exception(
-                    f"Firefox downloads extraction failed: {e}"
-                )
+                logger.error(f"Failed to extraction downloads from {db_file}: {e}")
 
     return downloads
 
 
-def extract_firefox_cookies(files, user_profile):
+def extract_firefox_cookies(files, logger=None):
     cookies = []
 
     for db_file in files:
@@ -108,12 +106,13 @@ def extract_firefox_cookies(files, user_profile):
             conn.close()
 
         except Exception as e:
-            print(f"Firefox cookies error: {e}")
+            if logger:
+                logger.error(f"Failed to extracting cookies from {db_file}: {e}")
 
     return cookies
 
 
-def extract_firefox_logins(files, user_profile):
+def extract_firefox_logins(files, logger=None):
     logins = []
 
     for file in files:
@@ -133,11 +132,12 @@ def extract_firefox_logins(files, user_profile):
                 ])
 
         except Exception as e:
-            print(f"Error extracting Firefox logins from {file}: {e}")
+            if logger:
+                logger.error(f"Failed to extracting logins from {file}: {e}")
 
     return logins
 
-def extract_firefox_bookmarks(files, user_profile):
+def extract_firefox_bookmarks(files, logger=None):
     bookmarks = []
 
     for db_file in files:
@@ -166,6 +166,7 @@ def extract_firefox_bookmarks(files, user_profile):
             conn.close()
 
         except Exception as e:
-            print(f"Error extracting Firefox bookmarks from {db_file}: {e}")
+            if logger:
+                logger.error(f"Failed to extracting bookmarks from {db_file}: {e}")
 
     return bookmarks

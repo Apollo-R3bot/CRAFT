@@ -1,50 +1,92 @@
-import sys, os
+import sys
+import os
 from PySide6.QtWidgets import QApplication, QDialog
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QAction, QIcon, Qt
+from PySide6.QtGui import QIcon
 from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
 from gui.main_window import MainWindow
 from gui.mode_selection_dialog import ModeSelectionDialog
 from services.utils.logger import setup_logger
+from services.utils.utils import get_icon, resource_path
 
 
 def main():
+    # ── Application setup ──────────────────────────────────────────────
     app = QApplication(sys.argv)
 
-    app.setWindowIcon(QIcon("./resources/craft.png"))
+    path = resource_path("resources/icons/craft.ico")
+    app.setWindowIcon(QIcon(path))
 
+    # ── Logger setup ───────────────────────────────────────────────────
     log_folder = os.path.join(os.getcwd(), "Logs")
-    logger = setup_logger(log_folder)
+    logger     = setup_logger(log_folder)
 
-    logger.info("=== CRAFT Application Started ===")
-    
-    
+    logger.info("CRAFT application initialised")
+    logger.info(f"Log folder: {log_folder}")
+
+    # ── Global exception handler ───────────────────────────────────────
+    def _handle_exception(exc_type, exc_value, exc_tb):
+        if issubclass(exc_type, KeyboardInterrupt):
+            sys.__excepthook__(exc_type, exc_value, exc_tb)
+            return
+        logger.critical(
+            "Unhandled exception", exc_info=(exc_type, exc_value, exc_tb)
+        )
+
+    sys.excepthook = _handle_exception
+
+    # ── Main loop ──────────────────────────────────────────────────────
     while True:
+        logger.user("[NAV] Mode selection dialog opened")
         dialog = ModeSelectionDialog(logger=logger)
         result = dialog.exec()
 
         if result != QDialog.Accepted:
-            break 
+            logger.user("[NAV] Mode selection cancelled — exiting")
+            break
 
+        # ── Acquire mode ───────────────────────────────────────────────
         if dialog.selected_mode == "acquire":
+            logger.user("[NAV] Mode selected: Acquire Evidence")
             acquire_dialog = EvidenceAcquisition(logger=logger)
-            acquire_dialog.exec()
-            continue  
+            acq_result     = acquire_dialog.exec()
 
+            if acq_result == QDialog.Accepted:
+                evidence = getattr(acquire_dialog, "generated_evidence_path", None)
+                if evidence:
+                    logger.info(f"[ACQUIRE] Evidence saved to: {evidence}")
+                else:
+                    logger.warning("[ACQUIRE] Dialog accepted but no evidence path returned")
+            else:
+                logger.user("[ACQUIRE] Acquisition cancelled")
+
+            continue
+
+        # ── Analyse mode ───────────────────────────────────────────────
         elif dialog.selected_mode == "analyze":
+            logger.user("[NAV] Mode selected: Analyze Evidence")
             analysis_dialog = EvidenceAnalysis(logger=logger)
-            result = analysis_dialog.exec()
-            if result == QDialog.Accepted:
-                evidence_path = analysis_dialog.evidence_path
-                window = MainWindow(evidence_path)
-                window.showMaximized() 
-                sys.exit(app.exec())
+            ana_result      = analysis_dialog.exec()
 
-            elif result == QDialog.Rejected:
+            if ana_result == QDialog.Accepted:
+                evidence_path = analysis_dialog.evidence_path
+                logger.user(f"[ANALYZE] Evidence folder selected: {evidence_path}")
+
+                logger.info("[WINDOW] Opening main analysis window")
+                window = MainWindow(evidence_path, logger=logger)
+                window.showMaximized()
+
+                exit_code = app.exec()
+                logger.info(f"[WINDOW] Main window closed (exit code {exit_code})")
+                logger.info("=== CRAFT session ended ===")
+                sys.exit(exit_code)
+
+            else:
+                logger.user("[ANALYZE] Evidence selection cancelled")
                 continue
 
-    sys.exit()
+    logger.info("=== CRAFT session ended ===")
+    sys.exit(0)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from controllers.artifact_controller import ArtifactTableController
+from controllers.artifact_controller import ArtifactTableController, _build_clear_message, _load_clear_info
 
 
 class SearchTermController:
@@ -30,10 +30,24 @@ class SearchTermController:
             columns = ["Message"]
             data = [["search_terms not found"]]
 
+        # ── Build bottom banner ────────────────────────────────────────
+        bottom_message = ""
+
+        info = _load_clear_info(self.evidence_path)
+        clear_range = info["clear_range"]
+        last_close  = info["last_browser_close"]
+
+        if clear_range and clear_range.lower() not in ("unknown", ""):
+            bottom_message = _build_clear_message(
+                clear_range, last_close, data, columns
+            )
+
         total_count = len(data)
+
         return self.table.create_table_page(
             self.title,
             columns,
             data,
-            total_count
+            total_count,
+            bottom_message=bottom_message,
         )

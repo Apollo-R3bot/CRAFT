@@ -99,7 +99,6 @@ class ReportController:
         ])
 
     # ── Style helpers ──────────────────────────────────────────────────
-
     def _styles(self):
         base = getSampleStyleSheet()
         S = {}
@@ -151,29 +150,6 @@ class ReportController:
 
     def _bullet(self, text, S):
         return Paragraph(f"&#8226; &nbsp;{text}", S["bullet"])
-
-    def _browser_logo(self, browser_type, size=60):
-        """Return a ReportLab Image for the browser logo, or None if not found."""
-        base_dir   = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        icon_map   = {
-            "chrome":  "chrome.png",
-            "edge":    "edge.png",
-            "firefox": "firefox.png",
-            "opera":   "opera.png",
-        }
-        icon_file  = icon_map.get(str(browser_type).lower(), "default.png")
-        icon_path  = os.path.join(base_dir, "src", "resources", "icons", icon_file)
-
-        # Also try without the extra src/ prefix
-        if not os.path.exists(icon_path):
-            icon_path = os.path.join(base_dir, "resources", "icons", icon_file)
-
-        if os.path.exists(icon_path):
-            try:
-                return Image(icon_path, width=size, height=size)
-            except Exception:
-                pass
-        return None
 
     # ── Data loaders ───────────────────────────────────────────────────
 
@@ -281,7 +257,7 @@ class ReportController:
 
         elements.append(Spacer(1, 16))
         elements.append(Paragraph(
-            "Investigation Objective: Aim of this investigation is to identify and analyze browser artifacts recovered "
+            "Investigation Objective: Aim of this investigation is to identify and analyze browser artifacts extracted "
             "from the acquired evidence source and determine significant user activity "
             "relevant to the investigation.",
             S["body"]
@@ -298,7 +274,16 @@ class ReportController:
             ("1.", "Cover Page",        []),
             ("2.", "Introduction",      []),
             ("3.", "Executive Summary", []),
-            ("4.", "Artifact Analysis", []),
+            ("4.", "Artifact Analysis", [
+                ("4.1", "History Analysis"),
+                ("4.2", "Download Analysis"),
+                ("4.3", "Search Term Analysis"),
+                ("4.4", "Autofill / Form Data Analysis"),
+                ("4.5", "Cookie Analysis"),
+                ("4.6", "Saved Login Analysis"),
+                ("4.7", "Bookmark Analysis"),
+                ("4.8", "Frequently Visited Sites"),
+            ]),
             ("5.", "Timeline Analysis",  []),
             ("6.", "Conclusion",         []),
             ("7.", "Examiner Notes",     []),
@@ -342,12 +327,12 @@ class ReportController:
             "using the CRAFT (Cross Browser Artifact Forensic Tool) platform.", S["body"]))
         elements.append(Paragraph(
             "The examination involved the acquisition, parsing, analysis, and interpretation "
-            "of browser artifacts recovered from the selected user profile. Browser artifacts "
+            "of browser artifacts extracted from the selected user profile. Browser artifacts "
             "including browsing history, downloads, autofill records, search terms, bookmarks, "
             "cookies, session information, and other available web artifacts were examined.",
             S["body"]))
         elements.append(Paragraph(
-            "All findings contained within this report are based solely on recovered digital "
+            "All findings contained within this report are based solely on extracted digital "
             "artifacts and should be considered in conjunction with other available "
             "investigative evidence.", S["body"]))
         elements.append(Spacer(1, 8))
@@ -356,27 +341,26 @@ class ReportController:
     def _section_executive_summary(self, elements, S, data):
         elements.append(self._section_header(3, "Executive Summary", S))
 
-        total = sum(
-            len(_resolve(data, k))
-            for k in KEY_ALIASES
-        )
+        total = sum(len(_resolve(data, k)) for k in KEY_ALIASES)
         elements.append(Paragraph(
-            f"A total of <b>{total}</b> browser artifacts were recovered and analyzed.",
+            f"A total of <b>{total}</b> browser artifacts were extracted and analyzed.",
             S["body"]))
         elements.append(Spacer(1, 6))
         elements.append(Paragraph("Summary of Findings:", S["h2"]))
 
+        # Only show artifact types that have at least one record
         summary_rows = [[
             Paragraph("Artifact Type",     S["cell_bold"]),
-            Paragraph("Records Recovered", S["cell_bold"]),
+            Paragraph("Records Extracted", S["cell_bold"]),
         ]]
-        for canonical, aliases in KEY_ALIASES.items():
+        for canonical in KEY_ALIASES:
             df    = _resolve(data, canonical)
             count = len(df) if not df.empty else 0
-            summary_rows.append([
-                Paragraph(canonical.replace("_", " ").title(), S["cell"]),
-                Paragraph(str(count), S["cell"]),
-            ])
+            if count > 0:
+                summary_rows.append([
+                    Paragraph(canonical.replace("_", " ").title(), S["cell"]),
+                    Paragraph(str(count), S["cell"]),
+                ])
 
         t = Table(summary_rows, colWidths=[200, 150], hAlign="LEFT", repeatRows=1)
         t.setStyle(self.table_style)
@@ -384,16 +368,15 @@ class ReportController:
         elements.append(Spacer(1, 10))
 
         elements.append(Paragraph("Key Observations:", S["h2"]))
-        for obs in [
-            "Browsing history records recovered and analyzed.",
-            "Download activity detected and examined.",
-            "Search terms extracted and categorized.",
-            "Saved login credentials recovered.",
-            "Autofill / form-entry data recovered.",
-            "Cookie records analyzed.",
-            "Bookmarks extracted.",
-        ]:
-            elements.append(self._bullet(obs, S))
+        elements.append(Paragraph(
+            "The forensic examination successfully extracted and analyzed several categories "
+            "of browser artifacts from the acquired evidence. These artifacts included browsing "
+            "history, download records, search terms, saved login credentials, autofill / "
+            "form-entry data, cookies, and bookmarks. Collectively, these artifacts provide "
+            "valuable insight into user browsing behavior, authentication activities, web "
+            "interactions, and other digital evidence that may support the investigation.",
+            S["body"]
+        ))
         elements.append(Spacer(1, 8))
 
     # ── Section 4: Artifact Analysis ──────────────────────────────────
@@ -415,15 +398,13 @@ class ReportController:
             # Resolve using alias table — works for both full and marked export
             df = _resolve(data, canonical)
 
-            elements.append(Paragraph(f"{num} {title}", S["h2"]))
-
+            # Skip entire section if no data — do not show "No data extracted"
             if df.empty:
-                elements.append(Paragraph("No data recovered.", S["body"]))
-                elements.append(Spacer(1, 8))
                 continue
 
+            elements.append(Paragraph(f"{num} {title}", S["h2"]))
             elements.append(Paragraph(
-                f"Recovered {canonical.replace('_',' ')} records ({len(df)} total):",
+                f"Extracted {canonical.replace('_',' ')} records ({len(df)} total):",
                 S["body"]))
             elements.append(self._make_table(df, S, max_rows=50))
 
@@ -435,31 +416,187 @@ class ReportController:
             elements.append(Spacer(1, 12))
 
     # ── Per-section observations ───────────────────────────────────────
+    def _get_clear_message(self, df) -> str:
+        prefs_path = os.path.join(self.evidence_path, "preferences.json")
+        if not os.path.exists(prefs_path):
+            return ""
+        try:
+            with open(prefs_path, encoding="utf-8") as f:
+                prefs = json.load(f)
+            browser_info = prefs.get("browser_info", {})
+            clear_data   = prefs.get("clear_data", {})
+            clear_range  = (
+                browser_info.get("last_selected_clear_data_range")
+                or clear_data.get("time_period_label", "")
+                or ""
+            ).strip()
+            last_close = browser_info.get("last_browser_close", "")
+        except Exception:
+            return ""
+
+        if not clear_range or clear_range.lower() == "unknown":
+            return ""
+
+        is_all_time = clear_range.lower() == "all time"
+        has_records = not df.empty
+
+        # Earliest active visit time
+        first_time = ""
+        if has_records and "Visit Time" in df.columns and "Status" in df.columns:
+            times = (
+                df[df["Status"] == "Active"]["Visit Time"]
+                .dropna()
+                .astype(str)
+                .tolist()
+            )
+            if times:
+                first_time = sorted(times)[0]
+
+        if is_all_time and not has_records:
+            return (
+                "The browsing history was cleared for All Time — no records remain."
+            )
+        elif is_all_time and has_records:
+            if first_time:
+                return (
+                    f"Browsing history was cleared for All Time before {first_time}. "
+                    "Records shown were created after the clear event."
+                )
+            return (
+                "Browsing history was cleared for All Time. "
+                "Records shown survived the clear."
+            )
+        else:
+            close_str = f" Browser last closed at {last_close}." if last_close else ""
+            return (
+                f"Browsing history was cleared for {clear_range}.{close_str} "
+                "Records outside this range may be missing."
+            )
+        
     def _history_observations(self, elements, S, df):
         total   = len(df)
         active  = len(df[df["Status"] == "Active"])  if "Status" in df.columns else "—"
         deleted = len(df[df["Status"] == "Deleted"]) if "Status" in df.columns else "—"
-        elements.append(self._bullet(f"Total URL visits: {total}", S))
-        elements.append(self._bullet(f"Active records: {active}", S))
-        elements.append(self._bullet(f"Deleted / gap records detected: {deleted}", S))
+        
+        # ── Collect data for narrative ─────────────────────────────────
+        top_domains = []
         if "URL" in df.columns:
             try:
                 from urllib.parse import urlparse
                 domains = df["URL"].dropna().apply(
                     lambda u: urlparse(str(u)).netloc.replace("www.", ""))
-                for domain, count in domains.value_counts().head(3).items():
-                    elements.append(Paragraph(
-                        f"&nbsp;&nbsp;&nbsp;&nbsp;– {domain} ({count} visits)", S["bullet"]))
+                top_domains = list(domains.value_counts().head(3).items())
             except Exception:
                 pass
+ 
+        earliest = latest = None
         if "Visit Time" in df.columns:
             try:
                 times = pd.to_datetime(df["Visit Time"], errors="coerce").dropna()
                 if not times.empty:
-                    elements.append(self._bullet(f"Earliest visit: {times.min()}", S))
-                    elements.append(self._bullet(f"Latest visit:   {times.max()}", S))
+                    earliest = times.min()
+                    latest   = times.max()
             except Exception:
                 pass
+ 
+        clear_msg = self._get_clear_message(df)
+ 
+        # ── Para style used across all observation paragraphs ──────────
+        obs_style = ParagraphStyle(
+            "ObsPara", parent=S["body"],
+            leading=14, spaceAfter=8,
+        )
+        bold_label = ParagraphStyle(
+            "ObsLabel", parent=S["body"],
+            fontName="Helvetica-Bold", fontSize=9,
+            leading=14, spaceAfter=4, textColor=HexColor("#1591DC"),
+        )
+        warning_style = ParagraphStyle(
+            "ClearWarning", parent=S["body"],
+            # backColor=HexColor("#2d0a0a"),
+            borderColor=HexColor("#dc2626"),
+            textColor=HexColor("#dc2626"),
+            # borderWidth=1, borderPadding=10,
+            # textColor=HexColor("#fca5a5"),
+            leading=14, spaceAfter=6,
+        )
+ 
+        # ── 1. Volume & Integrity ──────────────────────────────────────
+        elements.append(Paragraph("Volume and Record Integrity", bold_label))
+        elements.append(Paragraph(
+            f"A total of <b>{total} URL </b> visit records were extracted from the "
+            f"browser history database. Of these, <b>{active} records </b> are intact "
+            f"and active, representing confirmed browsing sessions. "
+            f"<b>{deleted} gap record(s) </b> were identified through SQLite visit ID "
+            "discontinuity analysis, indicating that history entries were removed — "
+            "either by the user manually clearing history, by the browser's automatic "
+            "cleanup routine, or by a third-party tool. While the content of deleted "
+            "records cannot be extracted from this source, their prior existence is "
+            "forensically confirmed by the missing ID sequence.",
+            obs_style
+        ))
+ 
+        # ── 2. Domain activity ─────────────────────────────────────────
+        if top_domains:
+            elements.append(Paragraph("Domain Activity", bold_label))
+            domain_lines = "".join(
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&#8226; <b>{d}</b> — "
+                f"{c} visit{'s' if c != 1 else ''}<br/>"
+                for d, c in top_domains
+            )
+            elements.append(Paragraph(
+                "The most frequently accessed web domains extracted from the "
+                "browsing history are as follows:<br/>" + domain_lines +
+                "These domains indicate the primary online destinations of the "
+                "device user during the examination period and may be relevant "
+                "to establishing user intent, online behaviour patterns, or "
+                "association with specific services or platforms.",
+                obs_style
+            ))
+ 
+        # ── 3. Activity timeline ───────────────────────────────────────
+        if earliest and latest:
+            elements.append(Paragraph("Activity Timeline", bold_label))
+            if str(earliest)[:10] == str(latest)[:10]:
+                time_detail = (
+                    f"all recorded on <b>{str(earliest)[:10]}</b>, "
+                    f"between <b>{str(earliest)[11:19]}</b> and "
+                    f"<b>{str(latest)[11:19]}</b>"
+                )
+            else:
+                time_detail = (
+                    f"spanning from <b>{earliest}</b> to <b>{latest}</b>"
+                )
+            elements.append(Paragraph(
+                f"The extracted browsing activity is {time_detail}. "
+                "This time window defines the period of confirmed user interaction "
+                "with the browser and can be used to correlate activity with other "
+                "digital artefacts such as file system timestamps, network logs, "
+                "or communication records gathered from the same device.",
+                obs_style
+            ))
+ 
+        # ── 4. Forensic significance ───────────────────────────────────
+        elements.append(Paragraph("Forensic Significance", bold_label))
+        elements.append(Paragraph(
+            "The extracted browsing history records provide a partial but "
+            "forensically valuable reconstruction of user online activity. "
+            "Typed URL entries confirm deliberate navigation to specific websites, "
+            "while link-click and redirect entries reveal associated content and "
+            "referral chains. Visit counts indicate repeat access to certain "
+            "resources, which may be indicative of sustained user interest. "
+            "These records should be examined in conjunction with download records, "
+            "search terms, cookies, and saved credentials to build a complete "
+            "picture of user behaviour during the relevant investigation period.",
+            obs_style
+        ))
+ 
+        # ── 5. Clear data alert — red box ──────────────────────────────
+        if clear_msg:
+            elements.append(Spacer(1, 4))
+            elements.append(
+                Paragraph(f"⚠  CLEARED BROWSING DATA DETECTED: {clear_msg}", warning_style)
+            )
 
     def _download_observations(self, elements, S, df):
         elements.append(self._bullet(f"Total downloads: {len(df)}", S))
@@ -512,7 +649,7 @@ class ReportController:
     def _section_timeline(self, elements, S, data):
         elements.append(self._section_header(5, "Timeline Analysis", S))
         elements.append(Paragraph(
-            "Chronological reconstruction of recovered browser activity.", S["body"]))
+            "Timeline analysis combines timestamped browser artifacts from multiple sources into a single chronological sequence of events, including website visits, downloads, searches, and other browser activities.", S["body"]))
         elements.append(Spacer(1, 6))
 
         timeline_rows = []
@@ -543,7 +680,7 @@ class ReportController:
                 Paragraph(r["type"],   S["cell"]),
                 Paragraph(r["detail"], S["cell"]),
             ] for r in timeline_rows]
-            t = Table([headers] + rows, colWidths=[130, 80, 270], repeatRows=1)
+            t = Table([headers] + rows, colWidths=[130, 80, 320], repeatRows=1)
             t.setStyle(self.table_style)
             elements.append(t)
         else:
@@ -557,11 +694,11 @@ class ReportController:
         elements.append(self._section_header(6, "Conclusion", S))
         total = sum(len(_resolve(data, k)) for k in KEY_ALIASES)
         elements.append(Paragraph(
-            f"This examination successfully recovered and analyzed <b>{total}</b> browser "
+            f"This examination successfully extracted and analyzed <b>{total}</b> browser "
             "artifacts from the acquired evidence source.", S["body"]))
         elements.append(Paragraph(
             "Timeline reconstruction established a chronological sequence of events. "
-            "All findings are based solely on recovered digital evidence and should be "
+            "All findings are based solely on extracted digital evidence and should be "
             "interpreted alongside other available investigative information.", S["body"]))
         elements.append(Spacer(1, 6))
 
@@ -594,11 +731,9 @@ class ReportController:
         self._table_of_contents(elements, S, data)        # ← new
         self._section_introduction(elements, S)
         self._section_executive_summary(elements, S, data)
-        elements.append(PageBreak())
         self._section_artifact_analysis(elements, S, data)
         elements.append(PageBreak())
         self._section_timeline(elements, S, data)
-        elements.append(PageBreak())
         self._section_conclusion(elements, S, data, case_info)
 
         pdf.build(elements,

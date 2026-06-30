@@ -15,12 +15,13 @@ from services.utils.utils import format_size
 
 
 class DashboardController:
-    def __init__(self, evidence_path=None, report_controller=None):
+    def __init__(self, evidence_path=None, report_controller=None, logger=None):
         self.table = ArtifactTableController(report_controller)
         
         self.evidence_path = evidence_path
         self.layout_builder = DashboardLayout()
         self.control = MainController()
+        self.logger = logger
 
         if evidence_path:
             self.control.load_evidence(evidence_path)
@@ -180,7 +181,8 @@ class DashboardController:
                     visits = df["Visit Count"].tolist()
 
             except Exception as e:
-                print(f"Top sites chart error: {e}")
+                if self.logger:
+                    self.logger.error(f"Top sites chart error: {e}")
 
         # Fallback if no data
         if df.empty:

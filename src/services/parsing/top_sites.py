@@ -4,7 +4,7 @@ import os
 from urllib.parse import urlparse
 from services.utils.utils import convert_firefox_time, convert_webkit_time, safe_copy
 
-def extract_top_sites(browser, files, user_profile):
+def extract_top_sites(browser, files, logger=None):
     top_sites = []
 
     domain_counts = defaultdict(int)
@@ -65,13 +65,10 @@ def extract_top_sites(browser, files, user_profile):
             conn.close()
 
         except Exception as e:
-            print(f"Error extracting top sites from {db_file}: {e}")
+            if logger:
+                logger.error(f"Failed to extracting top sites from {db_file}: {e}")
 
-    top_sites = sorted(
-        domain_counts.items(),
-        key=lambda x: x[1],
-        reverse=True
-    )
+    top_sites = sorted(domain_counts.items(),key=lambda x: x[1],reverse=True)
 
     return [
         [
@@ -81,4 +78,3 @@ def extract_top_sites(browser, files, user_profile):
         ]
         for domain, count in top_sites[:20]
     ]
-    # return top_sites

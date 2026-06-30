@@ -1,7 +1,7 @@
 import sqlite3
 from services.utils.utils import convert_webkit_time, safe_copy
 
-def extract_logins(browser, files, user_profile):
+def extract_logins(browser, files, user_profile, logger=None):
     logins = []
     for db_file in files:
         try:
@@ -31,6 +31,7 @@ def extract_logins(browser, files, user_profile):
             conn.close()
 
         except sqlite3.Error as e:
-            print(f"Error extracting logins from {db_file}: {e}")
+            if logger:
+                logger.error(f"Failed to extracting logins from {db_file}: {e}")
 
     return logins

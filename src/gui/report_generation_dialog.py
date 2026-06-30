@@ -12,12 +12,15 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QHBoxLayout
 )
+from PySide6.QtGui import QIcon
+from services.utils.utils import resource_path
 
 class ReportGenerationDialog(QDialog):
-    def __init__(self, report_controller, report_mode="full", parent=None):
+    def __init__(self, report_controller, report_mode="full", parent=None, logger=None):
         super().__init__(parent)
         self.report_controller = report_controller
         self.report_mode = report_mode
+        self.logger = logger
 
         self.setWindowTitle("Generate Report")
         self.resize(350, 150)
@@ -32,7 +35,6 @@ class ReportGenerationDialog(QDialog):
         self.pdf_radio = QRadioButton("PDF")
         self.csv_radio = QRadioButton("CSV")
         self.json_radio = QRadioButton("JSON")
-        # self.html_radio = QRadioButton("HTML")
 
         # Default selected
         self.pdf_radio.setChecked(True)
@@ -42,12 +44,10 @@ class ReportGenerationDialog(QDialog):
         self.format_group.addButton(self.pdf_radio)
         self.format_group.addButton(self.csv_radio)
         self.format_group.addButton(self.json_radio)
-        # self.format_group.addButton(self.html_radio)
 
         format_layout.addWidget(self.pdf_radio)
         format_layout.addWidget(self.csv_radio)
         format_layout.addWidget(self.json_radio)
-        # format_layout.addWidget(self.html_radio)
 
         layout.addLayout(format_layout)
 
@@ -74,8 +74,6 @@ class ReportGenerationDialog(QDialog):
             selected_format = "csv"
         elif self.json_radio.isChecked():
             selected_format = "json"
-        elif self.html_radio.isChecked():
-            selected_format = "html"
 
         file_path, _ = QFileDialog.getSaveFileName(
             self,
@@ -128,12 +126,10 @@ class ReportGenerationDialog(QDialog):
             QMessageBox.information(
                 self,
                 "Success",
-                f"Report generated successfully:\n{file_path}"
+                f"Report generated successfully to:\n{file_path}"
             )
 
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Export Error",
-                str(e)
-            )
+            if self.logger:
+                self.logger.error(f"Failed to generate report: {e}")
+            QMessageBox.critical(self,"Export Error",str(e))

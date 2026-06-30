@@ -1,10 +1,7 @@
-from datetime import datetime, timedelta
 import json
-import traceback
-
 from services.utils.utils import convert_webkit_time
 
-def extract_bookmarks(browser, files, user_profile, logger=None):
+def extract_bookmarks(browser, files, logger=None):
     bookmarks = []
 
     def parse_node(node):

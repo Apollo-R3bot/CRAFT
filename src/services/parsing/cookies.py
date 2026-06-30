@@ -1,7 +1,7 @@
 import sqlite3
 from services.utils.utils import convert_webkit_time, safe_copy
 
-def extract_cookies(browser, files, user_profile):
+def extract_cookies(browser, files, logger=None):
     cookies = []
     for db_file in files:
         try:
@@ -28,5 +28,6 @@ def extract_cookies(browser, files, user_profile):
                 cookies.append([creation_time_utc, url, name, last_access_time_utc, comment])
             conn.close()
         except sqlite3.Error as e:
-            print(f"Error extracting cookies from {db_file}: {e}")
+            if logger:
+                logger.error(f"Failed to extracting cookies from {db_file}: {e}")
     return cookies

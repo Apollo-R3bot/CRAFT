@@ -5,6 +5,7 @@ import hashlib
 import os
 from os import path
 import shutil
+import sys
 import tempfile
 import zipfile
                         
@@ -49,7 +50,7 @@ def write_to_csv(data, headers, output_file):
         writer.writerow(headers)
         writer.writerows(data)    
 
-def safe_copy(db_path):
+def safe_copy(db_path, logger=None):
     try:
         temp_dir = tempfile.gettempdir()
         temp_path = os.path.join(temp_dir, os.path.basename(db_path))
@@ -58,7 +59,8 @@ def safe_copy(db_path):
         return temp_path
 
     except Exception as e:
-        print(f"Safe copy failed for {db_path}: {e}")
+        if logger:
+            logger.error(f"Safe copy failed for {db_path}: {e}")
         return None
     
 def zip_folder(folder_path, zip_path):
@@ -89,7 +91,6 @@ def hash_file_multi(file_path):
 
 def hash_all_csv_to_txt(folder_path, output_file, zip_path=None):
     lines = []
-
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     lines.append(f"=== HASH REPORT ===")
     lines.append(f"Generated: {timestamp}")
@@ -99,10 +100,8 @@ def hash_all_csv_to_txt(folder_path, output_file, zip_path=None):
     for file in os.listdir(folder_path):
         if file.endswith(".csv"):
             full_path = os.path.join(folder_path, file)
-
             try:
                 md5, sha1, sha256 = hash_file_multi(full_path)
-
                 lines.append(f"File: {file}")
                 lines.append(f"Path: {full_path}")
                 lines.append(f"MD5   : {md5}")
@@ -137,14 +136,24 @@ def hash_all_csv_to_txt(folder_path, output_file, zip_path=None):
     return output_file
 
 def write_json(data, output_file):
-    with open(
-        output_file,
-        "w",
-        encoding="utf-8"
-    ) as f:
+    with open(output_file,"w",encoding="utf-8") as f:
         json.dump(
             data,
             f,
             indent=4,
             ensure_ascii=False
         )
+
+def get_icon(name: str) -> str:
+    base = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "resources", "icons")
+    )
+    return os.path.join(base, name)
+
+def resource_path(relative_path):
+    if getattr(sys, "frozen", False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+    return os.path.join(base_path, relative_path)

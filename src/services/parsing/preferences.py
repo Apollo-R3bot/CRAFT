@@ -16,7 +16,7 @@ CLEAR_PERIOD = {
 }
 
 
-def download_profile_picture(url, save_folder, email):
+def download_profile_picture(url, save_folder, email, logger=None):
     if not url:
         return ""
 
@@ -38,12 +38,13 @@ def download_profile_picture(url, save_folder, email):
             return save_path
 
     except Exception as e:
-        print(f"Profile picture download error: {e}")
+        if logger:
+            logger.error(f"Profile picture download error: {e}")
 
     return ""
 
 
-def extract_signed_in_accounts(profile, username, output_folder):
+def extract_signed_in_accounts(profile, username, output_folder, logger=None):
     entries = []
 
     seen_emails = set()
@@ -102,7 +103,8 @@ def extract_signed_in_accounts(profile, username, output_folder):
                 break
 
         except Exception as e:
-            print(f"Preferences parse error: {e}")
+            if logger:
+                logger.error(f"Preferences parse error: {e}")
 
     local_state = os.path.join(
         os.path.dirname(profile),
@@ -144,9 +146,8 @@ def extract_signed_in_accounts(profile, username, output_folder):
                 })
 
         except Exception as e:
-            print(
-                f"Local State parse error: {e}"
-            )
+            if logger:
+                logger.error(f"Local State parse error: {e}")
 
     return entries
 
@@ -181,7 +182,7 @@ def get_machine_info():
     }
 
     
-def extract_browser_info(browser_type, profile_path, output_folder, username, accounts_data=None):
+def extract_browser_info(browser_type, profile_path, output_folder, username, accounts_data=None, logger=None):
     browser_info = {
         "browser_info": {
             "browser_type": browser_type.title(),
@@ -237,32 +238,33 @@ def extract_browser_info(browser_type, profile_path, output_folder, username, ac
                 browser_info["browser_info"]["source"] = "Local State"
                 browser_info["machine_info"] = get_machine_info()
 
-            preferences_path = os.path.join(
-                profile_path,
-                "Preferences"
-            )
+            preferences_path = os.path.join(profile_path,"Preferences")
 
             if os.path.exists(preferences_path):
                 with open(preferences_path, "r", encoding="utf-8", errors="replace") as f:
                     prefs = json.load(f)
-
-                time_period = (
-                    prefs.get("browser", {})
-                        .get("clear_data", {})
-                        .get("time_period")
-                )
-
+                time_period = (prefs.get("browser", {}).get("clear_data", {}).get("time_period"))
                 browser_info["browser_info"]["last_selected_clear_data_range"] = (
                     CLEAR_PERIOD.get(time_period, "Unknown")
                 )
+                browser_info["browser_info"]["last_browser_close"] = (
+                    datetime.fromtimestamp(
+                        os.path.getmtime(preferences_path)
+                    ).strftime("%Y-%m-%d %H:%M:%S")
+                )
+
 
         # FIREFOX
         elif browser_type.lower() == "firefox":
-            compatibility_path = os.path.join(
-                profile_path,
-                "compatibility.ini"
-            )
+            prefs = os.path.join(profile_path, "prefs.js")
+            if os.path.exists(prefs):
+                browser_info["browser_info"]["last_browser_close"] = (
+                    datetime.fromtimestamp(
+                        os.path.getmtime(prefs)
+                    ).strftime("%Y-%m-%d %H:%M:%S")
+                )
 
+            compatibility_path = os.path.join(profile_path,"compatibility.ini")
             if os.path.exists(compatibility_path):
                 with open(compatibility_path,"r",encoding="utf-8",errors="replace") as f:
                     lines = f.readlines()
@@ -292,15 +294,11 @@ def extract_browser_info(browser_type, profile_path, output_folder, username, ac
         )
 
         with open(output_path,"w",encoding="utf-8") as f:
-            json.dump(
-                browser_info,
-                f,
-                indent=4,
-                ensure_ascii=False
-            )
+            json.dump(browser_info,f,indent=4,ensure_ascii=False)
 
         return browser_info
 
     except Exception as e:
-        print(f"Browser info extraction error: {e}")
+        if logger:
+                logger.error(f"Browser info extraction error: {e}")
         return browser_info

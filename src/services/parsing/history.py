@@ -163,6 +163,6 @@ def extract_history(browser, files, user_profile, logger=None):
             conn.close()
         except sqlite3.Error as e:
             if logger:
-                logger.error(f"History extraction failed from {db_file}: {e}")
+                logger.error(f"Failed to extraction history from {db_file}: {e}")
                 
     return history, search_terms

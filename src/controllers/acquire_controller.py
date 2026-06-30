@@ -82,23 +82,6 @@ class AcquireEvidenceController:
             f.write(f"SHA256: {zip_sha256}\n")
             f.write("=" * 60 + "\n")
 
-    def copy_session_folder(self, session_source, output_folder):
-        session_output = os.path.join(output_folder, "sessions")
-        os.makedirs(session_output, exist_ok=True)
-
-        if os.path.exists(session_source):
-            for file in os.listdir(session_source):
-                full_path = os.path.join(session_source, file)
-
-                if os.path.isfile(full_path):
-                    try:
-                        shutil.copy2(
-                            full_path,
-                            os.path.join(session_output, file)
-                        )
-                    except Exception as e:
-                        print(f"Session copy error: {e}")
-
     def start_parsing(self, root_folder, browser_path):
         try:
             if self.logger:
@@ -246,9 +229,11 @@ class AcquireEvidenceController:
             if self.enable_hashing:
                 self.generate_hash(user_name, browser, archive_folder)
                 if self.logger:
-                    self.logger.info("Hash verification started..")
+                    self.logger.info(f"Hash verification started.. saved in {archive_folder}")
 
             return archive_folder
         
         except Exception as e:
-            QMessageBox.critical(self, "Error", "Acquisition not completed.!")
+            if self.logger:
+                self.logger.error(f"Acquisition not completed.!: {e}")
+            QMessageBox.critical(self, "Error", f"Acquisition not completed.!: {e}")

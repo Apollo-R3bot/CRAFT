@@ -21,7 +21,6 @@ class DashboardLayout:
         """)
 
         layout = QVBoxLayout(card)
-
         title = QLabel(title_text)
         title.setStyleSheet("font-size: 14px; font-weight: bold;")
         layout.addWidget(title)
@@ -31,14 +30,7 @@ class DashboardLayout:
 
         return card
 
-    def create_dashboard_page(
-            self, 
-            top_left, 
-            top_right, 
-            middle_left, 
-            middle_right, 
-            # bottom_full_width
-        ):
+    def create_dashboard_page(self, top_left, top_right, middle_left, middle_right):
         page = QWidget()
         main_layout = QVBoxLayout(page)
         main_layout.setContentsMargins(15, 15, 15, 15)

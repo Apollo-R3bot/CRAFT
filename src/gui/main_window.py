@@ -1,7 +1,7 @@
 import json
 import os
 
-from PySide6.QtGui import QAction, QCloseEvent, Qt
+from PySide6.QtGui import QAction, QCloseEvent, QIcon, Qt
 from PySide6.QtWidgets import (
     QFileDialog, QFrame, QHBoxLayout, QLabel, QListWidget, QListWidgetItem,
     QMainWindow, QSplitter, QStackedWidget, QTableWidget, QTableWidgetItem,
@@ -81,7 +81,7 @@ class MainWindow(QMainWindow):
                 self.logger.info(f"Evidence loaded successful from: {evidence_path}")
             self.control.load_evidence(evidence_path)
 
-        self.setWindowTitle("CRAFT - Evidence Analysis")
+        self.setWindowTitle("CRAFT - Evidence Analyzer")
         self.setGeometry(100, 100, 1400, 850)
 
         # ── Menu bar ───────────────────────────────────────────────────
@@ -131,7 +131,7 @@ class MainWindow(QMainWindow):
         analyze_evidence.triggered.connect(self.open_analysis_dialog)
 
         report_menu   = menuBar.addMenu("Report")
-        report_action = QAction("Generate Report", self)
+        report_action = QAction("Full Report", self)
         report_menu.addAction(report_action)
         report_action.triggered.connect(
             lambda: ReportGenerationDialog(

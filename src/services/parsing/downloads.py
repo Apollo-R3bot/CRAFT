@@ -50,7 +50,7 @@ DOWNLOAD_STATE = {
     4: 'Interrupted'
 }
 
-def extract_downloads(browser, files, user_profile):
+def extract_downloads(browser, files, logger=None):
     downloads = []
     for db_file in files:
         try:
@@ -96,5 +96,6 @@ def extract_downloads(browser, files, user_profile):
                 
             conn.close()
         except sqlite3.Error as e:
-            print(f"Error extracting downloads from {db_file}: {e}")
+            if logger:
+                logger.error(f"Failed to extracting downloads from {db_file}: {e}")
     return downloads
