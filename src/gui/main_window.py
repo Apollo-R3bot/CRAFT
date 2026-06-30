@@ -4,7 +4,7 @@ import os
 from PySide6.QtGui import QAction, QCloseEvent, QIcon, Qt
 from PySide6.QtWidgets import (
     QFileDialog, QFrame, QHBoxLayout, QLabel, QListWidget, QListWidgetItem,
-    QMainWindow, QSplitter, QStackedWidget, QTableWidget, QTableWidgetItem,
+    QMainWindow, QMessageBox, QSplitter, QStackedWidget, QTableWidget, QTableWidgetItem,
     QToolBar, QVBoxLayout, QWidget
 )
 
@@ -24,6 +24,7 @@ from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
 from gui.report_generation_dialog import ReportGenerationDialog
 from services.utils.utils import resource_path
+from version import APP_AUTHOR, APP_COMPANY, APP_FULL_NAME, APP_NAME, APP_TITLE, APP_VERSION
 
 
 SIDEBAR_BG    = "#06080f"
@@ -53,7 +54,7 @@ NAV_ICONS = {
 class MainWindow(QMainWindow):
     def closeEvent(self, event: QCloseEvent):
         if self.logger:
-            self.logger.info("CRAFT application closed.")
+            self.logger.info(f"{APP_TITLE} application closed.")
 
         super().closeEvent(event)
         
@@ -108,7 +109,7 @@ class MainWindow(QMainWindow):
                 self.logger.info(f"Evidence loaded successful from: {evidence_path}")
             self.control.load_evidence(evidence_path)
 
-        self.setWindowTitle("CRAFT - Evidence Analyzer")
+        self.setWindowTitle(f"{APP_TITLE} - Evidence Analyzer")
         self.setGeometry(100, 100, 1400, 850)
 
         # ── Menu bar ───────────────────────────────────────────────────
@@ -177,6 +178,8 @@ class MainWindow(QMainWindow):
         quit_app = fileMenu.addAction("Quit")
         quit_app.triggered.connect(self.control.quit_app)
         helpMenu = menuBar.addMenu("Help")
+        about_action = helpMenu.addAction("About CRAFT")
+        about_action.triggered.connect(self.show_about_dialog)
 
         # ── Central widget ─────────────────────────────────────────────
         central_widget = QWidget()
@@ -356,3 +359,37 @@ class MainWindow(QMainWindow):
     def change_page(self, index):
         if index >= 0:
             self.pages.setCurrentIndex(index)
+
+    def show_about_dialog(self):
+        QMessageBox.about(
+            self,
+            f"About {APP_NAME}",
+            f"""
+            <h2>{APP_NAME}</h2>
+            <p><b>{APP_FULL_NAME}</b></p>
+
+            <p>
+            <b>Version:</b> {APP_VERSION}<br>
+            <b>Author:</b> {APP_AUTHOR}<br>
+            <b>Organization:</b> {APP_COMPANY}
+            </p>
+
+            <hr>
+
+            <p>
+            <b>CRAFT</b> is a digital forensic application developed to acquire,
+            analyze, and report browser artifacts from Chromium-based browsers
+            (Google Chrome, Microsoft Edge, Opera) and Mozilla Firefox.
+            </p>
+
+            <p>
+            The tool extracts and analyzes browsing history, downloads, cookies,
+            saved passwords, bookmarks, search terms, autofill data, and other
+            browser artifacts to support digital forensic investigations.
+            </p>
+
+            <p align="center">
+            © {APP_COMPANY}
+            </p>
+            """
+        )

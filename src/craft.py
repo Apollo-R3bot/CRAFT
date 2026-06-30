@@ -8,6 +8,7 @@ from gui.main_window import MainWindow
 from gui.mode_selection_dialog import ModeSelectionDialog
 from services.utils.logger import setup_logger
 from services.utils.utils import get_icon, resource_path
+from version import APP_TITLE
 
 MENUBAR_BG    = "#06080f"
 TEXT_PRIMARY  = "#e2e8f0"
@@ -46,7 +47,7 @@ def main():
     log_folder = os.path.join(os.getcwd(), "Logs")
     logger     = setup_logger(log_folder)
 
-    logger.info("CRAFT application initialised")
+    logger.info(f"{APP_TITLE} application initialised")
     logger.info(f"Log folder: {log_folder}")
 
     # ── Global exception handler ───────────────────────────────────────
@@ -110,7 +111,7 @@ def main():
                 logger.user("[ANALYZE] Evidence selection cancelled")
                 continue
 
-    logger.info("=== CRAFT session ended ===")
+    logger.info(f"=== {APP_TITLE} session ended ===")
     sys.exit(0)
 
 

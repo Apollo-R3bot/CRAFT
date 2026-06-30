@@ -4,6 +4,7 @@ from PySide6.QtCore import QDir, QTimer
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressBar, QPushButton, QRadioButton, QVBoxLayout
 from controllers.acquire_controller import AcquireEvidenceController
 from controllers.browser_and_user_profile_controller import BrowserSelectionController
+from version import APP_TITLE
 
 class EvidenceAcquisition(QDialog):
     def __init__(self, logger, parent=None):
@@ -20,7 +21,7 @@ class EvidenceAcquisition(QDialog):
         self.parent_dialog = parent 
         self.generated_evidence_path = None
 
-        self.setWindowTitle("Select Profile and Browser Source")
+        self.setWindowTitle(f"{APP_TITLE} - Select Profile and Browser Source")
         self.resize(450, 500)
         layout = QVBoxLayout()
 

@@ -3,6 +3,7 @@ import os
 from PySide6.QtCore import QDir
 from PySide6.QtWidgets import QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QTextEdit, QVBoxLayout
 from controllers.browser_and_user_profile_controller import BrowserSelectionController
+from version import APP_TITLE
 
 class EvidenceAnalysis(QDialog):
     def __init__(self, logger=None, parent=None):
@@ -13,7 +14,7 @@ class EvidenceAnalysis(QDialog):
         self.user_profile = BrowserSelectionController()
         self.evidence_path = None
 
-        self.setWindowTitle("Select Evidence Source")
+        self.setWindowTitle(f"{APP_TITLE} - Select Evidence Source")
         self.resize(450, 200)
         layout = QVBoxLayout()
 

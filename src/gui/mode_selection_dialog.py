@@ -5,12 +5,13 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
 
 from services.utils.utils import resource_path
+from version import APP_TITLE
 
 class ModeSelectionDialog(QDialog):
     def __init__(self, logger):
         super().__init__()
 
-        self.setWindowTitle("CRAFT - Cross Browser Artifact Forensics Tool v1.0.0")
+        self.setWindowTitle(f"{APP_TITLE} - Mode Selection")
         self.resize(400, 300)
 
         self.selected_mode = None
@@ -29,7 +30,7 @@ class ModeSelectionDialog(QDialog):
         logo.setAlignment(Qt.AlignCenter)
         layout.insertWidget(0, logo)
 
-        heading = QLabel("Welcome to CRAFT")
+        heading = QLabel(f"Welcome to {APP_TITLE}")
         heading.setStyleSheet("""font-size: 25px; font-weight: bold;""")
         layout.addWidget(heading)
         heading.setAlignment(Qt.AlignCenter)
@@ -49,7 +50,6 @@ class ModeSelectionDialog(QDialog):
                 text-align: center;
                 font-size: 15px;
             }
-            
             """)
 
         acquire_btn.clicked.connect(self.select_acquire)
