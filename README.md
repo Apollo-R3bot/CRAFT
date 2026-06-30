@@ -28,3 +28,5 @@ Web browsers store a wealth of information that can be invaluable in investigati
 **Deleted history detection** — `CLEARED_GAP` entries identify gaps in internal visit ID sequence. A gap of N means N visit records were deleted. The timestamp range shows when the deletion likely occurred.
 
 ---
+
+[![Latest Release](https://img.shields.io/github/v/release/Apollo-R3bot/CRAFT)](https://github.com/Apollo-R3bot/CRAFT/releases/latest)
