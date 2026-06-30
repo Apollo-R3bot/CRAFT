@@ -193,7 +193,7 @@ class AcquireEvidenceController:
             if browser == "firefox":
                 bookmarks_data = extract_firefox_bookmarks(profile_files["bookmarks"], user_name)
             else:
-                bookmarks_data = extract_bookmarks(browser, profile_files["bookmarks"], user_name, logger=self.logger)
+                bookmarks_data = extract_bookmarks(browser, profile_files["bookmarks"], logger=self.logger)
             bookmarks_output = os.path.join(archive_folder, "bookmarks.csv")
             write_to_csv(bookmarks_data, [ "Date Added","Name","URL"], bookmarks_output)
             if self.logger:

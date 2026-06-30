@@ -23,6 +23,7 @@ from controllers.report_controller import ReportController
 from gui.evidence_acquisition_dialog import EvidenceAcquisition
 from gui.evidence_analysis_dialog import EvidenceAnalysis
 from gui.report_generation_dialog import ReportGenerationDialog
+from services.utils.utils import resource_path
 
 
 SIDEBAR_BG    = "#06080f"
@@ -35,6 +36,19 @@ TEXT_DIM      = "#475569"
 ACCENT        = "#38bdf8"
 NAV_HOVER     = "#0f141f"
 NAV_SELECTED     = "#0f141f"
+
+
+NAV_ICONS = {
+    " Dashboard":           "dashboard.png",
+    " History":             "history.png",
+    " Downloads":           "download.png",
+    " Cookies":             "cookies.png",
+    " Password":            "password.png",
+    " Search Terms":        "search.png",
+    " Bookmarks":           "bookmarks.png",
+    " Form Data":           "form.png",
+    " Frequently Websites": "topsites.png",
+}
 
 class MainWindow(QMainWindow):
     def closeEvent(self, event: QCloseEvent):
@@ -69,6 +83,19 @@ class MainWindow(QMainWindow):
         except Exception:
             return {}
 
+    def _nav_icon(self, name: str) -> QIcon:
+        icon_file = NAV_ICONS.get(name)
+        if not icon_file:
+            return QIcon()
+ 
+        icon_path = resource_path(f"resources/icons/navs/{icon_file}")
+        if not os.path.exists(icon_path):
+            if self.logger:
+                self.logger.warning(f"Nav icon not found: {icon_path}")
+            return QIcon()
+ 
+        return QIcon(icon_path)
+    
     def __init__(self, evidence_path=None, logger=None):
         super().__init__()
         self.control           = MainController()
@@ -223,13 +250,13 @@ class MainWindow(QMainWindow):
         self.nav_list.setStyleSheet(f"""
             QListWidget {{
                 font-size: 14px;
-                padding: 5px;
+                padding: 4px;
                 border: none;
                 background: transparent;
                 color: {TEXT_PRIMARY};
             }}
             QListWidget::item {{
-                padding: 8px 10px;
+                padding: 7px 12px;
                 margin: 2px 4px;
                 border-radius: 8px;
                 color: {TEXT_MUTED};
@@ -240,7 +267,6 @@ class MainWindow(QMainWindow):
             }}
             QListWidget::item:selected {{
                 background: {NAV_SELECTED};
-                border-radius: 8px;
                 color: {TEXT_PRIMARY};
             }}
         """)
@@ -256,7 +282,8 @@ class MainWindow(QMainWindow):
             " Form Data",
             " Frequently Websites"
         ]:
-            self.nav_list.addItem(QListWidgetItem(name))
+            item = QListWidgetItem(self._nav_icon(name), name)
+            self.nav_list.addItem(item)
 
         self.nav_list.currentRowChanged.connect(self.change_page)
         sidebar_layout.addWidget(self.nav_list)

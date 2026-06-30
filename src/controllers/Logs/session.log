@@ -1,0 +1,27 @@
+2026-06-30 06:39:47 | INFO     | ======================================================================
+2026-06-30 06:39:47 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:39:47 | INFO     |   Time      : 2026-06-30 06:39:47
+2026-06-30 06:39:47 | INFO     |   Host      : Robot
+2026-06-30 06:39:47 | INFO     |   User      : robot
+2026-06-30 06:39:47 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:39:47 | INFO     |   PID       : 7124
+2026-06-30 06:39:47 | INFO     | ======================================================================
+2026-06-30 06:39:47 | INFO     | CRAFT application initialised
+2026-06-30 06:39:47 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:39:47 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:39:48 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:39:48 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:39:58 | USER     | [ANALYZE] Evidence selection cancelled
+2026-06-30 06:39:58 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:40:05 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:40:05 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:40:12 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:40:12 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:40:13 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:40:13 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:40:29 | USER     | [ANALYZE] Evidence folder selected: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:40:29 | INFO     | [WINDOW] Opening main analysis window
+2026-06-30 06:40:29 | INFO     | Evidence loaded successful from: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:42:56 | INFO     | CRAFT application closed.
+2026-06-30 06:42:56 | INFO     | [WINDOW] Main window closed (exit code 0)
+2026-06-30 06:42:56 | INFO     | === CRAFT session ended ===

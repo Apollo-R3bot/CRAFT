@@ -13,6 +13,8 @@ from reportlab.platypus import (
     Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 )
 
+from services.utils.utils import resource_path
+
 # ── Palette ────────────────────────────────────────────────────────────────
 C_PRIMARY   = HexColor("#1591DC")
 C_DARK      = HexColor("#0a1228")
@@ -214,18 +216,38 @@ class ReportController:
 
         elements.append(Spacer(1, 30))
 
-        # CRAFT title
-        title_para = Paragraph("CRAFT", S["title"])
-        sub_para   = Paragraph("Cross Browser Artifact Forensic Tool", S["subtitle"])
-        elements.append(title_para)
-        elements.append(sub_para)
+        # ── CRAFT logo, centered on top of the cover page ───────────────
+        craft_logo_path = resource_path("resources/icons/craft.png")
+        if os.path.exists(craft_logo_path):
+            try:
+                logo_img = Image(craft_logo_path, width=110, height=110)
+                logo_img.hAlign = "CENTER"
+                elements.append(logo_img)
+                elements.append(Spacer(1, 12))
+            except Exception:
+                pass
+
+        # ── Title and subtitle — centered, stacked below the logo ──────
+        title_centered = ParagraphStyle(
+            "CraftTitleCentered", parent=S["title"],
+            alignment=1,   # 1 = TA_CENTER
+        )
+        subtitle_centered = ParagraphStyle(
+            "CraftSubtitleCentered", parent=S["subtitle"],
+            alignment=1,
+        )
+
+        elements.append(Paragraph("CRAFT", title_centered))
+        elements.append(Paragraph(
+            "Cross Browser Artifact Forensic Tool", subtitle_centered
+        ))
 
         elements.append(Spacer(1, 4))
         elements.append(self._hr(C_PRIMARY, 1.5))
         elements.append(Spacer(1, 4))
         elements.append(Paragraph(
             "<font color='#64748b'>BROWSER FORENSIC INVESTIGATION REPORT</font>",
-            S["subtitle"]
+            subtitle_centered
         ))
         elements.append(Spacer(1, 20))
 
@@ -257,7 +279,7 @@ class ReportController:
 
         elements.append(Spacer(1, 16))
         elements.append(Paragraph(
-            "Investigation Objective: Aim of this investigation is to identify and analyze browser artifacts extracted "
+            "Aim of this investigation is to identify and analyze browser artifacts extracted "
             "from the acquired evidence source and determine significant user activity "
             "relevant to the investigation.",
             S["body"]
@@ -513,11 +535,8 @@ class ReportController:
         )
         warning_style = ParagraphStyle(
             "ClearWarning", parent=S["body"],
-            # backColor=HexColor("#2d0a0a"),
             borderColor=HexColor("#dc2626"),
             textColor=HexColor("#dc2626"),
-            # borderWidth=1, borderPadding=10,
-            # textColor=HexColor("#fca5a5"),
             leading=14, spaceAfter=6,
         )
  

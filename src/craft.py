@@ -9,13 +9,38 @@ from gui.mode_selection_dialog import ModeSelectionDialog
 from services.utils.logger import setup_logger
 from services.utils.utils import get_icon, resource_path
 
+MENUBAR_BG    = "#06080f"
+TEXT_PRIMARY  = "#e2e8f0"
+PRIMARY_CL   = "#1e3a5f"
+SECONDARY_CL   = "#2a4569"
 
 def main():
-    # ── Application setup ──────────────────────────────────────────────
     app = QApplication(sys.argv)
 
     path = resource_path("resources/icons/craft.ico")
     app.setWindowIcon(QIcon(path))
+
+    app.setStyleSheet(f"""
+        QMessageBox {{
+            background: {MENUBAR_BG};
+            color: {TEXT_PRIMARY};
+            padding: 5px;
+        }}
+        QDialog {{
+            padding: 30px;
+            background: {MENUBAR_BG};
+            color: {TEXT_PRIMARY};
+        }}
+        QLineEdit, QTextEdit {{
+            background: {MENUBAR_BG};
+            color: #e2e8f0;
+            border: 1px solid {PRIMARY_CL};
+            border-radius: 6px;
+            padding: 4px;
+        }}
+        QPushButton {{border: 1px solid {PRIMARY_CL};border-radius: 6px;padding: 5px;}}
+        QPushButton:hover {{background: {SECONDARY_CL};border-color: {SECONDARY_CL};}}
+    """)
 
     # ── Logger setup ───────────────────────────────────────────────────
     log_folder = os.path.join(os.getcwd(), "Logs")

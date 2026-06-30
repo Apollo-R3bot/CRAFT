@@ -26,7 +26,7 @@ SECONDARY_CL = "#1A7FAE"
 BG_CL        = "#1e3a5f"
 
 # ── Clear message background, border, text color) ────────────────
-CLEAR_MSG_BG = "#2d1f00"
+CLEAR_MSG_BG = "None"
 CLEAR_MSG_BORDER = "#fbbf24"
 CLEAR_MSG_TEXT = "#fde68a"
 

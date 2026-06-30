@@ -1,0 +1,270 @@
+2026-06-30 06:00:07 | INFO     | ======================================================================
+2026-06-30 06:00:07 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:00:07 | INFO     |   Time      : 2026-06-30 06:00:07
+2026-06-30 06:00:07 | INFO     |   Host      : Robot
+2026-06-30 06:00:07 | INFO     |   User      : robot
+2026-06-30 06:00:07 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:00:07 | INFO     |   PID       : 6576
+2026-06-30 06:00:07 | INFO     | ======================================================================
+2026-06-30 06:00:07 | INFO     | CRAFT application initialised
+2026-06-30 06:00:07 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:00:07 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:03:57 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:03:57 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:04:43 | INFO     | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-30 06:04:43 | INFO     | History extracted: 13 records
+2026-06-30 06:04:43 | INFO     | Search terms extracted: 13 records
+2026-06-30 06:04:43 | INFO     | Downloads extracted: 1 records
+2026-06-30 06:04:43 | INFO     | Cookies extracted: 5 records
+2026-06-30 06:04:43 | INFO     | Logins data extracted: 3 records
+2026-06-30 06:04:43 | ERROR    | Acquisition not completed.!: extract_bookmarks() got multiple values for argument 'logger'
+2026-06-30 06:04:43 | ERROR    | Acquisition failed: 'PySide6.QtWidgets.QMessageBox.critical' called with wrong argument types:
+  PySide6.QtWidgets.QMessageBox.critical(AcquireEvidenceController, str, str)
+Supported signatures:
+  PySide6.QtWidgets.QMessageBox.critical(parent: PySide6.QtWidgets.QWidget | None, title: str, text: str, /, buttons: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.Ok), defaultButton: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.NoButton))
+2026-06-30 06:04:43 | CRITICAL | Unhandled exception
+Traceback (most recent call last):
+  File "d:\PROJECTS\FYP\CRAFT\src\controllers\acquire_controller.py", line 196, in start_parsing
+    bookmarks_data = extract_bookmarks(browser, profile_files["bookmarks"], user_name, logger=self.logger)
+TypeError: extract_bookmarks() got multiple values for argument 'logger'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "d:\PROJECTS\FYP\CRAFT\src\gui\evidence_acquisition_dialog.py", line 176, in start_acquire
+    evidence_folder = self.acquire.start_parsing(
+        self.selected_user,
+        self.selected_browser_path
+    )
+  File "d:\PROJECTS\FYP\CRAFT\src\controllers\acquire_controller.py", line 239, in start_parsing
+    QMessageBox.critical(self, "Error", f"Acquisition not completed.!: {e}")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'PySide6.QtWidgets.QMessageBox.critical' called with wrong argument types:
+  PySide6.QtWidgets.QMessageBox.critical(AcquireEvidenceController, str, str)
+Supported signatures:
+  PySide6.QtWidgets.QMessageBox.critical(parent: PySide6.QtWidgets.QWidget | None, title: str, text: str, /, buttons: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.Ok), defaultButton: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.NoButton))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "d:\PROJECTS\FYP\CRAFT\src\gui\evidence_acquisition_dialog.py", line 192, in start_acquire
+    raise Exception(str(e))
+Exception: 'PySide6.QtWidgets.QMessageBox.critical' called with wrong argument types:
+  PySide6.QtWidgets.QMessageBox.critical(AcquireEvidenceController, str, str)
+Supported signatures:
+  PySide6.QtWidgets.QMessageBox.critical(parent: PySide6.QtWidgets.QWidget | None, title: str, text: str, /, buttons: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.Ok), defaultButton: PySide6.QtWidgets.QMessageBox.StandardButton = Instance(QMessageBox.StandardButton.NoButton))
+2026-06-30 06:13:03 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:13:03 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:13:05 | USER     | [NAV] Mode selection cancelled — exiting
+2026-06-30 06:13:05 | INFO     | === CRAFT session ended ===
+2026-06-30 06:13:15 | INFO     | ======================================================================
+2026-06-30 06:13:15 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:13:15 | INFO     |   Time      : 2026-06-30 06:13:15
+2026-06-30 06:13:15 | INFO     |   Host      : Robot
+2026-06-30 06:13:15 | INFO     |   User      : robot
+2026-06-30 06:13:15 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:13:15 | INFO     |   PID       : 18032
+2026-06-30 06:13:15 | INFO     | ======================================================================
+2026-06-30 06:13:15 | INFO     | CRAFT application initialised
+2026-06-30 06:13:15 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:13:15 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:13:18 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:13:18 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:13:30 | INFO     | Acquisition started | User: C:\Users\Mgeni | Path: C:\Users\Mgeni\AppData\Local\Google\Chrome\User Data\Default\History
+2026-06-30 06:13:30 | INFO     | History extracted: 13 records
+2026-06-30 06:13:30 | INFO     | Search terms extracted: 13 records
+2026-06-30 06:13:30 | INFO     | Downloads extracted: 1 records
+2026-06-30 06:13:30 | INFO     | Cookies extracted: 5 records
+2026-06-30 06:13:30 | INFO     | Logins data extracted: 3 records
+2026-06-30 06:13:30 | INFO     | Bookmarks extracted: 1 records
+2026-06-30 06:13:30 | INFO     | Autofills data extracted: 61 records
+2026-06-30 06:13:30 | INFO     | Signed-in accounts extracted: 0 records
+2026-06-30 06:13:45 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:13:45 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:13:46 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:13:46 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:13:52 | INFO     | Case information saved successful
+2026-06-30 06:13:54 | USER     | [ANALYZE] Evidence folder selected: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:13:54 | INFO     | [WINDOW] Opening main analysis window
+2026-06-30 06:13:54 | INFO     | Evidence loaded successful from: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:17:36 | INFO     | CRAFT application closed.
+2026-06-30 06:17:36 | INFO     | [WINDOW] Main window closed (exit code 0)
+2026-06-30 06:17:36 | INFO     | === CRAFT session ended ===
+2026-06-30 06:17:46 | INFO     | ======================================================================
+2026-06-30 06:17:46 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:17:46 | INFO     |   Time      : 2026-06-30 06:17:46
+2026-06-30 06:17:46 | INFO     |   Host      : Robot
+2026-06-30 06:17:46 | INFO     |   User      : robot
+2026-06-30 06:17:46 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:17:46 | INFO     |   PID       : 14520
+2026-06-30 06:17:46 | INFO     | ======================================================================
+2026-06-30 06:17:46 | INFO     | CRAFT application initialised
+2026-06-30 06:17:46 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:17:46 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:17:47 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:17:47 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:17:56 | USER     | [ANALYZE] Evidence folder selected: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:17:56 | INFO     | [WINDOW] Opening main analysis window
+2026-06-30 06:17:56 | INFO     | Evidence loaded successful from: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:25:06 | INFO     | CRAFT application closed.
+2026-06-30 06:25:06 | INFO     | [WINDOW] Main window closed (exit code 0)
+2026-06-30 06:25:06 | INFO     | === CRAFT session ended ===
+2026-06-30 06:25:16 | INFO     | ======================================================================
+2026-06-30 06:25:16 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:25:16 | INFO     |   Time      : 2026-06-30 06:25:16
+2026-06-30 06:25:16 | INFO     |   Host      : Robot
+2026-06-30 06:25:16 | INFO     |   User      : robot
+2026-06-30 06:25:16 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:25:16 | INFO     |   PID       : 15504
+2026-06-30 06:25:16 | INFO     | ======================================================================
+2026-06-30 06:25:16 | INFO     | CRAFT application initialised
+2026-06-30 06:25:16 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:25:16 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:25:19 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:25:19 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:25:27 | USER     | [ANALYZE] Evidence folder selected: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:25:27 | INFO     | [WINDOW] Opening main analysis window
+2026-06-30 06:25:27 | INFO     | Evidence loaded successful from: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:27:39 | INFO     | CRAFT application closed.
+2026-06-30 06:27:39 | INFO     | [WINDOW] Main window closed (exit code 0)
+2026-06-30 06:27:39 | INFO     | === CRAFT session ended ===
+2026-06-30 06:27:45 | INFO     | ======================================================================
+2026-06-30 06:27:45 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:27:45 | INFO     |   Time      : 2026-06-30 06:27:45
+2026-06-30 06:27:45 | INFO     |   Host      : Robot
+2026-06-30 06:27:45 | INFO     |   User      : robot
+2026-06-30 06:27:45 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:27:45 | INFO     |   PID       : 16768
+2026-06-30 06:27:45 | INFO     | ======================================================================
+2026-06-30 06:27:45 | INFO     | CRAFT application initialised
+2026-06-30 06:27:45 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:27:45 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:28:49 | USER     | [NAV] Mode selection cancelled — exiting
+2026-06-30 06:28:49 | INFO     | === CRAFT session ended ===
+2026-06-30 06:29:38 | INFO     | ======================================================================
+2026-06-30 06:29:38 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:29:38 | INFO     |   Time      : 2026-06-30 06:29:38
+2026-06-30 06:29:38 | INFO     |   Host      : Robot
+2026-06-30 06:29:38 | INFO     |   User      : robot
+2026-06-30 06:29:38 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:29:38 | INFO     |   PID       : 15404
+2026-06-30 06:29:38 | INFO     | ======================================================================
+2026-06-30 06:29:38 | INFO     | CRAFT application initialised
+2026-06-30 06:29:38 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:29:38 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:30:04 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:30:04 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:30:23 | USER     | [ANALYZE] Evidence selection cancelled
+2026-06-30 06:30:23 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:30:24 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:30:24 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:30:26 | USER     | [ANALYZE] Evidence selection cancelled
+2026-06-30 06:30:26 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:30:27 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:30:27 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:31:00 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:31:00 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:32:37 | USER     | [NAV] Mode selection cancelled — exiting
+2026-06-30 06:32:37 | INFO     | === CRAFT session ended ===
+2026-06-30 06:32:43 | INFO     | ======================================================================
+2026-06-30 06:32:43 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:32:43 | INFO     |   Time      : 2026-06-30 06:32:43
+2026-06-30 06:32:43 | INFO     |   Host      : Robot
+2026-06-30 06:32:43 | INFO     |   User      : robot
+2026-06-30 06:32:43 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:32:43 | INFO     |   PID       : 15248
+2026-06-30 06:32:43 | INFO     | ======================================================================
+2026-06-30 06:32:43 | INFO     | CRAFT application initialised
+2026-06-30 06:32:43 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:32:43 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:32:44 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:32:44 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:32:51 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:32:51 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:32:52 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:32:52 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:33:14 | USER     | [ANALYZE] Evidence folder selected: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:33:14 | INFO     | [WINDOW] Opening main analysis window
+2026-06-30 06:33:14 | INFO     | Evidence loaded successful from: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:36:27 | INFO     | CRAFT application closed.
+2026-06-30 06:36:27 | INFO     | [WINDOW] Main window closed (exit code 0)
+2026-06-30 06:36:27 | INFO     | === CRAFT session ended ===
+2026-06-30 06:36:33 | INFO     | ======================================================================
+2026-06-30 06:36:33 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:36:33 | INFO     |   Time      : 2026-06-30 06:36:33
+2026-06-30 06:36:33 | INFO     |   Host      : Robot
+2026-06-30 06:36:33 | INFO     |   User      : robot
+2026-06-30 06:36:33 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:36:33 | INFO     |   PID       : 13480
+2026-06-30 06:36:33 | INFO     | ======================================================================
+2026-06-30 06:36:33 | INFO     | CRAFT application initialised
+2026-06-30 06:36:33 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:36:33 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:36:42 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:36:42 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:36:47 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:36:47 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:36:48 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:36:48 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:36:57 | USER     | [ANALYZE] Evidence selection cancelled
+2026-06-30 06:36:57 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:37:05 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:37:05 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:37:16 | USER     | [ANALYZE] Evidence folder selected: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:37:16 | INFO     | [WINDOW] Opening main analysis window
+2026-06-30 06:37:16 | INFO     | Evidence loaded successful from: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:38:35 | INFO     | CRAFT application closed.
+2026-06-30 06:38:35 | INFO     | [WINDOW] Main window closed (exit code 0)
+2026-06-30 06:38:35 | INFO     | === CRAFT session ended ===
+2026-06-30 06:38:41 | INFO     | ======================================================================
+2026-06-30 06:38:41 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:38:41 | INFO     |   Time      : 2026-06-30 06:38:41
+2026-06-30 06:38:41 | INFO     |   Host      : Robot
+2026-06-30 06:38:41 | INFO     |   User      : robot
+2026-06-30 06:38:41 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:38:41 | INFO     |   PID       : 4760
+2026-06-30 06:38:41 | INFO     | ======================================================================
+2026-06-30 06:38:41 | INFO     | CRAFT application initialised
+2026-06-30 06:38:41 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:38:41 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:38:44 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:38:44 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:38:55 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:38:55 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:38:56 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:38:56 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:38:58 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:38:58 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:38:59 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:38:59 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:39:39 | USER     | [ANALYZE] Evidence selection cancelled
+2026-06-30 06:39:39 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:39:41 | USER     | [NAV] Mode selection cancelled — exiting
+2026-06-30 06:39:41 | INFO     | === CRAFT session ended ===
+2026-06-30 06:39:47 | INFO     | ======================================================================
+2026-06-30 06:39:47 | INFO     |   CRAFT v1.0.0 (Portable) — Session started
+2026-06-30 06:39:47 | INFO     |   Time      : 2026-06-30 06:39:47
+2026-06-30 06:39:47 | INFO     |   Host      : Robot
+2026-06-30 06:39:47 | INFO     |   User      : robot
+2026-06-30 06:39:47 | INFO     |   OS        : Windows 11 (10.0.26200)
+2026-06-30 06:39:47 | INFO     |   PID       : 7124
+2026-06-30 06:39:47 | INFO     | ======================================================================
+2026-06-30 06:39:47 | INFO     | CRAFT application initialised
+2026-06-30 06:39:47 | INFO     | Log folder: D:\PROJECTS\FYP\CRAFT\src\controllers\Logs
+2026-06-30 06:39:47 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:39:48 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:39:48 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:39:58 | USER     | [ANALYZE] Evidence selection cancelled
+2026-06-30 06:39:58 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:40:05 | INFO     | User selected: Acquire Evidence
+2026-06-30 06:40:05 | USER     | [NAV] Mode selected: Acquire Evidence
+2026-06-30 06:40:12 | USER     | [ACQUIRE] Acquisition cancelled
+2026-06-30 06:40:12 | USER     | [NAV] Mode selection dialog opened
+2026-06-30 06:40:13 | INFO     | User selected: Analyze Evidence
+2026-06-30 06:40:13 | USER     | [NAV] Mode selected: Analyze Evidence
+2026-06-30 06:40:29 | USER     | [ANALYZE] Evidence folder selected: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:40:29 | INFO     | [WINDOW] Opening main analysis window
+2026-06-30 06:40:29 | INFO     | Evidence loaded successful from: D:\PROJECTS\FYP\CRAFT\tests\Mgeni_chrome_2026-06-30_06-13
+2026-06-30 06:42:56 | INFO     | CRAFT application closed.
+2026-06-30 06:42:56 | INFO     | [WINDOW] Main window closed (exit code 0)
+2026-06-30 06:42:56 | INFO     | === CRAFT session ended ===

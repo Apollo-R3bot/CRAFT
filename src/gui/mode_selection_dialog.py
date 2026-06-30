@@ -49,9 +49,7 @@ class ModeSelectionDialog(QDialog):
                 text-align: center;
                 font-size: 15px;
             }
-            QDialog {
-                padding: 40px;
-            }
+            
             """)
 
         acquire_btn.clicked.connect(self.select_acquire)
