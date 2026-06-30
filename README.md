@@ -29,4 +29,7 @@ Web browsers store a wealth of information that can be invaluable in investigati
 
 ---
 
+# CRAFT
+Cross-Browser Artifact Forensic Tool
+
 [![Latest Release](https://img.shields.io/github/v/release/Apollo-R3bot/CRAFT)](https://github.com/Apollo-R3bot/CRAFT/releases/latest)
