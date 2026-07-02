@@ -1,5 +1,6 @@
 import json
 import csv
+import psutil
 from datetime import datetime, timedelta
 import hashlib
 import os
@@ -8,7 +9,23 @@ import shutil
 import sys
 import tempfile
 import zipfile
-                        
+
+BROWSER_PROCESS_NAMES = {
+    "chrome.exe":        "Google Chrome",
+    "msedge.exe":        "Microsoft Edge",
+    "opera.exe":         "Opera",
+    "opera_gx.exe":       "Opera GX",
+    "firefox.exe":       "Firefox",
+}
+
+BROWSER_KEY_TO_PROCESSES = {
+    "chrome":  ["chrome.exe"],
+    "edge":    ["msedge.exe"],
+    "opera":   ["opera.exe", "opera_gx.exe"],
+    "firefox": ["firefox.exe"],
+}
+
+         
 def convert_webkit_date(microseconds):
     return datetime.fromtimestamp(microseconds).strftime("%Y-%m-%d %H:%M:%S")
 
@@ -157,3 +174,50 @@ def resource_path(relative_path):
         base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
     return os.path.join(base_path, relative_path)
+
+
+def get_running_browsers() -> list:
+    running = set()
+    for proc in psutil.process_iter(attrs=["name"]):
+        try:
+            proc_name = (proc.info.get("name") or "").lower()
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+
+        for exe_name, display_name in BROWSER_PROCESS_NAMES.items():
+            if proc_name == exe_name:
+                running.add(display_name)
+
+    return sorted(running)
+
+
+def is_browser_running(browser_key: str) -> bool:
+    target_processes = BROWSER_KEY_TO_PROCESSES.get(browser_key.lower(), [])
+    if not target_processes:
+        return False
+
+    for proc in psutil.process_iter(attrs=["name"]):
+        try:
+            proc_name = (proc.info.get("name") or "").lower()
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+
+        if proc_name in target_processes:
+            return True
+
+    return False
+
+
+def detect_browser_from_path(browser_path: str) -> str:
+    if not browser_path:
+        return ""
+    path_lower = browser_path.lower()
+    if "chrome" in path_lower:
+        return "chrome"
+    if "edge" in path_lower:
+        return f"edge"
+    if "opera" in path_lower:
+        return "opera"
+    if "firefox" in path_lower:
+        return "firefox"
+    return ""

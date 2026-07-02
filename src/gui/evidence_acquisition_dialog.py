@@ -4,6 +4,8 @@ from PySide6.QtCore import QDir, QTimer
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QFileDialog, QFrame, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressBar, QPushButton, QRadioButton, QVBoxLayout
 from controllers.acquire_controller import AcquireEvidenceController
 from controllers.browser_and_user_profile_controller import BrowserSelectionController
+
+from services.utils.utils import detect_browser_from_path, get_running_browsers, is_browser_running
 from version import APP_TITLE
 
 class EvidenceAcquisition(QDialog):
@@ -78,21 +80,6 @@ class EvidenceAcquisition(QDialog):
         hash_checkbox.setStyleSheet("QCheckBox { padding: 10px; }")
         layout.addWidget(hash_checkbox)
 
-        # Warning 
-        warning_label = QLabel(
-            "Please close all browser windows before starting acquisition "
-            "to ensure all forensic evidence can be collected successfully."
-        )
-        warning_label.setWordWrap(True)
-        warning_label.setStyleSheet("""
-            QLabel {
-                color: #d9534f;
-                padding: 8px;
-                font-size: 11px;
-            }
-        """)
-        layout.addWidget(warning_label)
-
         # Footer - Separator
         line = QFrame()
         line.setFrameShape(QFrame.Shape.HLine)
@@ -163,6 +150,47 @@ class EvidenceAcquisition(QDialog):
     def go_back(self):
         self.reject()
 
+    # ── Browser running check ──────────────────────────────────────────
+    def _check_browser_not_running(self) -> bool:
+        browser_key = detect_browser_from_path(self.selected_browser_path)
+
+        if browser_key and is_browser_running(browser_key):
+            if self.logger:
+                self.logger.warning(
+                    f"[ACQUIRE] Selected browser '{browser_key}' is currently running"
+                )
+
+            response = QMessageBox.warning(
+                self,
+                "Browser Is Running",
+                f"The selected browser ({browser_key.title()}) is currently open.\n\n"
+                "Please close all browser windows and try again.\n\n"
+                "Do you want to continue anyway? (Not recommended)",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No,
+            )
+
+            if response == QMessageBox.No:
+                if self.logger:
+                    self.logger.info(
+                        "[ACQUIRE] User cancelled acquisition — browser still running"
+                    )
+                return False
+
+            if self.logger:
+                self.logger.warning(
+                    "[ACQUIRE] User chose to proceed despite browser being open"
+                )
+
+        # Also warn about other browsers running, even if not the selected one,
+        # since some shared system resources (e.g. Network/Cookies on Windows)
+        # can still be affected by other Chromium-based browsers.
+        all_running = get_running_browsers()
+        if all_running and self.logger:
+            self.logger.info(f"[ACQUIRE] Browsers currently running: {', '.join(all_running)}")
+
+        return True
+
     def start_acquire(self):
         output_path = self.path_input.text().strip()
         if not output_path or not self.selected_browser_path:
@@ -171,6 +199,10 @@ class EvidenceAcquisition(QDialog):
                 "Warning",
                 "Please select both browser and destination folder"
             )
+            return
+
+        # ── Pre-flight check: is the selected browser currently running? ──
+        if not self._check_browser_not_running():
             return
 
         try:

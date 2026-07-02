@@ -2,10 +2,9 @@ import json
 import os
 
 from PySide6.QtGui import QAction, QCloseEvent, QIcon, Qt
-from PySide6.QtWidgets import (
-    QFileDialog, QFrame, QHBoxLayout, QLabel, QListWidget, QListWidgetItem,
-    QMainWindow, QMessageBox, QSplitter, QStackedWidget, QTableWidget, QTableWidgetItem,
-    QToolBar, QVBoxLayout, QWidget
+from PySide6.QtWidgets import ( 
+    QFrame, QHBoxLayout, QLabel, QListWidget, QListWidgetItem,
+    QMainWindow, QMessageBox, QSplitter, QStackedWidget, QVBoxLayout, QWidget
 )
 
 from controllers.artifacts.artifact_count_controller import get_artifact_count
@@ -317,7 +316,6 @@ class MainWindow(QMainWindow):
         self.nav_list.setCurrentRow(0)
 
     # ── Evidence loading ────────────────────────────────────────────────
-
     def load_evidence(self, evidence_path):
         self.evidence_path     = evidence_path
         self.current_case_path = evidence_path

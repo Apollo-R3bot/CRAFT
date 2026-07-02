@@ -1,4 +1,9 @@
 
+import datetime
+import json
+import os
+import re
+
 from PySide6.QtWidgets import (
     QButtonGroup,
     QDialog,
@@ -15,12 +20,28 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QIcon
 from services.utils.utils import resource_path
 
+def get_case_number(evidence_path):
+    prefs = os.path.join(evidence_path, "preferences.json")
+
+    if os.path.exists(prefs):
+        with open(prefs, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        return (
+            data.get("case_information", {})
+                .get("case_number", "")
+        )
+
+    return ""
+
 class ReportGenerationDialog(QDialog):
     def __init__(self, report_controller, report_mode="full", parent=None, logger=None):
         super().__init__(parent)
         self.report_controller = report_controller
         self.report_mode = report_mode
         self.logger = logger
+
+        self.evidence_path = report_controller.evidence_path
 
         self.setWindowTitle("Generate Report")
         self.resize(350, 150)
@@ -66,7 +87,7 @@ class ReportGenerationDialog(QDialog):
         button_layout.addWidget(export_btn)
 
         layout.addLayout(button_layout)
-
+    
     def generate_report(self):
         if self.pdf_radio.isChecked():
             selected_format = "pdf"
@@ -75,12 +96,25 @@ class ReportGenerationDialog(QDialog):
         elif self.json_radio.isChecked():
             selected_format = "json"
 
+        case_number = get_case_number(self.evidence_path)
+
+        if not case_number:
+            case_number = "NO_CASE"
+
+        # Make filename safe
+        case_number = re.sub(r'[^A-Za-z0-9_-]', "_", case_number)
+
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        default_name = f"report_{case_number}_{timestamp}.{selected_format}"
+
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             "Save Report",
-            f"report.{selected_format}",
+            default_name,
             f"{selected_format.upper()} Files (*.{selected_format})"
         )
+
 
         if not file_path:
             return

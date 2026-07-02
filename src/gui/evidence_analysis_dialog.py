@@ -40,18 +40,22 @@ class EvidenceAnalysis(QDialog):
 
         case.addWidget(QLabel("Case Number"))
         self.case_number = QLineEdit()
+        self.case_number.setPlaceholderText("CASE-2026-001")
         case.addWidget(self.case_number)
 
         case.addWidget(QLabel("Evidence Number"))
         self.evidence_number = QLineEdit()
+        self.evidence_number.setPlaceholderText("EV-2026-001")
         case.addWidget(self.evidence_number)
 
         case.addWidget(QLabel("Examiner Name"))
         self.examiner_name = QLineEdit()
+        self.examiner_name.setPlaceholderText("Benjamin Apollo")
         case.addWidget(self.examiner_name)
 
-        case.addWidget(QLabel("Description"))
+        case.addWidget(QLabel("Subject / Description"))
         self.desc = QTextEdit()
+        self.desc.setPlaceholderText("eg. Gumbo Abubakary, insider data exfiltration")
         self.desc.setFixedHeight(130)
         case.addWidget(self.desc)
         case_information.setLayout(case)
